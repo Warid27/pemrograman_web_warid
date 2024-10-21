@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Okt 2024 pada 16.31
+-- Waktu pembuatan: 21 Okt 2024 pada 18.03
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -45,10 +45,34 @@ CREATE TABLE `kereta` (
 
 INSERT INTO `kereta` (`id`, `nama`, `asal`, `tujuan`, `kelas`, `bagasi`, `tanggal`, `jml_tiket`, `total_bayar`) VALUES
 (36, 'Abi', 'Jogja', 'Belum Memilih', 'Belum Memilih', 'Ya', '2024-10-10', 10, 0),
-(41, 'Bagas', 'Jogja', 'Belum Memilih', 'Panoramic', 'Ya', '2024-10-10', 1, 0),
+(41, 'Bagas', 'Jogja', 'Belum Memilih', 'Belum Memilih', 'Ya', '2024-10-10', 5, 0),
 (44, 'Sodiq', 'Jogja', 'Bandung', 'Ekonomi', 'Tidak', '2024-10-10', 10, 2000000),
 (45, 'Warid', 'Jogja', 'Surabaya', 'VIP', 'Ya', '2015-05-29', 100, 100050000),
-(46, 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWX', 'Jogja', 'Jakarta', 'Belum Memilih', 'Ya', '1010-10-10', 1010101010, 0);
+(48, 'ipan', 'Jogja', 'Jakarta', 'VIP', 'Ya', '2005-02-20', 13, 19550000),
+(56, 'warid', 'Jogja', 'Bandung', 'VIP', 'Ya', '2024-02-10', 10, 9050000);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rapor`
+--
+
+CREATE TABLE `rapor` (
+  `id` int(10) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `nilaiUH` int(10) NOT NULL,
+  `nilaiUA` int(10) NOT NULL,
+  `nilai_total` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `rapor`
+--
+
+INSERT INTO `rapor` (`id`, `nama`, `nilaiUH`, `nilaiUA`, `nilai_total`) VALUES
+(3, 'AWE123', 12, 3, 8),
+(5, 'AKVB1234', 12, 34, 21),
+(6, 'Supernova', 11, 11, 11);
 
 --
 -- Indexes for dumped tables
@@ -61,6 +85,12 @@ ALTER TABLE `kereta`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `rapor`
+--
+ALTER TABLE `rapor`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -68,7 +98,13 @@ ALTER TABLE `kereta`
 -- AUTO_INCREMENT untuk tabel `kereta`
 --
 ALTER TABLE `kereta`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT untuk tabel `rapor`
+--
+ALTER TABLE `rapor`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
