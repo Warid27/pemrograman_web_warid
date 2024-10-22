@@ -129,7 +129,7 @@
               </div>
 
               <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">BOS</legend>
+                <legend class="col-form-label col-sm-2 pt-0"><?php echo $OSIS; ?></legend>
                 <div class="col-sm-1">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="<?php echo $OSIS; ?>" id="S" value="S" required>
@@ -157,7 +157,7 @@
               </fieldset>
 
               <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">Infak</legend>
+                <legend class="col-form-label col-sm-2 pt-0"><?php echo $Pramuka; ?></legend>
                 <div class="col-sm-1">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="<?php echo $Pramuka; ?>" id="S" value="S" required>
@@ -185,7 +185,7 @@
               </fieldset>
 
               <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">Komite</legend>
+                <legend class="col-form-label col-sm-2 pt-0"><?php echo $Olahraga; ?></legend>
                 <div class="col-sm-1">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="<?php echo $Olahraga; ?>" id="S" value="S" required>
@@ -213,7 +213,7 @@
               </fieldset>
 
               <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">Pilihan 4</legend>
+                <legend class="col-form-label col-sm-2 pt-0"><?php echo $Identitas; ?></legend>
                 <div class="col-sm-1">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="<?php echo $Identitas; ?>" id="S" value="S" required>
@@ -309,18 +309,47 @@
               $hargaIdentitas = $harga[$IdentitasValue][$Identitas];
 
               $hargaTotal = $hargaOSIS + $hargaPramuka + $hargaOlahraga + $hargaIdentitas;
-              $totalBayar = $hargaTotal - ($hargaTotal * $diskonBantuan[$bantuan])
+              $totalBayar = $hargaTotal - ($hargaTotal * $diskonBantuan[$bantuan]);
+
+              $seragamOSiS = "Rp. ".number_format($hargaOSIS, 2, ",", ".")." ($OSISValue)";
+              $seragamPramuka = "Rp. ".number_format($hargaPramuka, 2, ",", ".")." ($PramukaValue)";
+              $seragamOlahraga = "Rp. ".number_format($hargaOlahraga, 2, ",", ".")." ($OlahragaValue)";
+              $seragamIdentitas = "Rp. ".number_format($hargaIdentitas, 2, ",", ".")." ($IdentitasValue)";
+
+              $query = "INSERT INTO `seragam`(`id`, `nama`, `osis`, `pramuka`, `olahraga`, `identitas`, `bantuan`, `total_bayar`) VALUES (NULL,'$nama','$seragamOSiS','$seragamPramuka','$seragamOlahraga','$seragamIdentitas','$bantuan','$totalBayar')";
+              $result = mysqli_query($koneksi, $query);
+              if ($result) {
             ?>
+                <script>
+                  Swal.fire({
+                    icon: "success",
+                    title: "Data Berhasil Dikirim!",
+                  });
+                </script>
+              <?php
+              } else {
+              ?>
+                <script>
+                  Swal.fire({
+                    icon: "error",
+                    title: "Data Gagal Dikirim!",
+                    text: "<?php echo mysqli_error($koneksi); ?>"
+                  });
+                </script>
+              <?php
+              }
+
+              ?>
               <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <strong>Pembayaran</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 <p>Nama: <?php echo $nama; ?></p>
-                <p>OSIS: <?php echo "Rp.$hargaOSIS ($OSISValue)"; ?></p>
-                <p>Pramuka: <?php echo "Rp.$hargaPramuka ($PramukaValue)"; ?></p>
-                <p>Olahraga: <?php echo "Rp.$hargaOlahraga ($OlahragaValue)"; ?></p>
-                <p>Identitas: <?php echo "Rp.$hargaIdentitas ($IdentitasValue)"; ?></p>
+                <p>OSIS: <?php echo $seragamOSiS; ?></p>
+                <p>Pramuka: <?php echo $seragamPramuka; ?></p>
+                <p>Olahraga: <?php echo $seragamOlahraga; ?></p>
+                <p>Identitas: <?php echo $seragamIdentitas; ?></p>
                 <p>Bantuan: <?php echo $bantuan; ?></p>
-                <p>Total Bayar: Rp.<?php echo $totalBayar; ?></p>
+                <p>Total Bayar: <?php echo "Rp. " . number_format($totalBayar, 2, ",", "."); ?></p>
               </div>
             <?php
             }

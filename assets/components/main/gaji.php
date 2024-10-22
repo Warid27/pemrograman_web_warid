@@ -117,14 +117,14 @@
             <!-- General Form Elements -->
             <form action="" method="post">
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Nama Karyawan</label>
-                <div class="col-sm-10">
+                <label for="inputText" class="col-sm-3 col-form-label">Nama Karyawan</label>
+                <div class="col-sm-9">
                   <input type="text" class="form-control" name="nama" placeholder="Nama Pegawai" required>
                 </div>
               </div>
 
               <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">Devisi</legend>
+                <legend class="col-form-label col-sm-3 pt-0">Devisi</legend>
                 <div class="col-sm-1">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="devisi" id="devisi1" value="Web" required>
@@ -144,8 +144,8 @@
               </fieldset>
 
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Jabatan</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 col-form-label">Jabatan</label>
+                <div class="col-sm-9">
                   <select class="form-select" name="jabatan" aria-label="Default select example">
                     <option selected value="Belum Memilih Jabatan">Pilih Jabatan</option>
                     <option value="Magang">Magang</option>
@@ -156,14 +156,14 @@
               </div>
 
               <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Jam Kerja (Per Minggu)</label>
-                <div class="col-sm-10">
+                <label for="inputNumber" class="col-sm-3 col-form-label">Jam Kerja (Per Minggu)</label>
+                <div class="col-sm-9">
                   <input type="number" class="form-control" name="jam_kerja" min="0" placeholder="Jam Kerja" required>
                 </div>
               </div>
 
               <div class="row mb-3">
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                   <button type="submit" name="kirim" value="Hitung Gaji" class="btn btn-primary">Hitung Gaji</button>
                 </div>
               </div>
@@ -194,7 +194,31 @@
 
               $gajiKaryawan = $gaji[$devisi][$jabatan];
               $totalBayar = $gajiKaryawan * $jam_kerja;
+
+              $query = "INSERT INTO `gaji`(`id`, `nama`, `devisi`, `jabatan`, `jam_kerja`, `total_bayar`) VALUES (NULL,'$nama','$devisi','$jabatan','$jam_kerja','$totalBayar')";
+              $result = mysqli_query($koneksi, $query);
+              if ($result) {
             ?>
+                <script>
+                  Swal.fire({
+                    icon: "success",
+                    title: "Data Berhasil Dikirim!",
+                  });
+                </script>
+              <?php
+              } else {
+              ?>
+                <script>
+                  Swal.fire({
+                    icon: "error",
+                    title: "Data Gagal Dikirim!",
+                    text: "<?php echo mysqli_error($koneksi); ?>"
+                  });
+                </script>
+              <?php
+              }
+
+              ?>
               <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <strong>Pembayaran</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -202,7 +226,7 @@
                 <p>Total Jam [Minggu]: <?php echo $jam_kerja; ?></p>
                 <p>Devisi: <?php echo $devisi; ?></p>
                 <p>Jabatan: <?php echo $jabatan; ?></p>
-                <p>Total Pembayaran: Rp.<?php echo $totalBayar; ?></p>
+                <p>Total Pembayaran: <?php echo "Rp. " . number_format($totalBayar, 2, ",", "."); ?></p>
               </div>
             <?php
             }

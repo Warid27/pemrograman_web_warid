@@ -164,8 +164,30 @@
                 $kwalifikasi = "Duh le....";
               }
 
-
+              $query = "INSERT INTO `kwalifikasi`(`id`, `nama`, `iq`, `kwalifikasi`) VALUES (NULL,'$nama','$iq','$kwalifikasi')";
+              $result = mysqli_query($koneksi, $query);
+              if ($result) {
             ?>
+                <script>
+                  Swal.fire({
+                    icon: "success",
+                    title: "Data Berhasil Dikirim!",
+                  });
+                </script>
+              <?php
+              } else {
+              ?>
+                <script>
+                  Swal.fire({
+                    icon: "error",
+                    title: "Data Gagal Dikirim!",
+                    text: "<?php echo mysqli_error($koneksi); ?>"
+                  });
+                </script>
+              <?php
+              }
+
+              ?>
               <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <strong>Kwalifikasi IQ</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
