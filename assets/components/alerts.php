@@ -54,6 +54,28 @@ if (isset($_GET['alert'])) {
 }
 ?>
 
+<?php 
+if (isset($_GET['alert'])) {
+    if ($_GET['alert'] == 'ConfirmationDeleteSim') {
+        $pageName = $_GET['pageName'];
+?>
+        <script>
+            Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text: "Data akan terhapus permanen!",
+            icon: 'warning',
+            showConfirmButton: false,
+            footer:`
+            <a class="btn btn-danger m-1" href="?page=delete_sim&pageName=<?php echo $pageName; ?>&id=<?php echo $_GET['id']; ?>">Hapus!</a>
+            <a class="btn btn-primary m-1" href="?page=<?php echo $pageName; ?>">Tidak</a>
+            `,
+    });
+        </script>
+<?php  
+    }
+}
+?>
+
 <!-- Deleted -->
 <?php 
 if (isset($_GET['alert'])) {

@@ -87,6 +87,40 @@
       </ul>
     </li>
 
+    <!-- Sim Akademik -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#sim_akademik" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-mortarboard"></i><span>Sim Akademik</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="sim_akademik" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="?page=siswa" class="">
+            <i class="bi bi-circle"></i><span>Data Siswa</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=mapel" class="">
+            <i class="bi bi-circle"></i><span>Mata Pelajaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=nilai_siswa" class="">
+            <i class="bi bi-circle"></i><span>Nilai Siswa</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=tabel_seragam" class="">
+            <i class="bi bi-circle"></i><span>Data Pembayaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=data_sim_akademik" class="">
+            <i class="bi bi-circle"></i><span>Data Sim Akademik</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
   </ul>
 
 </aside>

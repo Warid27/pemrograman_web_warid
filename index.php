@@ -34,81 +34,111 @@
 
 <body>
   <!-- ======= PHP Script ======= -->
-    <?php 
-      include "assets/components/koneksi.php"; 
-      include 'assets/components/alerts.php';
-    ?>
+  <?php
+  include "assets/components/koneksi.php";
+  include 'assets/components/alerts.php';
+  ?>
   <!-- End PHP Script -->
 
   <!-- ======= Header ======= -->
-   <?php include 'assets/components/header.php'; ?>
+  <?php include 'assets/components/header.php'; ?>
   <!-- End Header -->
 
   <!-- ======= Main ======= -->
-  <?php 
-    if (!isset($_GET['page'])) {
-      $page = 'dashboard';
-    } else{
-      $page = $_GET['page'];
-    }
+  <?php
+  if (!isset($_GET['page'])) {
+    $page = 'dashboard';
+  } else {
+    $page = $_GET['page'];
+  }
 
-    switch ($page) {
-      case 'dashboard':
-        include 'assets/components/main/dashboard.php';
-        break;
+  switch ($page) {
+      // Homepage
+    case 'dashboard':
+      include 'assets/components/penilaian/form/dashboard.php';
+      break;
 
-      case 'kereta':
-        include 'assets/components/main/kereta.php';
-        break;
+      // Penilaian Form
+    case 'kereta':
+      include 'assets/components/penilaian/form/kereta.php';
+      break;
 
-      case 'rapor':
-        include 'assets/components/main/rapor.php';
-        break;
+    case 'rapor':
+      include 'assets/components/penilaian/form/rapor.php';
+      break;
 
-      case 'kwalifikasi':
-        include 'assets/components/main/kwalifikasi.php';
-        break;
+    case 'kwalifikasi':
+      include 'assets/components/penilaian/form/kwalifikasi.php';
+      break;
 
-      case 'seragam':
-        include 'assets/components/main/seragam.php';
-        break;
+    case 'seragam':
+      include 'assets/components/penilaian/form/seragam.php';
+      break;
 
-      case 'gaji':
-        include 'assets/components/main/gaji.php';
-        break;
+    case 'gaji':
+      include 'assets/components/penilaian/form/gaji.php';
+      break;
 
-      case 'tabel_kereta':
-        include 'assets/components/main/tabel/tabel_kereta.php';
-        break;
+      // Penilaian Table
+    case 'tabel_kereta':
+      include 'assets/components/penilaian/tabel/tabel_kereta.php';
+      break;
 
-      case 'tabel_rapor':
-        include 'assets/components/main/tabel/tabel_rapor.php';
-        break;
+    case 'tabel_rapor':
+      include 'assets/components/penilaian/tabel/tabel_rapor.php';
+      break;
 
-      case 'tabel_kwalifikasi':
-        include 'assets/components/main/tabel/tabel_kwalifikasi.php';
-        break;
+    case 'tabel_kwalifikasi':
+      include 'assets/components/penilaian/tabel/tabel_kwalifikasi.php';
+      break;
 
-      case 'tabel_seragam':
-        include 'assets/components/main/tabel/tabel_seragam.php';
-        break;
+    case 'tabel_seragam':
+      include 'assets/components/penilaian/tabel/tabel_seragam.php';
+      break;
 
-      case 'tabel_gaji':
-        include 'assets/components/main/tabel/tabel_gaji.php';
-        break;
+    case 'tabel_gaji':
+      include 'assets/components/penilaian/tabel/tabel_gaji.php';
+      break;
 
-      case 'delete':
-        include 'assets/components/delete.php';
-        break;
-        
-      case 'update':
-        include 'assets/components/update.php';
-        break;
-      
-      default:
+      // Penilaian Aksi
+    case 'delete':
+      include 'assets/components/penilaian/action/delete.php';
+      break;
+
+    case 'update':
+      include 'assets/components/penilaian/action/update.php';
+      break;
+
+      // Sim Akademik Warid
+    case 'siswa':
+      include 'assets/components/sim_akademik_warid/siswa.php';
+      break;
+    case 'mapel':
+      include 'assets/components/sim_akademik_warid/mapel.php';
+      break;
+    case 'nilai':
+      include 'assets/components/sim_akademik_warid/nilai_siswa.php';
+      break;
+    case 'pembayaran':
+      include 'assets/components/sim_akademik_warid/pembayaran.php';
+      break;
+    case 'data_sim_akademik':
+      include 'assets/components/sim_akademik_warid/data_sim_akademik.php';
+      break;
+
+      // Sim Akademik Warid (Aksi)
+    case 'update_sim':
+      include 'assets/components/sim_akademik_warid/update_sim.php';
+      break;
+    case 'delete_sim':
+      include 'assets/components/sim_akademik_warid/delete_sim.php';
+      break;
+
+      // Default Homepage
+    default:
       include 'assets/components/main/dashboard.php';
-        break;
-    }
+      break;
+  }
   ?>
   <!-- End main -->
 
@@ -127,11 +157,11 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-  
+
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-  
+
 </body>
 
 </html>

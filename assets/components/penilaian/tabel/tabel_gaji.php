@@ -224,7 +224,7 @@
     ?>
             <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
               <div class="card-body">
-                <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Kereta</span> <a href="?page=tabel_gaji" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
+                <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Gaji</span> <a href="?page=tabel_gaji" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
 
                 <!-- General Form Elements -->
                 <form action="?page=update&tableName=gaji&id=<?php echo $id; ?>" method="POST">
