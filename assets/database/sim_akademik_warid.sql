@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Okt 2024 pada 15.55
+-- Waktu pembuatan: 24 Okt 2024 pada 23.28
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -32,6 +32,16 @@ CREATE TABLE `mapel` (
   `mata_pelajaran` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `mapel`
+--
+
+INSERT INTO `mapel` (`id_mapel`, `mata_pelajaran`) VALUES
+(5, 'Pemrograman Web'),
+(6, 'JAVA'),
+(7, 'Flutter'),
+(8, 'DKV');
+
 -- --------------------------------------------------------
 
 --
@@ -39,11 +49,19 @@ CREATE TABLE `mapel` (
 --
 
 CREATE TABLE `nilai_siswa` (
-  `id_nilai` int(10) NOT NULL,
+  `id_nilai_siswa` int(10) NOT NULL,
   `id_siswa` int(10) NOT NULL,
   `id_mapel` int(10) NOT NULL,
   `nilai` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `nilai_siswa`
+--
+
+INSERT INTO `nilai_siswa` (`id_nilai_siswa`, `id_siswa`, `id_mapel`, `nilai`) VALUES
+(5, 12, 6, 90),
+(6, 15, 5, 100);
 
 -- --------------------------------------------------------
 
@@ -52,12 +70,21 @@ CREATE TABLE `nilai_siswa` (
 --
 
 CREATE TABLE `pembayaran_siswa` (
-  `id_pembayaran` int(10) NOT NULL,
+  `id_pembayaran_siswa` int(10) NOT NULL,
   `id_siswa` int(10) NOT NULL,
-  `pembayaran` int(10) NOT NULL,
+  `pembayaran` varchar(10) NOT NULL,
   `bulan` varchar(20) NOT NULL,
   `jumlah_bayar` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `pembayaran_siswa`
+--
+
+INSERT INTO `pembayaran_siswa` (`id_pembayaran_siswa`, `id_siswa`, `pembayaran`, `bulan`, `jumlah_bayar`) VALUES
+(5, 15, 'SPP', '15', 300000),
+(6, 13, 'SPP', '13', 10000000),
+(7, 14, 'SPP', '14', 1000);
 
 -- --------------------------------------------------------
 
@@ -70,6 +97,16 @@ CREATE TABLE `siswa` (
   `nama_siswa` varchar(255) NOT NULL,
   `kelas` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `siswa`
+--
+
+INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `kelas`) VALUES
+(12, 'Sodiq R', 'XI PPLG 1'),
+(13, 'Rasya Nelfi', 'XI PPLG 1'),
+(14, 'Nicho', 'XI PPLG 3'),
+(15, 'Ilham Uwais', 'XI PPLG 2');
 
 --
 -- Indexes for dumped tables
@@ -85,7 +122,7 @@ ALTER TABLE `mapel`
 -- Indeks untuk tabel `nilai_siswa`
 --
 ALTER TABLE `nilai_siswa`
-  ADD PRIMARY KEY (`id_nilai`),
+  ADD PRIMARY KEY (`id_nilai_siswa`),
   ADD KEY `id_siswa` (`id_siswa`),
   ADD KEY `id_mapel` (`id_mapel`);
 
@@ -93,7 +130,7 @@ ALTER TABLE `nilai_siswa`
 -- Indeks untuk tabel `pembayaran_siswa`
 --
 ALTER TABLE `pembayaran_siswa`
-  ADD PRIMARY KEY (`id_pembayaran`),
+  ADD PRIMARY KEY (`id_pembayaran_siswa`),
   ADD KEY `id_siswa` (`id_siswa`);
 
 --
@@ -110,25 +147,25 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT untuk tabel `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id_mapel` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_mapel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai_siswa`
 --
 ALTER TABLE `nilai_siswa`
-  MODIFY `id_nilai` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nilai_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembayaran_siswa`
 --
 ALTER TABLE `pembayaran_siswa`
-  MODIFY `id_pembayaran` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pembayaran_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
