@@ -4,7 +4,7 @@
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-      <a class="nav-link " href="index.php">
+      <a class="nav-link <?php echo $dashboard_sidebar; ?>" href="index.php">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
       </a>
@@ -17,17 +17,17 @@
       </a>
       <ul id="penilaian-1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="?page=kereta">
+          <a href="?page=kereta" class="<?php echo $penilaian1_1 ?>">
             <i class="bi bi-circle"></i><span>Form Kereta</span>
           </a>
         </li>
         <li>
-          <a href="?page=rapor">
+          <a href="?page=rapor" class="<?php echo $penilaian1_2 ?>">
             <i class="bi bi-circle"></i><span>Form Rapor</span>
           </a>
         </li>
         <li>
-          <a href="?page=kwalifikasi">
+          <a href="?page=kwalifikasi" class="<?php echo $penilaian1_3 ?>">
             <i class="bi bi-circle"></i><span>Form Kwalifikasi</span>
           </a>
         </li>
@@ -41,12 +41,12 @@
       </a>
       <ul id="penilaian-2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="?page=seragam">
+          <a href="?page=seragam" class="<?php echo $penilaian2_1 ?>">
             <i class="bi bi-circle"></i><span>Form Seragam</span>
           </a>
         </li>
         <li>
-          <a href="?page=gaji">
+          <a href="?page=gaji" class="<?php echo $penilaian2_2 ?>">
             <i class="bi bi-circle"></i><span>Gaji Karyawan</span>
           </a>
         </li>
@@ -60,27 +60,27 @@
       </a>
       <ul id="table-view" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="?page=tabel_kereta" class="">
+          <a href="?page=tabel_kereta" class="<?php echo $tableView_1 ?>">
             <i class="bi bi-circle"></i><span>View Kereta</span>
           </a>
         </li>
         <li>
-          <a href="?page=tabel_rapor" class="">
+          <a href="?page=tabel_rapor" class="<?php echo $tableView_2 ?>">
             <i class="bi bi-circle"></i><span>View Rapor</span>
           </a>
         </li>
         <li>
-          <a href="?page=tabel_kwalifikasi" class="">
+          <a href="?page=tabel_kwalifikasi" class="<?php echo $tableView_3 ?>">
             <i class="bi bi-circle"></i><span>View Kwalifikasi</span>
           </a>
         </li>
         <li>
-          <a href="?page=tabel_seragam" class="">
+          <a href="?page=tabel_seragam" class="<?php echo $tableView_4 ?>">
             <i class="bi bi-circle"></i><span>View Seragam</span>
           </a>
         </li>
         <li>
-          <a href="?page=tabel_gaji" class="">
+          <a href="?page=tabel_gaji" class="<?php echo $tableView_5 ?>">
             <i class="bi bi-circle"></i><span>View Gaji</span>
           </a>
         </li>
@@ -94,27 +94,27 @@
       </a>
       <ul id="sim_akademik" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="?page=siswa" class="">
+          <a href="?page=siswa" class="<?php echo $simAkademik_1 ?>">
             <i class="bi bi-circle"></i><span>Data Siswa</span>
           </a>
         </li>
         <li>
-          <a href="?page=mapel" class="">
+          <a href="?page=mapel" class="<?php echo $simAkademik_2 ?>">
             <i class="bi bi-circle"></i><span>Mata Pelajaran</span>
           </a>
         </li>
         <li>
-          <a href="?page=nilai_siswa" class="">
+          <a href="?page=nilai_siswa" class="<?php echo $simAkademik_3 ?>">
             <i class="bi bi-circle"></i><span>Nilai Siswa</span>
           </a>
         </li>
         <li>
-          <a href="?page=tabel_seragam" class="">
+          <a href="?page=pembayaran_siswa" class="<?php echo $simAkademik_4 ?>">
             <i class="bi bi-circle"></i><span>Data Pembayaran</span>
           </a>
         </li>
         <li>
-          <a href="?page=data_sim_akademik" class="">
+          <a href="?page=data_sim_akademik" class="<?php echo $simAkademik_5 ?>">
             <i class="bi bi-circle"></i><span>Data Sim Akademik</span>
           </a>
         </li>
@@ -125,28 +125,3 @@
 
 </aside>
 <!-- Sidebar -->
-
-<!-- Main -->
-<main id="main" class="main">
-
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
-
-  <section class="section dashboard">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body pt-5 pb-5 mb-100">
-          <h1>Selamat Datang di Dashboard!</h1>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-<!-- Main -->

@@ -1,95 +1,4 @@
-<!-- Sidebar -->
-<aside id="sidebar" class="sidebar">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="index.php">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
-      </a>
-    </li><!-- End Dashboard Nav -->
-
-    <!-- Penilaian 1 -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#penilaian-1" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Penilaian 1</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="penilaian-1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="?page=kereta">
-            <i class="bi bi-circle"></i><span>Form Kereta</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=rapor">
-            <i class="bi bi-circle"></i><span>Form Rapor</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=kwalifikasi">
-            <i class="bi bi-circle"></i><span>Form Kwalifikasi</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- Penilaian 2 -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#penilaian-2" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Penilaian 2</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="penilaian-2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="?page=seragam">
-            <i class="bi bi-circle"></i><span>Form Seragam</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=gaji">
-            <i class="bi bi-circle"></i><span>Gaji Karyawan</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- Table View -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#table-view" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-grid-3x3"></i><span>Table</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="table-view" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="?page=tabel_kereta" class="active">
-            <i class="bi bi-circle"></i><span>View Kereta</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=tabel_rapor" class="">
-            <i class="bi bi-circle"></i><span>View Rapor</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=tabel_kwalifikasi" class="">
-            <i class="bi bi-circle"></i><span>View Kwalifikasi</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=tabel_seragam" class="">
-            <i class="bi bi-circle"></i><span>View Seragam</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=tabel_gaji" class="">
-            <i class="bi bi-circle"></i><span>View Gaji</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</aside>
-<!-- Sidebar -->
-
+<?php $tableView_1 = "active"; ?>
 <!-- Main -->
 <main id="main" class="main">
 
@@ -212,7 +121,7 @@
             // Kelas
             switch ($selectKelas) {
               case 'Belum Memilih':
-                $kelas1 = "checked";
+                $kelas1 = "selected";
                 $kelas2 = "";
                 $kelas3 = "";
                 $kelas4 = "";
@@ -220,7 +129,7 @@
 
               case 'Panoramic':
                 $kelas1 = "";
-                $kelas2 = "checked";
+                $kelas2 = "selected";
                 $kelas3 = "";
                 $kelas4 = "";
                 break;
@@ -228,7 +137,7 @@
               case 'VIP':
                 $kelas1 = "";
                 $kelas2 = "";
-                $kelas3 = "checked";
+                $kelas3 = "selected";
                 $kelas4 = "";
                 break;
 
@@ -236,7 +145,7 @@
                 $kelas1 = "";
                 $kelas2 = "";
                 $kelas3 = "";
-                $kelas4 = "checked";
+                $kelas4 = "selected";
                 break;
 
               default:

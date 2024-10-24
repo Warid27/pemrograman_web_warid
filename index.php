@@ -43,6 +43,33 @@
   <!-- ======= Header ======= -->
   <?php include 'assets/components/header.php'; ?>
   <!-- End Header -->
+  
+  <!-- ======= Sidebar Variable ======= -->
+  <?php 
+
+    // Dashboard 
+    $dashboard_sidebar = "collapsed";  
+    // Penilaian 1 
+    $penilaian1_1 = "";  
+    $penilaian1_2 = "";  
+    $penilaian1_3 = "";  
+    // Penilaian 2 
+    $penilaian2_1 = "";  
+    $penilaian2_2 = "";  
+    // Table View 
+    $tableView_1 = "";  
+    $tableView_2 = "";  
+    $tableView_3 = "";  
+    $tableView_4 = "";  
+    $tableView_5 = "";  
+    // Sim Akademik
+    $simAkademik_1 = "";  
+    $simAkademik_2 = "";  
+    $simAkademik_3 = "";  
+    $simAkademik_4 = "";  
+    $simAkademik_5 = "";  
+  ?>
+  <!-- End Sidebar Variable -->
 
   <!-- ======= Main ======= -->
   <?php
@@ -52,10 +79,11 @@
     $page = $_GET['page'];
   }
 
+
   switch ($page) {
       // Homepage
     case 'dashboard':
-      include 'assets/components/penilaian/form/dashboard.php';
+      include 'assets/components/dashboard.php';
       break;
 
       // Penilaian Form
@@ -116,10 +144,10 @@
     case 'mapel':
       include 'assets/components/sim_akademik_warid/mapel.php';
       break;
-    case 'nilai':
+    case 'nilai_siswa':
       include 'assets/components/sim_akademik_warid/nilai_siswa.php';
       break;
-    case 'pembayaran':
+    case 'pembayaran_siswa':
       include 'assets/components/sim_akademik_warid/pembayaran.php';
       break;
     case 'data_sim_akademik':
@@ -142,6 +170,9 @@
   ?>
   <!-- End main -->
 
+  <!-- ======= Sidebar ======= -->
+  <?php include "assets/components/sidebar.php"; ?>
+  <!-- End Sidebar -->
   <!-- ======= Footer ======= -->
   <?php include 'assets/components/footer.php' ?>
   <!-- End Footer -->
@@ -149,14 +180,14 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
   <script src="assets/vendor/echarts/echarts.min.js"></script>
   <script src="assets/vendor/quill/quill.js"></script>
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
 
   <!-- Template Main JS File -->

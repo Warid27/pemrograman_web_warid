@@ -92,7 +92,7 @@ if (isset($_GET['alert'])) {
 }
 ?>
 
-<!-- Deleted -->
+<!-- Updated -->
 <?php 
 if (isset($_GET['alert'])) {
     if ($_GET['alert'] == 'Updated') {
