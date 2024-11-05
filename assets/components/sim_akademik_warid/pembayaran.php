@@ -112,7 +112,7 @@ $pageName = 'pembayaran_siswa';
                                         <td><?php echo $data['nama_siswa']; ?></td>
                                         <td><?php echo $data['pembayaran']; ?></td>
                                         <td><?php echo $data['bulan']; ?></td>
-                                        <td><?php echo $data['jumlah_bayar']; ?></td>
+                                        <td><?php echo "Rp " . number_format(($data['jumlah_bayar']), 2, ",", "."); ?></td>
                                         <td>
                                             <a href="?page=<?php echo $pageName ?>&alert=EditData&id_pembayaran_siswa=<?php echo $data['id_pembayaran_siswa']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
                                             <a href="?page=<?php echo $pageName ?>&alert=ConfirmationDeleteSim&pageName=<?php echo $pageName ?>&id=<?php echo $data['id_pembayaran_siswa']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill" style="color: white;"></i></a>

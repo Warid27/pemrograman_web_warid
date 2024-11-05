@@ -98,7 +98,7 @@ $pageName = 'siswa';
               <tbody class="table-border-bottom-0">
                 <?php
                 $no = 1;
-                $result = mysqli_query($koneksi1, "SELECT * from siswa $kelas_query");
+                $result = mysqli_query($koneksi1, "SELECT * from siswa $kelas_query ORDER BY id_siswa");
                 while ($data = mysqli_fetch_assoc($result)) {
                 ?>
                   <tr>
@@ -150,39 +150,47 @@ $pageName = 'siswa';
                     <div class="col-sm-10">
                       <select class="form-select" name="kelas" id="kelas">
                         <option value="Belum Memilih" <?php echo ($d_table['kelas'] == 'Belum Memilih') ? 'selected="selected"' : ''; ?>>Pilih Kelas</option>
-                        <option value="X PPLG 1" <?php echo ($d_table['kelas'] == 'X PPLG 1') ? 'selected="selected"' : ''; ?>>X PPLG 1</option>
-                        <option value="X PPLG 2" <?php echo ($d_table['kelas'] == 'X PPLG 2') ? 'selected="selected"' : ''; ?>>X PPLG 2</option>
-                        <option value="X PPLG 3" <?php echo ($d_table['kelas'] == 'X PPLG 3') ? 'selected="selected"' : ''; ?>>X PPLG 3</option>
-                        <option value="X MPLB 1" <?php echo ($d_table['kelas'] == 'X MPLB 1') ? 'selected="selected"' : ''; ?>>X MPLB 1</option>
-                        <option value="X MPLB 2" <?php echo ($d_table['kelas'] == 'X MPLB 2') ? 'selected="selected"' : ''; ?>>X MPLB 2</option>
-                        <option value="X MPLB 3" <?php echo ($d_table['kelas'] == 'X MPLB 3') ? 'selected="selected"' : ''; ?>>X MPLB 3</option>
-                        <option value="X AKL 1" <?php echo ($d_table['kelas'] == 'X AKL 1') ? 'selected="selected"' : ''; ?>>X AKL 1</option>
-                        <option value="X AKL 2" <?php echo ($d_table['kelas'] == 'X AKL 2') ? 'selected="selected"' : ''; ?>>X AKL 2</option>
-                        <option value="X AKL 3" <?php echo ($d_table['kelas'] == 'X AKL 3') ? 'selected="selected"' : ''; ?>>X AKL 3</option>
-                        <option value="X PM 1" <?php echo ($d_table['kelas'] == 'X PM 1') ? 'selected="selected"' : ''; ?>>X PM 1</option>
-                        <option value="X PM 2" <?php echo ($d_table['kelas'] == 'X PM 2') ? 'selected="selected"' : ''; ?>>X PM 2</option>
-                        <option value="XI PPLG 1" <?php echo ($d_table['kelas'] == 'XI PPLG 1') ? 'selected="selected"' : ''; ?>>XI PPLG 1</option>
-                        <option value="XI PPLG 2" <?php echo ($d_table['kelas'] == 'XI PPLG 2') ? 'selected="selected"' : ''; ?>>XI PPLG 2</option>
-                        <option value="XI PPLG 3" <?php echo ($d_table['kelas'] == 'XI PPLG 3') ? 'selected="selected"' : ''; ?>>XI PPLG 3</option>
-                        <option value="XI MPLB 1" <?php echo ($d_table['kelas'] == 'XI MPLB 1') ? 'selected="selected"' : ''; ?>>XI MPLB 1</option>
-                        <option value="XI MPLB 2" <?php echo ($d_table['kelas'] == 'XI MPLB 2') ? 'selected="selected"' : ''; ?>>XI MPLB 2</option>
-                        <option value="XI MPLB 3" <?php echo ($d_table['kelas'] == 'XI MPLB 3') ? 'selected="selected"' : ''; ?>>XI MPLB 3</option>
-                        <option value="XI AKL 1" <?php echo ($d_table['kelas'] == 'XI AKL 1') ? 'selected="selected"' : ''; ?>>XI AKL 1</option>
-                        <option value="XI AKL 2" <?php echo ($d_table['kelas'] == 'XI AKL 2') ? 'selected="selected"' : ''; ?>>XI AKL 2</option>
-                        <option value="XI AKL 3" <?php echo ($d_table['kelas'] == 'XI AKL 3') ? 'selected="selected"' : ''; ?>>XI AKL 3</option>
-                        <option value="XI PM 1" <?php echo ($d_table['kelas'] == 'XI PM 1') ? 'selected="selected"' : ''; ?>>XI PM 1</option>
-                        <option value="XI PM 2" <?php echo ($d_table['kelas'] == 'XI PM 2') ? 'selected="selected"' : ''; ?>>XI PM 2</option>
-                        <option value="XII PPLG 1" <?php echo ($d_table['kelas'] == 'XII PPLG 1') ? 'selected="selected"' : ''; ?>>XII PPLG 1</option>
-                        <option value="XII PPLG 2" <?php echo ($d_table['kelas'] == 'XII PPLG 2') ? 'selected="selected"' : ''; ?>>XII PPLG 2</option>
-                        <option value="XII PPLG 3" <?php echo ($d_table['kelas'] == 'XII PPLG 3') ? 'selected="selected"' : ''; ?>>XII PPLG 3</option>
-                        <option value="XII MPLB 1" <?php echo ($d_table['kelas'] == 'XII MPLB 1') ? 'selected="selected"' : ''; ?>>XII MPLB 1</option>
-                        <option value="XII MPLB 2" <?php echo ($d_table['kelas'] == 'XII MPLB 2') ? 'selected="selected"' : ''; ?>>XII MPLB 2</option>
-                        <option value="XII MPLB 3" <?php echo ($d_table['kelas'] == 'XII MPLB 3') ? 'selected="selected"' : ''; ?>>XII MPLB 3</option>
-                        <option value="XII AKL 1" <?php echo ($d_table['kelas'] == 'XII AKL 1') ? 'selected="selected"' : ''; ?>>XII AKL 1</option>
-                        <option value="XII AKL 2" <?php echo ($d_table['kelas'] == 'XII AKL 2') ? 'selected="selected"' : ''; ?>>XII AKL 2</option>
-                        <option value="XII AKL 3" <?php echo ($d_table['kelas'] == 'XII AKL 3') ? 'selected="selected"' : ''; ?>>XII AKL 3</option>
-                        <option value="XII PM 1" <?php echo ($d_table['kelas'] == 'XII PM 1') ? 'selected="selected"' : ''; ?>>XII PM 1</option>
-                        <option value="XII PM 2" <?php echo ($d_table['kelas'] == 'XII PM 2') ? 'selected="selected"' : ''; ?>>XII PM 2</option>
+                        <optgroup label="Jurusan PPLG">
+                          <option value="X PPLG 1" <?php echo ($d_table['kelas'] == 'X PPLG 1') ? 'selected="selected"' : ''; ?>>X PPLG 1</option>
+                          <option value="X PPLG 2" <?php echo ($d_table['kelas'] == 'X PPLG 2') ? 'selected="selected"' : ''; ?>>X PPLG 2</option>
+                          <option value="X PPLG 3" <?php echo ($d_table['kelas'] == 'X PPLG 3') ? 'selected="selected"' : ''; ?>>X PPLG 3</option>
+                          <option value="XI PPLG 1" <?php echo ($d_table['kelas'] == 'XI PPLG 1') ? 'selected="selected"' : ''; ?>>XI PPLG 1</option>
+                          <option value="XI PPLG 2" <?php echo ($d_table['kelas'] == 'XI PPLG 2') ? 'selected="selected"' : ''; ?>>XI PPLG 2</option>
+                          <option value="XI PPLG 3" <?php echo ($d_table['kelas'] == 'XI PPLG 3') ? 'selected="selected"' : ''; ?>>XI PPLG 3</option>
+                          <option value="XII PPLG 1" <?php echo ($d_table['kelas'] == 'XII PPLG 1') ? 'selected="selected"' : ''; ?>>XII PPLG 1</option>
+                          <option value="XII PPLG 2" <?php echo ($d_table['kelas'] == 'XII PPLG 2') ? 'selected="selected"' : ''; ?>>XII PPLG 2</option>
+                          <option value="XII PPLG 3" <?php echo ($d_table['kelas'] == 'XII PPLG 3') ? 'selected="selected"' : ''; ?>>XII PPLG 3</option>
+                        </optgroup>
+                        <optgroup label="Jurusan MPLB">
+                          <option value="X MPLB 1" <?php echo ($d_table['kelas'] == 'X MPLB 1') ? 'selected="selected"' : ''; ?>>X MPLB 1</option>
+                          <option value="X MPLB 2" <?php echo ($d_table['kelas'] == 'X MPLB 2') ? 'selected="selected"' : ''; ?>>X MPLB 2</option>
+                          <option value="X MPLB 3" <?php echo ($d_table['kelas'] == 'X MPLB 3') ? 'selected="selected"' : ''; ?>>X MPLB 3</option>
+                          <option value="XI MPLB 1" <?php echo ($d_table['kelas'] == 'XI MPLB 1') ? 'selected="selected"' : ''; ?>>XI MPLB 1</option>
+                          <option value="XI MPLB 2" <?php echo ($d_table['kelas'] == 'XI MPLB 2') ? 'selected="selected"' : ''; ?>>XI MPLB 2</option>
+                          <option value="XI MPLB 3" <?php echo ($d_table['kelas'] == 'XI MPLB 3') ? 'selected="selected"' : ''; ?>>XI MPLB 3</option>
+                          <option value="XII MPLB 1" <?php echo ($d_table['kelas'] == 'XII MPLB 1') ? 'selected="selected"' : ''; ?>>XII MPLB 1</option>
+                          <option value="XII MPLB 2" <?php echo ($d_table['kelas'] == 'XII MPLB 2') ? 'selected="selected"' : ''; ?>>XII MPLB 2</option>
+                          <option value="XII MPLB 3" <?php echo ($d_table['kelas'] == 'XII MPLB 3') ? 'selected="selected"' : ''; ?>>XII MPLB 3</option>
+                        </optgroup>
+                        <optgroup label="Jurusan AKL">
+                          <option value="X AKL 1" <?php echo ($d_table['kelas'] == 'X AKL 1') ? 'selected="selected"' : ''; ?>>X AKL 1</option>
+                          <option value="X AKL 2" <?php echo ($d_table['kelas'] == 'X AKL 2') ? 'selected="selected"' : ''; ?>>X AKL 2</option>
+                          <option value="X AKL 3" <?php echo ($d_table['kelas'] == 'X AKL 3') ? 'selected="selected"' : ''; ?>>X AKL 3</option>
+                          <option value="XI AKL 1" <?php echo ($d_table['kelas'] == 'XI AKL 1') ? 'selected="selected"' : ''; ?>>XI AKL 1</option>
+                          <option value="XI AKL 2" <?php echo ($d_table['kelas'] == 'XI AKL 2') ? 'selected="selected"' : ''; ?>>XI AKL 2</option>
+                          <option value="XI AKL 3" <?php echo ($d_table['kelas'] == 'XI AKL 3') ? 'selected="selected"' : ''; ?>>XI AKL 3</option>
+                          <option value="XII AKL 1" <?php echo ($d_table['kelas'] == 'XII AKL 1') ? 'selected="selected"' : ''; ?>>XII AKL 1</option>
+                          <option value="XII AKL 2" <?php echo ($d_table['kelas'] == 'XII AKL 2') ? 'selected="selected"' : ''; ?>>XII AKL 2</option>
+                          <option value="XII AKL 3" <?php echo ($d_table['kelas'] == 'XII AKL 3') ? 'selected="selected"' : ''; ?>>XII AKL 3</option>
+                        </optgroup>
+                        <optgroup label="Jurusan PM">
+                          <option value="X PM 1" <?php echo ($d_table['kelas'] == 'X PM 1') ? 'selected="selected"' : ''; ?>>X PM 1</option>
+                          <option value="X PM 2" <?php echo ($d_table['kelas'] == 'X PM 2') ? 'selected="selected"' : ''; ?>>X PM 2</option>
+                          <option value="XI PM 1" <?php echo ($d_table['kelas'] == 'XI PM 1') ? 'selected="selected"' : ''; ?>>XI PM 1</option>
+                          <option value="XI PM 2" <?php echo ($d_table['kelas'] == 'XI PM 2') ? 'selected="selected"' : ''; ?>>XI PM 2</option>
+                          <option value="XII PM 1" <?php echo ($d_table['kelas'] == 'XII PM 1') ? 'selected="selected"' : ''; ?>>XII PM 1</option>
+                          <option value="XII PM 2" <?php echo ($d_table['kelas'] == 'XII PM 2') ? 'selected="selected"' : ''; ?>>XII PM 2</option>
+                        </optgroup>
                       </select>
                     </div>
                   </div>

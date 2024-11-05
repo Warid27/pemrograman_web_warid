@@ -20,12 +20,15 @@ $pageName = 'nilai_siswa';
         $kelas_siswa = $_POST['kelas_siswa'];
         if ($kelas_siswa == "Semua Kelas") {
             $kelas_query = "";
+            $kelas_query_join = " ";
         } else {
             $kelas_query = "WHERE kelas ='$kelas_siswa'";
+            $kelas_query_join = "WHERE siswa.kelas ='$kelas_siswa'";
         }
     } else {
         $kelas_siswa = "Semua Kelas";
         $kelas_query = "";
+        $kelas_query_join = " ";
     }
     ?>
 
@@ -99,7 +102,7 @@ $pageName = 'nilai_siswa';
                             <tbody class="table-border-bottom-0">
                                 <?php
                                 $no = 1;
-                                $result = mysqli_query($koneksi1, "SELECT nilai_siswa.id_nilai_siswa, siswa.nama_siswa, mapel.mata_pelajaran, nilai_siswa.nilai FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa INNER JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel");
+                                $result = mysqli_query($koneksi1, "SELECT nilai_siswa.id_nilai_siswa, siswa.nama_siswa, mapel.mata_pelajaran, nilai_siswa.nilai FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa INNER JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $kelas_query_join ORDER BY nilai_siswa.id_nilai_siswa");
                                 while ($data = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr>
@@ -126,15 +129,15 @@ $pageName = 'nilai_siswa';
             if ($_GET['alert'] == 'EditData') {
                 if (isset($_GET['id_nilai_siswa'])) {
                     $id_nilai_siswa = $_GET['id_nilai_siswa'];
-                    $edit_result = mysqli_query($koneksi1, "SELECT nilai_siswa.id_nilai_siswa, siswa.nama_siswa, siswa.kelas FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa WHERE nilai_siswa.id_nilai_siswa = '$id_nilai_siswa'");
+                    $edit_result = mysqli_query($koneksi1, "SELECT nilai_siswa.*, siswa.nama_siswa, siswa.kelas FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa WHERE nilai_siswa.id_nilai_siswa = '$id_nilai_siswa'");
 
                     if (mysqli_num_rows($edit_result) > 0) {
                         $d_table = mysqli_fetch_assoc($edit_result);
-
+                        $id_mapel_siswa = $d_table['id_mapel'];
         ?>
                         <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
                             <div class="card-body">
-                                <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Siswa</span> <a href="?page=<?php echo $pageName; ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
+                                <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Nilai Siswa</span> <a href="?page=<?php echo $pageName; ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
 
                                 <!-- General Form Elements -->
                                 <form action="?page=update_sim&pageName=<?php echo $pageName ?>" method="POST">
@@ -154,17 +157,22 @@ $pageName = 'nilai_siswa';
                                                 <?php
                                                 $subjects = mysqli_query($koneksi1, "SELECT id_mapel, mata_pelajaran FROM mapel");
                                                 while ($d_mapel = mysqli_fetch_assoc($subjects)) {
-                                                    echo "<option value='" . $d_mapel['id_mapel'] . "'>" . $d_mapel['mata_pelajaran'] . "</option>";
+                                                ?>
+                                                    <option value="<?php echo $d_mapel['id_mapel']; ?>" <?php echo ($d_mapel['id_mapel'] == $id_mapel_siswa) ? 'selected="selected"' : ''; ?>>
+                                                        <?php echo $d_mapel['mata_pelajaran']; ?>
+                                                    </option>
+                                                <?php
                                                 }
                                                 ?>
                                             </select>
+
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">Nilai</label>
                                         <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="nilai" min="0" max="100" required>
+                                            <input type="number" class="form-control" name="nilai" min="0" max="100" required value="<?php echo $d_table['nilai'] ?>">
                                         </div>
                                     </div>
 
@@ -197,7 +205,7 @@ $pageName = 'nilai_siswa';
         ?>
                 <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
                     <div class="card-body">
-                        <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Siswa</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
+                        <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Nilai Siswa</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
 
                         <!-- General Form Elements -->
                         <form action="" method="POST">

@@ -95,12 +95,13 @@ $pageName = 'data_sim_akademik';
                                     <th>Pembayaran</th>
                                     <th>Bulan</th>
                                     <th>Jumlah Bayar</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0" id="myTable">
                                 <?php
                                 $no = 1;
-                                $result = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.nama_siswa, mapel.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa LEFT JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $kelas_query");
+                                $result = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.nama_siswa, mapel.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa LEFT JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $kelas_query ORDER BY siswa.id_siswa");
                                 while ($data = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr>
@@ -111,13 +112,85 @@ $pageName = 'data_sim_akademik';
                                         <td><?php echo $data['nilai']; ?></td>
                                         <td><?php echo $data['pembayaran']; ?></td>
                                         <td><?php echo $data['bulan']; ?></td>
-                                        <td><?php echo $data['jumlah_bayar']; ?></td>
-                                    </tr><?php } ?>
+                                        <td><?php echo "Rp " . number_format(($data['jumlah_bayar']), 2, ",", "."); ?></td>
+                                        <td>
+                                            <a href="?page=<?php echo $pageName ?>&alert=InfoData&id_siswa=<?php echo $data['siswa_id']; ?>&id_mapel=<?php echo $data['id_mapel'] ?>&id_nilai_siswa=<?php echo $data['id_nilai_siswa'] ?>&id_pembayaran_siswa=<?php echo $data['id_pembayaran_siswa'] ?>" class="btn btn-primary"><i class="bi bi-info-lg" style="color: white;"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- ===== INFO ===== -->
+        <?php
+        if (isset($_GET['alert']) && $_GET['alert'] == 'InfoData' && isset($_GET['id_siswa'])) {
+            $id_siswa = !empty($_GET['id_siswa']) ? " WHERE siswa.id_siswa='" . $_GET['id_siswa'] . " '" : "";
+            $id_mapel = !empty($_GET['id_mapel']) ? " AND mapel.id_mapel='" . $_GET['id_mapel'] . " '" : "";
+            $id_nilai_siswa = !empty($_GET['id_nilai_siswa']) ? " AND nilai_siswa.id_nilai_siswa='" . $_GET['id_nilai_siswa'] . " '" : "";
+            $id_pembayaran_siswa = !empty($_GET['id_pembayaran_siswa']) ? " AND pembayaran_siswa.id_pembayaran_siswa='" . $_GET['id_pembayaran_siswa'] . " '" : "";
+
+            $data_table = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.*, mapel.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa LEFT JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $id_siswa $id_mapel $id_nilai_siswa $id_pembayaran_siswa");
+
+            if (mysqli_num_rows($data_table) > 0) {
+                $d_table = mysqli_fetch_assoc($data_table);
+        ?>
+
+                <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between">
+                            <span style="color: black;">Info Data Sim Akademik Siswa</span>
+                            <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;">
+                                <i class="bi bi-x-circle"></i>
+                            </a>
+                        </h5>
+                        <table>
+                            <tr>
+                                <td>NIS</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['siswa_id'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Nama</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['nama_siswa'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Kelas</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['kelas'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Mata Pelajaran</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['mata_pelajaran'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Nilai</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['nilai'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Pembayaran</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['pembayaran'] ?? 'N/A'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Jumlah Bayar</td>
+                                <td>:</td>
+                                <td><?php echo isset($d_table['jumlah_bayar']) ? "Rp " . number_format($d_table['jumlah_bayar'], 2, ",", ".") : 'N/A'; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+        <?php
+            }
+        }
+        ?>
+
 
 </main><!-- End #main -->

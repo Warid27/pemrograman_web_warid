@@ -30,6 +30,7 @@ $pageName = "mapel";
                   <th>No</th>
                   <th>ID Mapel</th>
                   <th>Mata Pelajaran</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
