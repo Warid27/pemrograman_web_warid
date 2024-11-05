@@ -16,6 +16,11 @@ if (isset($_POST['update'])) {
         $nilai = $_POST['nilai'];
         $query = "UPDATE `nilai_siswa` SET `id_siswa`='$id_siswa',`id_mapel`='$id_mapel', `nilai` = '$nilai' WHERE `id_nilai_siswa`='$id_nilai_siswa'";
     }
+    elseif ($pageName == 'mapel') {
+        $id_mapel = $_POST['id_mapel'];
+        $mata_pelajaran = $_POST['mata_pelajaran'];
+        $query = "UPDATE `mapel` SET `mata_pelajaran`='$mata_pelajaran' WHERE `id_mapel`='$id_mapel'";
+    }
     elseif ($pageName == 'pembayaran_siswa') {
         $id_pembayaran_siswa = $_POST['id_pembayaran_siswa'];
         $pembayaran = $_POST['pembayaran'];

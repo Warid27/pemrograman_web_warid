@@ -39,39 +39,47 @@ $pageName = 'data_sim_akademik';
                             <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
                                 <option value="Belum Memilih">Pilih Kelas</option>
                                 <option value="Semua Kelas">Semua Kelas</option>
-                                <option value="X PPLG 1">X PPLG 1</option>
-                                <option value="X PPLG 2">X PPLG 2</option>
-                                <option value="X PPLG 3">X PPLG 3</option>
-                                <option value="X MPLB 1">X MPLB 1</option>
-                                <option value="X MPLB 2">X MPLB 2</option>
-                                <option value="X MPLB 3">X MPLB 3</option>
-                                <option value="X AKL 1">X AKL 1</option>
-                                <option value="X AKL 2">X AKL 2</option>
-                                <option value="X AKL 3">X AKL 3</option>
-                                <option value="X PM 1">X PM 1</option>
-                                <option value="X PM 2">X PM 2</option>
-                                <option value="XI PPLG 1">XI PPLG 1</option>
-                                <option value="XI PPLG 2">XI PPLG 2</option>
-                                <option value="XI PPLG 3">XI PPLG 3</option>
-                                <option value="XI MPLB 1">XI MPLB 1</option>
-                                <option value="XI MPLB 2">XI MPLB 2</option>
-                                <option value="XI MPLB 3">XI MPLB 3</option>
-                                <option value="XI AKL 1">XI AKL 1</option>
-                                <option value="XI AKL 2">XI AKL 2</option>
-                                <option value="XI AKL 3">XI AKL 3</option>
-                                <option value="XI PM 1">XI PM 1</option>
-                                <option value="XI PM 2">XI PM 2</option>
-                                <option value="XII PPLG 1">XII PPLG 1</option>
-                                <option value="XII PPLG 2">XII PPLG 2</option>
-                                <option value="XII PPLG 3">XII PPLG 3</option>
-                                <option value="XII MPLB 1">XII MPLB 1</option>
-                                <option value="XII MPLB 2">XII MPLB 2</option>
-                                <option value="XII MPLB 3">XII MPLB 3</option>
-                                <option value="XII AKL 1">XII AKL 1</option>
-                                <option value="XII AKL 2">XII AKL 2</option>
-                                <option value="XII AKL 3">XII AKL 3</option>
-                                <option value="XII PM 1">XII PM 1</option>
-                                <option value="XII PM 2">XII PM 2</option>
+                                <optgroup label="Jurusan PPLG">
+                                    <option value="X PPLG 1">X PPLG 1</option>
+                                    <option value="X PPLG 2">X PPLG 2</option>
+                                    <option value="X PPLG 3">X PPLG 3</option>
+                                    <option value="XI PPLG 1">XI PPLG 1</option>
+                                    <option value="XI PPLG 2">XI PPLG 2</option>
+                                    <option value="XI PPLG 3">XI PPLG 3</option>
+                                    <option value="XII PPLG 1">XII PPLG 1</option>
+                                    <option value="XII PPLG 2">XII PPLG 2</option>
+                                    <option value="XII PPLG 3">XII PPLG 3</option>
+                                </optgroup>
+                                <optgroup label="Jurusan MPLB">
+                                    <option value="X MPLB 1">X MPLB 1</option>
+                                    <option value="X MPLB 2">X MPLB 2</option>
+                                    <option value="X MPLB 3">X MPLB 3</option>
+                                    <option value="XI MPLB 1">XI MPLB 1</option>
+                                    <option value="XI MPLB 2">XI MPLB 2</option>
+                                    <option value="XI MPLB 3">XI MPLB 3</option>
+                                    <option value="XII MPLB 1">XII MPLB 1</option>
+                                    <option value="XII MPLB 2">XII MPLB 2</option>
+                                    <option value="XII MPLB 3">XII MPLB 3</option>
+                                </optgroup>
+                                <optgroup label="Jurusan AKL">
+                                    <option value="X AKL 1">X AKL 1</option>
+                                    <option value="X AKL 2">X AKL 2</option>
+                                    <option value="X AKL 3">X AKL 3</option>
+                                    <option value="XI AKL 1">XI AKL 1</option>
+                                    <option value="XI AKL 2">XI AKL 2</option>
+                                    <option value="XI AKL 3">XI AKL 3</option>
+                                    <option value="XII AKL 1">XII AKL 1</option>
+                                    <option value="XII AKL 2">XII AKL 2</option>
+                                    <option value="XII AKL 3">XII AKL 3</option>
+                                </optgroup>
+                                <optgroup label="Jurusan PM">
+                                    <option value="X PM 1">X PM 1</option>
+                                    <option value="X PM 2">X PM 2</option>
+                                    <option value="XI PM 1">XI PM 1</option>
+                                    <option value="XI PM 2">XI PM 2</option>
+                                    <option value="XII PM 1">XII PM 1</option>
+                                    <option value="XII PM 2">XII PM 2</option>
+                                </optgroup>
                             </select>
                         </form>
                     </h5>
