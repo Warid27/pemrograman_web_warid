@@ -18,11 +18,10 @@ if (isset($_POST['update'])) {
     }
     elseif ($pageName == 'pembayaran_siswa') {
         $id_pembayaran_siswa = $_POST['id_pembayaran_siswa'];
-        $id_siswa = $_POST['id_siswa'];
         $pembayaran = $_POST['pembayaran'];
-        $bulan = $_POST['id_siswa'];
+        $bulan = $_POST['bulan'];
         $jumlah_bayar = $_POST['jumlah_bayar'];
-        $query = "UPDATE `pembayaran_siswa` SET `id_siswa`='$id_siswa',`pembayaran`='$pembayaran',`bulan`='$bulan',`jumlah_bayar`='$jumlah_bayar' WHERE `id_pembayaran_siswa` = '$id_pembayaran_siswa'";
+        $query = "UPDATE `pembayaran_siswa` SET `pembayaran`='$pembayaran',`bulan`='$bulan',`jumlah_bayar`='$jumlah_bayar' WHERE `id_pembayaran_siswa` = '$id_pembayaran_siswa'";
     }
 
     $result = mysqli_query($koneksi1, $query);
