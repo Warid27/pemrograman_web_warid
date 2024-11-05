@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Okt 2024 pada 23.28
+-- Waktu pembuatan: 05 Nov 2024 pada 16.18
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -37,10 +37,11 @@ CREATE TABLE `mapel` (
 --
 
 INSERT INTO `mapel` (`id_mapel`, `mata_pelajaran`) VALUES
-(5, 'Pemrograman Web'),
-(6, 'JAVA'),
-(7, 'Flutter'),
-(8, 'DKV');
+(1, 'Matematika'),
+(2, 'PKWU'),
+(3, 'PPKn'),
+(4, 'Kejuruan'),
+(5, 'DKV');
 
 -- --------------------------------------------------------
 
@@ -60,8 +61,14 @@ CREATE TABLE `nilai_siswa` (
 --
 
 INSERT INTO `nilai_siswa` (`id_nilai_siswa`, `id_siswa`, `id_mapel`, `nilai`) VALUES
-(5, 12, 6, 90),
-(6, 15, 5, 100);
+(1, 1000, 1, 50),
+(2, 1001, 2, 90),
+(3, 1004, 4, 100),
+(4, 1002, 3, 88),
+(5, 1009, 2, 15),
+(6, 1013, 5, 14),
+(7, 1003, 1, 100),
+(8, 1000, 2, 98);
 
 -- --------------------------------------------------------
 
@@ -82,9 +89,8 @@ CREATE TABLE `pembayaran_siswa` (
 --
 
 INSERT INTO `pembayaran_siswa` (`id_pembayaran_siswa`, `id_siswa`, `pembayaran`, `bulan`, `jumlah_bayar`) VALUES
-(5, 15, 'SPP', '15', 300000),
-(6, 13, 'SPP', '13', 10000000),
-(7, 14, 'SPP', '14', 1000);
+(4, 1002, 'SPP', 'Januari', 1000000),
+(5, 1011, 'SPP', 'November', 2147483647);
 
 -- --------------------------------------------------------
 
@@ -93,7 +99,7 @@ INSERT INTO `pembayaran_siswa` (`id_pembayaran_siswa`, `id_siswa`, `pembayaran`,
 --
 
 CREATE TABLE `siswa` (
-  `id_siswa` int(10) NOT NULL,
+  `id_siswa` int(11) NOT NULL,
   `nama_siswa` varchar(255) NOT NULL,
   `kelas` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -103,10 +109,20 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `kelas`) VALUES
-(12, 'Sodiq R', 'XI PPLG 1'),
-(13, 'Rasya Nelfi', 'XI PPLG 1'),
-(14, 'Nicho', 'XI PPLG 3'),
-(15, 'Ilham Uwais', 'XI PPLG 2');
+(1000, 'IPAN', 'XI PPLG 1'),
+(1001, 'Robby', 'XI PPLG 2'),
+(1002, 'Rava', 'X PPLG 1'),
+(1003, 'Gifari', 'XI AKL 3'),
+(1004, 'Warid', 'XI PPLG 1'),
+(1005, 'Yossa', 'X PM 2'),
+(1006, 'Ridho', 'XI PM 1'),
+(1007, 'Adit', 'XII PPLG 3'),
+(1008, 'Linda', 'XII PM 2'),
+(1009, 'Bagas Dwi', 'XI MPLB 2'),
+(1010, 'Yulia', 'XII AKL 3'),
+(1011, 'Haidar', 'XI PPLG 1'),
+(1012, 'Iqbal', 'XI PPLG 1'),
+(1013, 'Sodiq', 'X PPLG 1');
 
 --
 -- Indexes for dumped tables
@@ -147,25 +163,25 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT untuk tabel `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id_mapel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_mapel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai_siswa`
 --
 ALTER TABLE `nilai_siswa`
-  MODIFY `id_nilai_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_nilai_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembayaran_siswa`
 --
 ALTER TABLE `pembayaran_siswa`
-  MODIFY `id_pembayaran_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pembayaran_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1014;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -175,14 +191,14 @@ ALTER TABLE `siswa`
 -- Ketidakleluasaan untuk tabel `nilai_siswa`
 --
 ALTER TABLE `nilai_siswa`
-  ADD CONSTRAINT `nilai_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`),
-  ADD CONSTRAINT `nilai_siswa_ibfk_2` FOREIGN KEY (`id_mapel`) REFERENCES `mapel` (`id_mapel`);
+  ADD CONSTRAINT `nilai_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nilai_siswa_ibfk_2` FOREIGN KEY (`id_mapel`) REFERENCES `mapel` (`id_mapel`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `pembayaran_siswa`
 --
 ALTER TABLE `pembayaran_siswa`
-  ADD CONSTRAINT `pembayaran_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`);
+  ADD CONSTRAINT `pembayaran_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
