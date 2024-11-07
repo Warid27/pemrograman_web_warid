@@ -101,20 +101,21 @@ $pageName = 'data_sim_akademik';
                             <tbody class="table-border-bottom-0" id="myTable">
                                 <?php
                                 $no = 1;
-                                $result = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.nama_siswa, mapel.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa LEFT JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $kelas_query ORDER BY siswa.id_siswa");
+                                $result = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.nama_siswa, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa $kelas_query ORDER BY siswa.id_siswa");
                                 while ($data = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr>
                                         <td><?php echo $no++; ?></td>
                                         <td><?php echo $data['siswa_id']; ?></td>
                                         <td><?php echo $data['nama_siswa']; ?></td>
-                                        <td><?php echo $data['mata_pelajaran']; ?></td>
-                                        <td><?php echo $data['nilai']; ?></td>
-                                        <td><?php echo $data['pembayaran']; ?></td>
-                                        <td><?php echo $data['bulan']; ?></td>
-                                        <td><?php echo "Rp " . number_format(($data['jumlah_bayar']), 2, ",", "."); ?></td>
+                                        <td><?php echo $data['mata_pelajaran'] ?? '-'; ?></td>
+                                        <td><?php echo $data['nilai'] ?? '-'; ?></td>
+                                        <td><?php echo $data['pembayaran'] ?? '-'; ?></td>
+                                        <td><?php echo $data['bulan'] ?? '-'; ?></td>
+                                        <td><?php echo isset($data['jumlah_bayar']) ? "Rp " . number_format($data['jumlah_bayar'], 2, ",", ".") : '-'; ?></td>
                                         <td>
-                                            <a href="?page=<?php echo $pageName ?>&alert=InfoData&id_siswa=<?php echo $data['siswa_id']; ?>&id_mapel=<?php echo $data['id_mapel'] ?>&id_nilai_siswa=<?php echo $data['id_nilai_siswa'] ?>&id_pembayaran_siswa=<?php echo $data['id_pembayaran_siswa'] ?>" class="btn btn-primary"><i class="bi bi-info-lg" style="color: white;"></i></a>
+                                            <a href="?page=<?php echo $pageName ?>&alert=InfoData&id_siswa=<?php echo $data['siswa_id']; ?>&mata_pelajaran=<?php echo $data['mata_pelajaran'] ?>&id_nilai_siswa=<?php echo $data['id_nilai_siswa'] ?>&id_pembayaran_siswa=<?php echo $data['id_pembayaran_siswa'] ?>" class="btn btn-warning"><i class="bi bi-info-lg" style="color: white;"></i></a>
+                                            <a href="?page=<?php echo $pageName ?>&alert=EditData&id_siswa=<?php echo $data['siswa_id']; ?>&mata_pelajaran=<?php echo $data['mata_pelajaran'] ?>&id_nilai_siswa=<?php echo $data['id_nilai_siswa'] ?>&id_pembayaran_siswa=<?php echo $data['id_pembayaran_siswa'] ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -129,16 +130,14 @@ $pageName = 'data_sim_akademik';
         <?php
         if (isset($_GET['alert']) && $_GET['alert'] == 'InfoData' && isset($_GET['id_siswa'])) {
             $id_siswa = !empty($_GET['id_siswa']) ? " WHERE siswa.id_siswa='" . $_GET['id_siswa'] . " '" : "";
-            $id_mapel = !empty($_GET['id_mapel']) ? " AND mapel.id_mapel='" . $_GET['id_mapel'] . " '" : "";
             $id_nilai_siswa = !empty($_GET['id_nilai_siswa']) ? " AND nilai_siswa.id_nilai_siswa='" . $_GET['id_nilai_siswa'] . " '" : "";
             $id_pembayaran_siswa = !empty($_GET['id_pembayaran_siswa']) ? " AND pembayaran_siswa.id_pembayaran_siswa='" . $_GET['id_pembayaran_siswa'] . " '" : "";
 
-            $data_table = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.*, mapel.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa LEFT JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $id_siswa $id_mapel $id_nilai_siswa $id_pembayaran_siswa");
+            $data_table = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa $id_siswa $id_nilai_siswa $id_pembayaran_siswa");
 
             if (mysqli_num_rows($data_table) > 0) {
                 $d_table = mysqli_fetch_assoc($data_table);
         ?>
-
                 <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between">
@@ -151,42 +150,162 @@ $pageName = 'data_sim_akademik';
                             <tr>
                                 <td>NIS</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['siswa_id'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['siswa_id'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Nama</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['nama_siswa'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['nama_siswa'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Kelas</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['kelas'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['kelas'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Mata Pelajaran</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['mata_pelajaran'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['mata_pelajaran'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Nilai</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['nilai'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['nilai'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Pembayaran</td>
                                 <td>:</td>
-                                <td><?php echo $d_table['pembayaran'] ?? 'N/A'; ?></td>
+                                <td><?php echo $d_table['pembayaran'] ?? '-'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Bulan</td>
+                                <td>:</td>
+                                <td><?php echo $d_table['bulan'] ?? '-'; ?></td>
                             </tr>
                             <tr>
                                 <td>Jumlah Bayar</td>
                                 <td>:</td>
-                                <td><?php echo isset($d_table['jumlah_bayar']) ? "Rp " . number_format($d_table['jumlah_bayar'], 2, ",", ".") : 'N/A'; ?></td>
+                                <td><?php echo isset($d_table['jumlah_bayar']) ? "Rp " . number_format($d_table['jumlah_bayar'], 2, ",", ".") : '-'; ?></td>
                             </tr>
                         </table>
                     </div>
                 </div>
 
+        <?php
+            }
+        }
+        ?>
+
+        <!-- ===== EDIT ===== -->
+        <?php
+        if (isset($_GET['alert']) && $_GET['alert'] == 'EditData' && isset($_GET['id_siswa'])) {
+            $id_siswa = !empty($_GET['id_siswa']) ? " WHERE siswa.id_siswa='" . $_GET['id_siswa'] . " '" : "";
+            $id_nilai_siswa = !empty($_GET['id_nilai_siswa']) ? " AND nilai_siswa.id_nilai_siswa='" . $_GET['id_nilai_siswa'] . " '" : "";
+            $id_pembayaran_siswa = !empty($_GET['id_pembayaran_siswa']) ? " AND pembayaran_siswa.id_pembayaran_siswa='" . $_GET['id_pembayaran_siswa'] . " '" : "";
+
+            $data_table = mysqli_query($koneksi1, "SELECT siswa.id_siswa AS siswa_id, siswa.*, nilai_siswa.*, pembayaran_siswa.* FROM siswa LEFT JOIN nilai_siswa ON siswa.id_siswa = nilai_siswa.id_siswa LEFT JOIN pembayaran_siswa ON siswa.id_siswa = pembayaran_siswa.id_siswa $id_siswa $id_nilai_siswa $id_pembayaran_siswa");
+
+            if (mysqli_num_rows($data_table) > 0) {
+                $d_table = mysqli_fetch_assoc($data_table);
+        ?>
+                <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Edit Data Sim Akademik Siswa</span> <a href="?page=<?php echo $pageName; ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
+
+                        <!-- General Form Elements -->
+                        <form action="?page=update_sim&pageName=<?php echo $pageName ?>" method="POST">
+                            <input type="hidden" name="id_siswa" value="<?php echo $d_table['siswa_id']; ?>">
+                            <input type="hidden" name="id_nilai_siswa" value="<?php echo $d_table['id_nilai_siswa']; ?>">
+                            <input type="hidden" name="id_pembayaran_siswa" value="<?php echo $d_table['id_pembayaran_siswa']; ?>">
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">NIS</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nis" value="<?php echo $d_table['siswa_id']; ?>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Nama Siswa</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nama_siswa" value="<?php echo $d_table['nama_siswa']; ?>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Kelas</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nama_siswa" value="<?php echo $d_table['kelas']; ?>" disabled>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Mata Pelajaran</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" name="mata_pelajaran" aria-label="Default select example">
+                                        <option selected value="Belum Memilih">Pilih Mata Pelajaran</option>
+                                        <?php
+                                        foreach ($list_mapel as $mapel) {
+                                        ?>
+                                            <option value="<?php echo $mapel['mata_pelajaran']; ?>" <?php echo ($mapel['mata_pelajaran'] == $d_table['mata_pelajaran']) ? 'selected="selected"' : ''; ?>>
+                                                <?php echo $mapel['mata_pelajaran']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Nilai</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="nilai" min="0" max="100"  value="<?php echo $d_table['nilai'] ?>">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Pembayaran</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="pembayaran"  placeholder="Pembayaran" value="<?php echo $d_table['pembayaran'] ?>">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Bulan</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" name="bulan" id="bulan">
+                                        <option <?php echo ('' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Belum Memilih">Pilih Bulan</option>
+                                        <option <?php echo ('Januari' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Januari">Januari</option>
+                                        <option <?php echo ('Februari' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Februari">Februari</option>
+                                        <option <?php echo ('Maret' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Maret">Maret</option>
+                                        <option <?php echo ('April' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="April">April</option>
+                                        <option <?php echo ('Mei' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Mei">Mei</option>
+                                        <option <?php echo ('Juni' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Juni">Juni</option>
+                                        <option <?php echo ('Juli' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Juli">Juli</option>
+                                        <option <?php echo ('Agustus' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Agustus">Agustus</option>
+                                        <option <?php echo ('September' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="September">September</option>
+                                        <option <?php echo ('Oktober' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Oktober">Oktober</option>
+                                        <option <?php echo ('November' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="November">November</option>
+                                        <option <?php echo ('Desember' == $d_table['bulan']) ? 'selected="selected"' : ''; ?> value="Desember">Desember</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Jumlah Bayar</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="jumlah_bayar" min="0" max=""  value="<?php echo $d_table['jumlah_bayar'] ?>">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <button type="submit" name="update" value="update" class="btn btn-primary">Update!</button>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+                    </div>
+                </div>
         <?php
             }
         }
