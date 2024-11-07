@@ -102,7 +102,7 @@ $pageName = 'nilai_siswa';
                             <tbody class="table-border-bottom-0">
                                 <?php
                                 $no = 1;
-                                $result = mysqli_query($koneksi1, "SELECT nilai_siswa.id_nilai_siswa, siswa.nama_siswa, mapel.mata_pelajaran, nilai_siswa.nilai FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa INNER JOIN mapel ON nilai_siswa.id_mapel = mapel.id_mapel $kelas_query_join ORDER BY nilai_siswa.id_nilai_siswa");
+                                $result = mysqli_query($koneksi1, "SELECT nilai_siswa.id_nilai_siswa, siswa.nama_siswa, nilai_siswa.mata_pelajaran,nilai_siswa.nilai FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.id_siswa = siswa.id_siswa $kelas_query_join ORDER BY nilai_siswa.id_nilai_siswa");
                                 while ($data = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr>
@@ -133,7 +133,7 @@ $pageName = 'nilai_siswa';
 
                     if (mysqli_num_rows($edit_result) > 0) {
                         $d_table = mysqli_fetch_assoc($edit_result);
-                        $id_mapel_siswa = $d_table['id_mapel'];
+                        $mata_pelajaran_siswa = $d_table['mata_pelajaran'];
         ?>
                         <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
                             <div class="card-body">
@@ -152,17 +152,16 @@ $pageName = 'nilai_siswa';
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Mata Pelajaran</label>
                                         <div class="col-sm-10">
-                                            <select class="form-select" name="id_mapel" aria-label="Default select example">
+                                            <select class="form-select" name="mata_pelajaran" aria-label="Default select example">
                                                 <option selected value="Belum Memilih">Pilih Mata Pelajaran</option>
                                                 <?php
-                                                $subjects = mysqli_query($koneksi1, "SELECT id_mapel, mata_pelajaran FROM mapel");
-                                                while ($d_mapel = mysqli_fetch_assoc($subjects)) {
+                                                    foreach ($list_mapel as $mapel) {
                                                 ?>
-                                                    <option value="<?php echo $d_mapel['id_mapel']; ?>" <?php echo ($d_mapel['id_mapel'] == $id_mapel_siswa) ? 'selected="selected"' : ''; ?>>
-                                                        <?php echo $d_mapel['mata_pelajaran']; ?>
+                                                    <option value="<?php echo $mapel['mata_pelajaran']; ?>" <?php echo ($mapel['mata_pelajaran'] == $mata_pelajaran_siswa) ? 'selected="selected"' : ''; ?>>
+                                                        <?php echo $mapel['mata_pelajaran']; ?>
                                                     </option>
                                                 <?php
-                                                }
+                                                    }
                                                 ?>
                                             </select>
 
@@ -235,12 +234,11 @@ $pageName = 'nilai_siswa';
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Mata Pelajaran</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" name="id_mapel" aria-label="Default select example">
+                                    <select class="form-select" name="mata_pelajaran" aria-label="Default select example">
                                         <option selected value="Belum Memilih">Pilih Mata Pelajaran</option>
                                         <?php
-                                        $data_mapel = mysqli_query($koneksi1, "SELECT * FROM mapel");
-                                        while ($d_mapel = mysqli_fetch_assoc($data_mapel)) {
-                                            echo "<option value='" . $d_mapel['id_mapel'] . "'>" . $d_mapel['mata_pelajaran'] . "</option>";
+                                        foreach ($list_mapel as $mapel) {
+                                            echo "<option value='" . $mapel['mata_pelajaran'] . "'>" . $mapel['mata_pelajaran'] . "</option>";
                                         }
                                         ?>
                                     </select>
@@ -274,11 +272,11 @@ $pageName = 'nilai_siswa';
     <?php
     if (isset($_POST['add_data'])) {
         $id_siswa = $_POST['id_siswa'];
-        $id_mapel = $_POST['id_mapel'];
+        $mata_pelajaran = $_POST['mata_pelajaran'];
         $nilai = $_POST['nilai'];
 
-        if ($id_siswa !== "Belum Memilih" && $id_mapel !== "Belum Memilih") {
-            $query = "INSERT INTO `nilai_siswa`(`id_nilai_siswa`, `id_siswa`, `id_mapel`, `nilai`) VALUES (NULL, '$id_siswa', '$id_mapel', '$nilai')";
+        if ($id_siswa !== "Belum Memilih" && $mata_pelajaran !== "Belum Memilih") {
+            $query = "INSERT INTO `nilai_siswa`(`id_nilai_siswa`, `id_siswa`, `mata_pelajaran`, `nilai`) VALUES (NULL, '$id_siswa', '$mata_pelajaran', '$nilai')";
             $result = mysqli_query($koneksi1, $query);
 
             if ($result) {

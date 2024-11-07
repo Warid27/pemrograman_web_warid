@@ -73,6 +73,11 @@
     $simAkademik_5 = "";  
   ?>
   <!-- End Sidebar Variable -->
+  
+  <!-- ======= List Mata Pelajaran ======= -->
+   <?php include 'assets/components/sim_akademik_warid/list_mapel.php' ?>
+  <!-- List Mata Pelajaran -->
+
 
   <!-- ======= Main ======= -->
   <?php
