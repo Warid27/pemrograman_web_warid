@@ -94,27 +94,37 @@
       </a>
       <ul id="sim_akademik" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="?page=siswa" class="<?php echo $simAkademik_1 ?>">
+          <a href="?page=user" class="<?php echo $simAkademik_1 ?>">
+            <i class="bi bi-circle"></i><span>Data User</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=siswa" class="<?php echo $simAkademik_2 ?>">
             <i class="bi bi-circle"></i><span>Data Siswa</span>
           </a>
         </li>
         <li>
-          <a href="?page=mapel" class="<?php echo $simAkademik_2 ?>">
-            <i class="bi bi-circle"></i><span>Mata Pelajaran</span>
+          <a href="?page=mapel" class="<?php echo $simAkademik_3 ?>">
+            <i class="bi bi-circle"></i><span>Data Mata Pelajaran</span>
           </a>
         </li>
         <li>
-          <a href="?page=nilai_siswa" class="<?php echo $simAkademik_3 ?>">
-            <i class="bi bi-circle"></i><span>Nilai Siswa</span>
+          <a href="?page=kelas" class="<?php echo $simAkademik_4 ?>">
+            <i class="bi bi-circle"></i><span>Data Kelas</span>
           </a>
         </li>
         <li>
-          <a href="?page=pembayaran_siswa" class="<?php echo $simAkademik_4 ?>">
-            <i class="bi bi-circle"></i><span>Data Pembayaran</span>
+          <a href="?page=nilai" class="<?php echo $simAkademik_5 ?>">
+            <i class="bi bi-circle"></i><span>Data Nilai</span>
           </a>
         </li>
         <li>
-          <a href="?page=data_sim_akademik" class="<?php echo $simAkademik_5 ?>">
+          <a href="?page=bayar" class="<?php echo $simAkademik_6 ?>">
+            <i class="bi bi-circle"></i><span>Data Bayar</span>
+          </a>
+        </li>
+        <li>
+          <a href="?page=data_sim_akademik" class="<?php echo $simAkademik_7 ?>">
             <i class="bi bi-circle"></i><span>Data Sim Akademik</span>
           </a>
         </li>

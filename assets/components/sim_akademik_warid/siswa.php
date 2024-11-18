@@ -1,6 +1,12 @@
 <?php
-$simAkademik_1 = "active";
+$simAkademik_2 = "active";
 $pageName = 'siswa';
+?>
+<?php
+$query_kelas = "SELECT * FROM tb_kelas";
+$stmt_kelas = $pdo->prepare($query_kelas);
+$stmt_kelas->execute();
+$kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
 ?>
 <!-- Main -->
 <main id="main" class="main">
@@ -10,82 +16,21 @@ $pageName = 'siswa';
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="?page=dashboard">Home</a></li>
-        <li class="breadcrumb-item">Table</li>
+        <li class="breadcrumb-item">Sim Akademik</li>
         <li class="breadcrumb-item active">Data Siswa</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
-  <?php
-  if (isset($_POST['kelas_siswa'])) {
-    $kelas_siswa = $_POST['kelas_siswa'];
-    if ($kelas_siswa == "Semua Kelas") {
-      $kelas_query = "";
-    } else {
-      $kelas_query = "WHERE kelas ='$kelas_siswa'";
-    }
-  } else {
-    $kelas_siswa = "Semua Kelas";
-    $kelas_query = "";
-  }
-  ?>
-  </div>
+
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <h5 class="card-header d-flex">
-            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data</span>
-            <span class="col-sm-3"><?php echo $kelas_siswa; ?></span>
-            <form class="col-sm-3" action="?page=<?php echo $pageName ?>" method="post">
-              <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
-                <option value="Belum Memilih">Pilih Kelas</option>
-                <option value="Semua Kelas">Semua Kelas</option>
-                <optgroup label="Jurusan PPLG">
-                  <option value="X PPLG 1">X PPLG 1</option>
-                  <option value="X PPLG 2">X PPLG 2</option>
-                  <option value="X PPLG 3">X PPLG 3</option>
-                  <option value="XI PPLG 1">XI PPLG 1</option>
-                  <option value="XI PPLG 2">XI PPLG 2</option>
-                  <option value="XI PPLG 3">XI PPLG 3</option>
-                  <option value="XII PPLG 1">XII PPLG 1</option>
-                  <option value="XII PPLG 2">XII PPLG 2</option>
-                  <option value="XII PPLG 3">XII PPLG 3</option>
-                </optgroup>
-                <optgroup label="Jurusan MPLB">
-                  <option value="X MPLB 1">X MPLB 1</option>
-                  <option value="X MPLB 2">X MPLB 2</option>
-                  <option value="X MPLB 3">X MPLB 3</option>
-                  <option value="XI MPLB 1">XI MPLB 1</option>
-                  <option value="XI MPLB 2">XI MPLB 2</option>
-                  <option value="XI MPLB 3">XI MPLB 3</option>
-                  <option value="XII MPLB 1">XII MPLB 1</option>
-                  <option value="XII MPLB 2">XII MPLB 2</option>
-                  <option value="XII MPLB 3">XII MPLB 3</option>
-                </optgroup>
-                <optgroup label="Jurusan AKL">
-                  <option value="X AKL 1">X AKL 1</option>
-                  <option value="X AKL 2">X AKL 2</option>
-                  <option value="X AKL 3">X AKL 3</option>
-                  <option value="XI AKL 1">XI AKL 1</option>
-                  <option value="XI AKL 2">XI AKL 2</option>
-                  <option value="XI AKL 3">XI AKL 3</option>
-                  <option value="XII AKL 1">XII AKL 1</option>
-                  <option value="XII AKL 2">XII AKL 2</option>
-                  <option value="XII AKL 3">XII AKL 3</option>
-                </optgroup>
-                <optgroup label="Jurusan PM">
-                  <option value="X PM 1">X PM 1</option>
-                  <option value="X PM 2">X PM 2</option>
-                  <option value="XI PM 1">XI PM 1</option>
-                  <option value="XI PM 2">XI PM 2</option>
-                  <option value="XII PM 1">XII PM 1</option>
-                  <option value="XII PM 2">XII PM 2</option>
-                </optgroup>
-              </select>
-            </form>
+            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
           </h5>
           <div class="table-responsive text-nowrap">
-            <table class="table" style="text-align:center">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th>No</th>
@@ -95,22 +40,27 @@ $pageName = 'siswa';
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody class="table-border-bottom-0">
+              <tbody>
                 <?php
+                $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas";
+                $stmt = $pdo->query($sqlSiswa);
                 $no = 1;
-                $result = mysqli_query($koneksi1, "SELECT * from siswa $kelas_query ORDER BY id_siswa");
-                while ($data = mysqli_fetch_assoc($result)) {
+                foreach ($stmt as $siswa) {
                 ?>
                   <tr>
                     <td><?php echo $no++; ?></td>
-                    <td><?php echo $data['id_siswa']; ?></td>
-                    <td><?php echo $data['nama_siswa']; ?></td>
-                    <td><?php echo $data['kelas']; ?></td>
+                    <td><?php echo htmlspecialchars($siswa['nis']); ?></td>
+                    <td><?php echo htmlspecialchars($siswa['nama']); ?></td>
+                    <td><?php echo htmlspecialchars($siswa['nama_kelas']); ?></td>
                     <td>
-                      <a href="?page=<?php echo $pageName ?>&alert=EditData&id=<?php echo $data['id_siswa']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
-                      <a href="?page=<?php echo $pageName ?>&alert=ConfirmationDeleteSim&pageName=<?php echo $pageName; ?>&id=<?php echo $data['id_siswa']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill" style="color: white;"></i></a>
+                      <a href="?page=<?php echo $pageName ?>&alert=edit_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <a href="?page=<?php echo $pageName ?>&alert=info_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
+
                     </td>
-                  </tr><?php } ?>
+                  </tr>
+                <?php
+                }
+                ?>
               </tbody>
             </table>
           </div>
@@ -118,171 +68,79 @@ $pageName = 'siswa';
       </div>
     </div>
 
-    <!-- ===== EDIT ===== -->
-    <?php
-    if (isset($_GET['alert'])) {
-      if ($_GET['alert'] == 'EditData') {
-        if (isset($_GET['id'])) {
-          $id_siswa = $_GET['id'];
-
-          $data_table = mysqli_query($koneksi1, "SELECT * FROM `siswa` WHERE id_siswa='$id_siswa'");
-
-          if (mysqli_num_rows($data_table) > 0) {
-            $d_table = mysqli_fetch_assoc($data_table);
-
-    ?>
-            <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
-              <div class="card-body">
-                <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Siswa</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
-
-                <!-- General Form Elements -->
-                <form action="?page=update_sim&pageName=siswa" method="POST">
-                  <input type="hidden" name="id_siswa" value="<?php echo $d_table['id_siswa']; ?>">
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Nama Siswa</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" name="nama_siswa" required value="<?php echo $d_table['nama_siswa']; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Kelas</label>
-                    <div class="col-sm-10">
-                      <select class="form-select" name="kelas" id="kelas">
-                        <option value="Belum Memilih" <?php echo ($d_table['kelas'] == 'Belum Memilih') ? 'selected="selected"' : ''; ?>>Pilih Kelas</option>
-                        <optgroup label="Jurusan PPLG">
-                          <option value="X PPLG 1" <?php echo ($d_table['kelas'] == 'X PPLG 1') ? 'selected="selected"' : ''; ?>>X PPLG 1</option>
-                          <option value="X PPLG 2" <?php echo ($d_table['kelas'] == 'X PPLG 2') ? 'selected="selected"' : ''; ?>>X PPLG 2</option>
-                          <option value="X PPLG 3" <?php echo ($d_table['kelas'] == 'X PPLG 3') ? 'selected="selected"' : ''; ?>>X PPLG 3</option>
-                          <option value="XI PPLG 1" <?php echo ($d_table['kelas'] == 'XI PPLG 1') ? 'selected="selected"' : ''; ?>>XI PPLG 1</option>
-                          <option value="XI PPLG 2" <?php echo ($d_table['kelas'] == 'XI PPLG 2') ? 'selected="selected"' : ''; ?>>XI PPLG 2</option>
-                          <option value="XI PPLG 3" <?php echo ($d_table['kelas'] == 'XI PPLG 3') ? 'selected="selected"' : ''; ?>>XI PPLG 3</option>
-                          <option value="XII PPLG 1" <?php echo ($d_table['kelas'] == 'XII PPLG 1') ? 'selected="selected"' : ''; ?>>XII PPLG 1</option>
-                          <option value="XII PPLG 2" <?php echo ($d_table['kelas'] == 'XII PPLG 2') ? 'selected="selected"' : ''; ?>>XII PPLG 2</option>
-                          <option value="XII PPLG 3" <?php echo ($d_table['kelas'] == 'XII PPLG 3') ? 'selected="selected"' : ''; ?>>XII PPLG 3</option>
-                        </optgroup>
-                        <optgroup label="Jurusan MPLB">
-                          <option value="X MPLB 1" <?php echo ($d_table['kelas'] == 'X MPLB 1') ? 'selected="selected"' : ''; ?>>X MPLB 1</option>
-                          <option value="X MPLB 2" <?php echo ($d_table['kelas'] == 'X MPLB 2') ? 'selected="selected"' : ''; ?>>X MPLB 2</option>
-                          <option value="X MPLB 3" <?php echo ($d_table['kelas'] == 'X MPLB 3') ? 'selected="selected"' : ''; ?>>X MPLB 3</option>
-                          <option value="XI MPLB 1" <?php echo ($d_table['kelas'] == 'XI MPLB 1') ? 'selected="selected"' : ''; ?>>XI MPLB 1</option>
-                          <option value="XI MPLB 2" <?php echo ($d_table['kelas'] == 'XI MPLB 2') ? 'selected="selected"' : ''; ?>>XI MPLB 2</option>
-                          <option value="XI MPLB 3" <?php echo ($d_table['kelas'] == 'XI MPLB 3') ? 'selected="selected"' : ''; ?>>XI MPLB 3</option>
-                          <option value="XII MPLB 1" <?php echo ($d_table['kelas'] == 'XII MPLB 1') ? 'selected="selected"' : ''; ?>>XII MPLB 1</option>
-                          <option value="XII MPLB 2" <?php echo ($d_table['kelas'] == 'XII MPLB 2') ? 'selected="selected"' : ''; ?>>XII MPLB 2</option>
-                          <option value="XII MPLB 3" <?php echo ($d_table['kelas'] == 'XII MPLB 3') ? 'selected="selected"' : ''; ?>>XII MPLB 3</option>
-                        </optgroup>
-                        <optgroup label="Jurusan AKL">
-                          <option value="X AKL 1" <?php echo ($d_table['kelas'] == 'X AKL 1') ? 'selected="selected"' : ''; ?>>X AKL 1</option>
-                          <option value="X AKL 2" <?php echo ($d_table['kelas'] == 'X AKL 2') ? 'selected="selected"' : ''; ?>>X AKL 2</option>
-                          <option value="X AKL 3" <?php echo ($d_table['kelas'] == 'X AKL 3') ? 'selected="selected"' : ''; ?>>X AKL 3</option>
-                          <option value="XI AKL 1" <?php echo ($d_table['kelas'] == 'XI AKL 1') ? 'selected="selected"' : ''; ?>>XI AKL 1</option>
-                          <option value="XI AKL 2" <?php echo ($d_table['kelas'] == 'XI AKL 2') ? 'selected="selected"' : ''; ?>>XI AKL 2</option>
-                          <option value="XI AKL 3" <?php echo ($d_table['kelas'] == 'XI AKL 3') ? 'selected="selected"' : ''; ?>>XI AKL 3</option>
-                          <option value="XII AKL 1" <?php echo ($d_table['kelas'] == 'XII AKL 1') ? 'selected="selected"' : ''; ?>>XII AKL 1</option>
-                          <option value="XII AKL 2" <?php echo ($d_table['kelas'] == 'XII AKL 2') ? 'selected="selected"' : ''; ?>>XII AKL 2</option>
-                          <option value="XII AKL 3" <?php echo ($d_table['kelas'] == 'XII AKL 3') ? 'selected="selected"' : ''; ?>>XII AKL 3</option>
-                        </optgroup>
-                        <optgroup label="Jurusan PM">
-                          <option value="X PM 1" <?php echo ($d_table['kelas'] == 'X PM 1') ? 'selected="selected"' : ''; ?>>X PM 1</option>
-                          <option value="X PM 2" <?php echo ($d_table['kelas'] == 'X PM 2') ? 'selected="selected"' : ''; ?>>X PM 2</option>
-                          <option value="XI PM 1" <?php echo ($d_table['kelas'] == 'XI PM 1') ? 'selected="selected"' : ''; ?>>XI PM 1</option>
-                          <option value="XI PM 2" <?php echo ($d_table['kelas'] == 'XI PM 2') ? 'selected="selected"' : ''; ?>>XI PM 2</option>
-                          <option value="XII PM 1" <?php echo ($d_table['kelas'] == 'XII PM 1') ? 'selected="selected"' : ''; ?>>XII PM 1</option>
-                          <option value="XII PM 2" <?php echo ($d_table['kelas'] == 'XII PM 2') ? 'selected="selected"' : ''; ?>>XII PM 2</option>
-                        </optgroup>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="col-sm-10">
-                      <button type="submit" name="update" value="update" class="btn btn-primary">Update!</button>
-                    </div>
-                  </div>
-
-                </form><!-- End General Form Elements -->
-              </div>
-            </div>
-    <?php
-          }
-        }
-      }
-    }
-    ?>
-
-    <!-- ===== ADD ===== -->
+    <!-- ===== ADD DATA FORM ===== -->
     <?php
     if (isset($_GET['alert'])) {
       if ($_GET['alert'] == 'add_data') {
 
     ?>
-        <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
-          <div class="card-body">
-            <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Siswa</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Form Siswa</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
 
             <!-- General Form Elements -->
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Nama Siswa</label>
+                <label for="nis" class="col-sm-2 col-form-label">NIS</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama_siswa" required placeholder="Nama Siswa">
+                  <input type="text" class="form-control" id="nis" name="nis" maxlength="6" required placeholder="NIS...">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nama" name="nama" required placeholder="Nama...">
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Kelas</label>
+                <label for="id_kelas" class="col-sm-2 col-form-label">Kelas</label>
                 <div class="col-sm-10">
-                  <select class="form-select" name="kelas" id="kelas">
-                    <option selected value="Belum Memilih">Pilih Kelas</option>
-                    <optgroup label="Jurusan PPLG">
-                      <option value="X PPLG 1">X PPLG 1</option>
-                      <option value="X PPLG 2">X PPLG 2</option>
-                      <option value="X PPLG 3">X PPLG 3</option>
-                      <option value="XI PPLG 1">XI PPLG 1</option>
-                      <option value="XI PPLG 2">XI PPLG 2</option>
-                      <option value="XI PPLG 3">XI PPLG 3</option>
-                      <option value="XII PPLG 1">XII PPLG 1</option>
-                      <option value="XII PPLG 2">XII PPLG 2</option>
-                      <option value="XII PPLG 3">XII PPLG 3</option>
-                    </optgroup>
-                    <optgroup label="Jurusan MPLB">
-                      <option value="X MPLB 1">X MPLB 1</option>
-                      <option value="X MPLB 2">X MPLB 2</option>
-                      <option value="X MPLB 3">X MPLB 3</option>
-                      <option value="XI MPLB 1">XI MPLB 1</option>
-                      <option value="XI MPLB 2">XI MPLB 2</option>
-                      <option value="XI MPLB 3">XI MPLB 3</option>
-                      <option value="XII MPLB 1">XII MPLB 1</option>
-                      <option value="XII MPLB 2">XII MPLB 2</option>
-                      <option value="XII MPLB 3">XII MPLB 3</option>
-                    </optgroup>
-                    <optgroup label="Jurusan AKL">
-                      <option value="X AKL 1">X AKL 1</option>
-                      <option value="X AKL 2">X AKL 2</option>
-                      <option value="X AKL 3">X AKL 3</option>
-                      <option value="XI AKL 1">XI AKL 1</option>
-                      <option value="XI AKL 2">XI AKL 2</option>
-                      <option value="XI AKL 3">XI AKL 3</option>
-                      <option value="XII AKL 1">XII AKL 1</option>
-                      <option value="XII AKL 2">XII AKL 2</option>
-                      <option value="XII AKL 3">XII AKL 3</option>
-                    </optgroup>
-                    <optgroup label="Jurusan PM">
-                      <option value="X PM 1">X PM 1</option>
-                      <option value="X PM 2">X PM 2</option>
-                      <option value="XI PM 1">XI PM 1</option>
-                      <option value="XI PM 2">XI PM 2</option>
-                      <option value="XII PM 1">XII PM 1</option>
-                      <option value="XII PM 2">XII PM 2</option>
-                    </optgroup>
+                  <select class="form-select" name="id_kelas" id="id_kelas" required>
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    <?php foreach ($kelas_list as $kelas) { ?>
+                      <option value="<?php echo $kelas['id_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
+                    <?php } ?>
                   </select>
                 </div>
               </div>
 
               <div class="row mb-3">
+                <label for="jk" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                 <div class="col-sm-10">
-                  <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Tambah Data!</button>
+                  <select class="form-select" name="jk" id="jk" required>
+                    <option value="1">Laki-Laki</option>
+                    <option value="2">Perempuan</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="user" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="user" name="user" required placeholder="Username...">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="pass" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="pass" name="pass" required placeholder="Password...">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="foto" class="col-sm-2 col-form-label">Foto</label>
+                <div class="col-sm-10">
+                  <input type="file" class="form-control" id="foto" name="foto" accept="image/*" required>
+                </div>
+              </div>
+
+              <div class="row pt-3 border-top">
+                <div class="col-sm-12 d-flex justify-content-end gap-1">
+                  <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Simpan</button>
+                  <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
                 </div>
               </div>
 
@@ -293,30 +151,232 @@ $pageName = 'siswa';
       }
     }
     ?>
-    </div>
-  </section>
+    <!-- ===== ADD DATA PROCCESS ===== -->
+    <?php
+    if (isset($_POST['add_data'])) {
+      $nis = $_POST['nis'];
+      $nama = $_POST['nama'];
+      $id_kelas = $_POST['id_kelas'];
+      $jk = $_POST['jk'];
+      $user = $_POST['user'];
+      $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+      $foto = $_FILES['foto'];
 
-  <?php
-  if (isset($_POST['add_data'])) {
-    $nama_siswa = $_POST['nama_siswa'];
-    $kelas = $_POST['kelas'];
+      if ($foto['error'] == 0) {
+        $allowed_ext = ['jpg', 'jpeg', 'png'];
+        $file_ext = pathinfo($foto['name'], PATHINFO_EXTENSION);
 
-    $query = "INSERT INTO `siswa`(`id_siswa`, `nama_siswa`, `kelas`) VALUES (NULL,'$nama_siswa','$kelas')";
-    $result = mysqli_query($koneksi1, $query);
+        if (!in_array(strtolower($file_ext), $allowed_ext)) {
+          echo "Format file tidak valid!";
+          exit;
+        }
 
-    if ($result) {
-  ?>
-      <script>
-        window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
-      </script>
-  <?php
-    } else {
-      echo "Gagal Le: " . mysqli_error($koneksi);
-      echo $query;
+        $foto_name = time() . '-' . uniqid() . '-' . $foto['name'];
+        $target_file = $foto_dir . $foto_name;
+
+        if (!move_uploaded_file($foto['tmp_name'], $target_file)) {
+          echo "Gagal mengunggah foto";
+          exit;
+        }
+      }
+
+      try {
+        $query = "INSERT INTO tb_siswa(nis, nama, id_kelas, jk, user, pass, foto) VALUES (:nis,:nama,:id_kelas,:jk,:user,:pass,:foto)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':nis', $nis);
+        $stmt->bindParam(':nama', $nama);
+        $stmt->bindParam(':id_kelas', $id_kelas);
+        $stmt->bindParam(':jk', $jk);
+        $stmt->bindParam(':user', $user);
+        $stmt->bindParam(':pass', $pass);
+        $stmt->bindParam(':foto', $foto_name);
+
+        // Cek Duplicate NIS
+        $queryCheck = "SELECT COUNT(*) FROM tb_siswa WHERE nis = :nis";
+        $stmtCheck = $pdo->prepare($queryCheck);
+        $stmtCheck->bindParam(':nis', $nis);
+        $stmtCheck->execute();
+        $count = $stmtCheck->fetchColumn();
+
+        if ($count > 0) {
+          echo "Error: NIS sudah ada dalam database.";
+          exit;
+        }
+
+        if ($stmt->execute()) {
+    ?>
+          <script>
+            window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+          </script>
+    <?php
+        } else {
+          // Ambil informasi error
+          $errorInfo = $stmt->errorInfo();
+          echo "Error: " . $errorInfo[2]; // Elemen ke-2 berisi pesan error
+        }
+      } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
     }
-  }
 
-  ?>
+    ?>
+
+    <!-- ===== INFO ===== -->
+    <?php
+    if (isset($_GET['alert']) && $_GET['alert'] == 'info_data' && isset($_GET['nis'])) {
+      $nis = $_GET['nis'];
+
+      $query_siswa = "SELECT s.nis, s.nama, s.foto, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas WHERE nis = '$nis'";
+      $stmt_siswa = $pdo->prepare($query_siswa);
+      $stmt_siswa->execute();
+      $siswa_list = $stmt_siswa->fetchALL(PDO::FETCH_ASSOC);
+
+      foreach ($siswa_list as $d_siswa) {
+    ?>
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Detail Siswa</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
+            <div class="foto_siswa">
+              <img src="assets/uploads/<?php echo $d_siswa['foto']; ?>" alt="Foto Siswa">
+            </div>
+            <table class="border-bottom w-100 mt-2 table_info">
+              <tr>
+                <th>NIS</th>
+                <th>:</th>
+                <td><?php echo $d_siswa['nis'] ?? '-'; ?></td>
+              </tr>
+              <tr>
+                <th>Nama</th>
+                <th>:</th>
+                <td><?php echo $d_siswa['nama'] ?? '-'; ?></td>
+              </tr>
+              <tr>
+                <th>Kelas</th>
+                <th>:</th>
+                <td><?php echo $d_siswa['nama_kelas'] ?? '-'; ?></td>
+              </tr>
+            </table>
+            <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
+            <a class="btn btn-danger float-end mt-3" href="?page=delete_sim&page_name=<?php echo $pageName; ?>&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
+          </div>
+        </div>
+    <?php
+      }
+    }
+    ?>
+
+    <!-- ===== EDIT ===== -->
+    <?php
+    if (isset($_GET['alert']) && $_GET['alert'] == 'edit_data' && isset($_GET['nis'])) {
+      $nis = $_GET['nis'];
+
+      $query_siswa = "SELECT s.*, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas WHERE nis = '$nis'";
+      $stmt_siswa = $pdo->prepare($query_siswa);
+      $stmt_siswa->execute();
+      $siswa_list = $stmt_siswa->fetchALL(PDO::FETCH_ASSOC);
+
+      foreach ($siswa_list as $d_siswa) {
+    ?>
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Edit Data Siswa</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
+            <div class="foto_siswa">
+              <img src="assets/uploads/<?php echo $d_siswa['foto']; ?>" alt="Foto Siswa">
+            </div>
+            <form action="" method="POST" enctype="multipart/form-data" class="mt-2">
+              <div class="row mb-3">
+                <label for="nis" class="col-sm-2 col-form-label">NIS</label>
+                <div class="col-sm-10">
+                  <input type="hidden" id="nis" name="nis" value="<?php echo $d_siswa['nis'] ?>">
+                  <input type="text" class="form-control" value="<?php echo $d_siswa['nis'] ?>" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nama" name="nama" required value="<?php echo $d_siswa['nama'] ?>" placeholder="Nama...">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="id_kelas" class="col-sm-2 col-form-label">Kelas</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="id_kelas" id="id_kelas" required value="<?php echo $d_siswa['nama_kelas'] ?>">
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    <?php foreach ($kelas_list as $kelas) { ?>
+                      <option value="<?php echo $kelas['id_kelas']; ?>" <?php echo ($kelas['id_kelas'] == $d_siswa['id_kelas']) ? 'selected="selected"' : ''; ?>>
+                        <?php echo $kelas['nama_kelas']; ?>
+                      </option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="jk" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="jk" id="jk" required>
+                    <option value="1" <?php echo ($d_siswa['jk'] == '1') ? 'selected="selected"' : ''; ?>>Laki-laki</option>
+                    <option value="2" <?php echo ($d_siswa['jk'] == '2') ? 'selected="selected"' : ''; ?>>Perempuan</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row pt-3 border-top">
+                <div class="col-sm-12 d-flex justify-content-end gap-1">
+                  <button type="submit" name="update_data" value="update_data" class="btn btn-primary">Simpan</button>
+                  <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
+                </div>
+              </div>
+
+            </form><!-- End General Form Elements -->
+          </div>
+        </div>
+    <?php
+      }
+    }
+    ?>
+
+    <!-- ===== UPDATE DATA PROCCESS ===== -->
+    <?php
+    if (isset($_POST['update_data'])) {
+      $nis = $_POST['nis'];
+      $nama = $_POST['nama'];
+      $id_kelas = $_POST['id_kelas'];
+      $jk = $_POST['jk'];
+
+      try {
+        // Use correct placeholders
+        $query = "UPDATE tb_siswa SET nama = :nama, id_kelas = :id_kelas, jk = :jk WHERE nis = :nis";
+
+        $stmt = $pdo->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(':nis', $nis);
+        $stmt->bindParam(':nama', $nama);
+        $stmt->bindParam(':id_kelas', $id_kelas);
+        $stmt->bindParam(':jk', $jk);
+
+        if ($stmt->execute()) {
+    ?>
+          <script>
+            window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+          </script>
+    <?php
+        } else {
+          // Handle execution failure
+          $errorInfo = $stmt->errorInfo();
+          echo "Error: " . $errorInfo[2]; // Error message from database
+        }
+      } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    }
+    ?>
 
 </main>
 <!-- Main -->

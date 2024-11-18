@@ -1,20 +1,17 @@
 <?php
-$simAkademik_2 = "active";
-$pageName = "mapel";
-
-
+$simAkademik_3 = "active";
+$pageName = 'mapel';
 ?>
-
 <!-- Main -->
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Mata Pelajaran</h1>
+    <h1>Data Mata Pelajaran</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="?page=dashboard">Home</a></li>
-        <li class="breadcrumb-item">Table</li>
-        <li class="breadcrumb-item active">Mata Pelajaran</li>
+        <li class="breadcrumb-item">Sim Akademik</li>
+        <li class="breadcrumb-item active">Data Mata Pelajaran</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -23,34 +20,38 @@ $pageName = "mapel";
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <h5 class="card-header">
-            <a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data
+          <h5 class="card-header d-flex">
+            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
           </h5>
           <div class="table-responsive text-nowrap">
-            <table class="table" style="text-align:center">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th>No</th>
                   <th>ID Mapel</th>
-                  <th>Mata Pelajaran</th>
-                  <th>Aksi</th>
+                  <th>Nama Mata Pelajaran</th>
                 </tr>
               </thead>
-              <tbody class="table-border-bottom-0">
+              <tbody>
                 <?php
+                $sqlmapel = "SELECT * FROM tb_mapel";
+                $stmt = $pdo->query($sqlmapel);
                 $no = 1;
-                foreach ($list_mapel as $mapel) {
+                foreach ($stmt as $mapel) {
                 ?>
                   <tr>
                     <td><?php echo $no++; ?></td>
-                    <td><?php echo $mapel['id_mapel']; ?></td>
-                    <td><?php echo $mapel['mata_pelajaran']; ?></td>
+                    <td><?php echo htmlspecialchars($mapel['id_mapel']); ?></td>
+                    <td><?php echo htmlspecialchars($mapel['nama_mapel']); ?></td>
                     <td>
-                      <a href="?page=<?php echo $pageName ?>&alert=EditData&id_mapel=<?php echo $mapel['id_mapel']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
-                      <a href="?page=<?php echo $pageName ?>&alert=ConfirmationDeleteSim&pageName=<?php echo $pageName ?>&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill" style="color: white;"></i></a>
+                      <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <a href="?page=<?php echo $pageName ?>&alert=info_data&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
+
                     </td>
                   </tr>
-                <?php } ?>
+                <?php
+                }
+                ?>
               </tbody>
             </table>
           </div>
@@ -58,36 +59,121 @@ $pageName = "mapel";
       </div>
     </div>
 
-    <!-- ===== EDIT ===== -->
+    <!-- ===== ADD DATA FORM ===== -->
     <?php
-    if (isset($_GET['alert']) && isset($_GET['id_mapel'])) {
-      if ($_GET['alert'] == 'EditData') {
-        $id_mapel = $_GET['id_mapel'];
-        $mata_pelajaran = '';
-        foreach ($list_mapel as $mapel) {
-          if ($mapel['id_mapel'] == $id_mapel) {
-            $mata_pelajaran = $mapel['mata_pelajaran'];
-            break;
-          }
-        }
+    if (isset($_GET['alert'])) {
+      if ($_GET['alert'] == 'add_data') {
+
     ?>
-        <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
-          <div class="card-body">
-            <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Mata Pelajaran</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
-            <form action="?page=update_sim&pageName=<?php echo $pageName ?>" method="POST">
-              <input type="hidden" name="id_mapel" value="<?php echo $id_mapel; ?>">
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Form mapel</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
+
+            <!-- General Form Elements -->
+            <form action="" method="POST" enctype="multipart/form-data">
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Mata Pelajaran</label>
+                <label for="id_mapel" class="col-sm-2 col-form-label">ID Mapel</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="mata_pelajaran" required value="<?php echo $mata_pelajaran; ?>">
+                  <input type="text" class="form-control" id="id_mapel" name="id_mapel" maxlength="6" required placeholder="ID Mapel...">
                 </div>
               </div>
               <div class="row mb-3">
+                <label for="nama_mapel" class="col-sm-2 col-form-label">Nama Mata Pelajaran</label>
                 <div class="col-sm-10">
-                  <button type="submit" name="update" value="update" class="btn btn-primary">Update!</button>
+                  <input type="text" class="form-control" id="nama_mapel" name="nama_mapel" required placeholder="Nama Mata Pelajaran...">
                 </div>
               </div>
-            </form>
+
+              <div class="row pt-3 border-top">
+                <div class="col-sm-12 d-flex justify-content-end gap-1">
+                  <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Simpan</button>
+                  <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
+                </div>
+              </div>
+
+            </form><!-- End General Form Elements -->
+          </div>
+        </div>
+    <?php
+      }
+    }
+    ?>
+    <!-- ===== ADD DATA PROCCESS ===== -->
+    <?php
+    if (isset($_POST['add_data'])) {
+      $id_mapel = $_POST['id_mapel'];
+      $nama_mapel = $_POST['nama_mapel'];
+      $id_kelas = $_POST['id_kelas'];
+
+      try {
+        $query = "INSERT INTO tb_mapel(id_mapel, nama_mapel) VALUES (:id_mapel,:nama_mapel)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id_mapel', $id_mapel);
+        $stmt->bindParam(':nama_mapel', $nama_mapel);
+
+        // Cek Duplicate id_mapel
+        $queryCheck = "SELECT COUNT(*) FROM tb_mapel WHERE id_mapel = :id_mapel";
+        $stmtCheck = $pdo->prepare($queryCheck);
+        $stmtCheck->bindParam(':id_mapel', $id_mapel);
+        $stmtCheck->execute();
+        $count = $stmtCheck->fetchColumn();
+
+        if ($count > 0) {
+          echo "Error: id_mapel sudah ada dalam database.";
+          exit;
+        }
+
+        if ($stmt->execute()) {
+    ?>
+          <script>
+            window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+          </script>
+    <?php
+        } else {
+          // Ambil informasi error
+          $errorInfo = $stmt->errorInfo();
+          echo "Error: " . $errorInfo[2]; // Elemen ke-2 berisi pesan error
+        }
+      } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    }
+
+    ?>
+
+    <!-- ===== INFO ===== -->
+    <?php
+    if (isset($_GET['alert']) && $_GET['alert'] == 'info_data' && isset($_GET['id'])) {
+      $id_mapel = $_GET['id'];
+
+      $query_mapel = "SELECT * FROM tb_mapel WHERE id_mapel = '$id_mapel'";
+      $stmt_mapel = $pdo->prepare($query_mapel);
+      $stmt_mapel->execute();
+      $mapel_list = $stmt_mapel->fetchALL(PDO::FETCH_ASSOC);
+
+      foreach ($mapel_list as $d_mapel) {
+    ?>
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Detail mapel</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
+            <table class="border-bottom w-100 mt-2 table_info">
+              <tr>
+                <th>id_mapel</th>
+                <th>:</th>
+                <td><?php echo $d_mapel['id_mapel'] ?? '-'; ?></td>
+              </tr>
+              <tr>
+                <th>Nama</th>
+                <th>:</th>
+                <td><?php echo $d_mapel['nama_mapel'] ?? '-'; ?></td>
+              </tr>
+            </table>
+            <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
+            <a class="btn btn-danger float-end mt-3" href="?page=delete_sim&page_name=<?php echo $pageName; ?>&id=<?php echo $d_mapel['id_mapel']; ?>">Hapus</a>
           </div>
         </div>
     <?php
@@ -95,40 +181,85 @@ $pageName = "mapel";
     }
     ?>
 
-    <!-- ===== ADD ===== -->
+    <!-- ===== EDIT ===== -->
     <?php
-    if (isset($_GET['alert']) && $_GET['alert'] == 'add_data') {
+    if (isset($_GET['alert']) && $_GET['alert'] == 'edit_data' && isset($_GET['id'])) {
+      $id_mapel = $_GET['id'];
+
+      $query_mapel = "SELECT * FROM tb_mapel WHERE id_mapel = '$id_mapel'";
+      $stmt_mapel = $pdo->prepare($query_mapel);
+      $stmt_mapel->execute();
+      $mapel_list = $stmt_mapel->fetchALL(PDO::FETCH_ASSOC);
+
+      foreach ($mapel_list as $d_mapel) {
     ?>
-      <div class="card" style="position:fixed; top: 50%; transform:translate(-50%, -50%); left:50%; z-index: 1000; width: 75vw">
-        <div class="card-body">
-          <h5 class="card-title d-flex justify-content-between"><span style="color: black;">Form Mata Pelajaran</span> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a></h5>
-          <form action="" method="POST">
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Mata Pelajaran</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" name="mata_pelajaran" required placeholder="Mata Pelajaran">
+        <div class="card cardModals ">
+          <div class="card-body cardInfo border">
+            <span class="card-title d-flex justify-content-between border-bottom">
+              <h5 class="fw-bold" style="color: black;">Edit Data mapel</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
+            </span>
+            <form action="" method="POST" enctype="multipart/form-data" class="mt-2">
+              <div class="row mb-3">
+                <label for="id_mapel" class="col-sm-2 col-form-label">id_mapel</label>
+                <div class="col-sm-10">
+                  <input type="hidden" id="id_mapel" name="id_mapel" value="<?php echo $d_mapel['id_mapel'] ?>">
+                  <input type="text" class="form-control" value="<?php echo $d_mapel['id_mapel'] ?>" disabled>
+                </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-sm-10">
-                <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Tambah Data!</button>
+              <div class="row mb-3">
+                <label for="nama_mapel" class="col-sm-2 col-form-label">Nama Mata Pelajaran</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nama_mapel" name="nama_mapel" required placeholder="Nama Mata Pelajaran..." value="<?php echo $d_mapel['nama_mapel'] ?>">
+                </div>
               </div>
-            </div>
-          </form>
+
+              <div class="row pt-3 border-top">
+                <div class="col-sm-12 d-flex justify-content-end gap-1">
+                  <button type="submit" name="update_data" value="update_data" class="btn btn-primary">Simpan</button>
+                  <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
+                </div>
+              </div>
+
+            </form><!-- End General Form Elements -->
+          </div>
         </div>
-      </div>
-    <?php } ?>
-  </section>
-  <!-- ADD DATA PROCESS -->
-  <?php
-  // Add new data
-  if (isset($_POST['add_data'])) {
-    $new_id = count($list_mapel) + 1; // Membuat ID Mapel secara otomatis
-    $mata_pelajaran = $_POST['mata_pelajaran'];
-    $list_mapel[] = ["id_mapel" => $new_id, "mata_pelajaran" => $mata_pelajaran];
-    save_mapel_list($list_mapel);
-    echo "<script>window.location.href = '?page=$pageName&alert=Success';</script>";
-  }
-  ?>
+    <?php
+      }
+    }
+    ?>
+
+    <!-- ===== UPDATE DATA PROCCESS ===== -->
+    <?php
+    if (isset($_POST['update_data'])) {
+      $id_mapel = $_POST['id_mapel'];
+      $nama_mapel = $_POST['nama_mapel'];
+
+      try {
+        // Use correct placeholders
+        $query = "UPDATE tb_mapel SET nama_mapel = :nama_mapel WHERE id_mapel = :id_mapel";
+
+        $stmt = $pdo->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(':id_mapel', $id_mapel);
+        $stmt->bindParam(':nama_mapel', $nama_mapel);
+
+        if ($stmt->execute()) {
+    ?>
+          <script>
+            window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+          </script>
+    <?php
+        } else {
+          // Handle execution failure
+          $errorInfo = $stmt->errorInfo();
+          echo "Error: " . $errorInfo[2]; // Error message from database
+        }
+      } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    }
+    ?>
 
 </main>
+<!-- Main -->

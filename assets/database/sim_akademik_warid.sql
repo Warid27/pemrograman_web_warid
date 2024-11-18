@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Nov 2024 pada 19.51
+-- Waktu pembuatan: 18 Nov 2024 pada 11.42
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -24,147 +24,239 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `nilai_siswa`
+-- Struktur dari tabel `tb_bayar`
 --
 
-CREATE TABLE `nilai_siswa` (
-  `id_nilai_siswa` int(10) NOT NULL,
-  `id_siswa` int(10) NOT NULL,
-  `mata_pelajaran` varchar(255) NOT NULL,
-  `nilai` int(10) NOT NULL
+CREATE TABLE `tb_bayar` (
+  `id_bayar` int(4) NOT NULL,
+  `nis` int(11) NOT NULL,
+  `jenis` enum('SPP','Tabungan','Extra') NOT NULL,
+  `bulan` int(20) NOT NULL,
+  `jumlah` int(10) NOT NULL,
+  `id_user` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `nilai_siswa`
+-- Dumping data untuk tabel `tb_bayar`
 --
 
-INSERT INTO `nilai_siswa` (`id_nilai_siswa`, `id_siswa`, `mata_pelajaran`, `nilai`) VALUES
-(10, 1012, 'DKV', 100),
-(11, 1000, 'Pemrograman Web', 90),
-(12, 1000, 'DKV', 30),
-(24, 1001, 'Pemrograman Web', 100),
-(25, 1003, 'Belum Memilih', 0),
-(26, 1004, 'Kejuruan', 100);
+INSERT INTO `tb_bayar` (`id_bayar`, `nis`, `jenis`, `bulan`, `jumlah`, `id_user`) VALUES
+(21, 1015, 'SPP', 12, 10000, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pembayaran_siswa`
+-- Struktur dari tabel `tb_kelas`
 --
 
-CREATE TABLE `pembayaran_siswa` (
-  `id_pembayaran_siswa` int(10) NOT NULL,
-  `id_siswa` int(10) NOT NULL,
-  `pembayaran` varchar(10) NOT NULL,
-  `bulan` varchar(20) NOT NULL,
-  `jumlah_bayar` int(10) NOT NULL
+CREATE TABLE `tb_kelas` (
+  `id_kelas` int(4) NOT NULL,
+  `jenjang` enum('10','11','12') NOT NULL,
+  `jurusan` enum('PPLG','AKL','MPLB','PM') NOT NULL,
+  `nama_kelas` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pembayaran_siswa`
+-- Dumping data untuk tabel `tb_kelas`
 --
 
-INSERT INTO `pembayaran_siswa` (`id_pembayaran_siswa`, `id_siswa`, `pembayaran`, `bulan`, `jumlah_bayar`) VALUES
-(4, 1002, 'SPP', 'Januari', 1000000),
-(5, 1011, 'SPP', 'November', 2147483647),
-(6, 1000, 'SPP', 'Mei', 1000000),
-(18, 1001, 'spp', 'November', 20000),
-(19, 1003, 'pkl', 'November', 100),
-(20, 1004, '', 'Belum Memilih', 0);
+INSERT INTO `tb_kelas` (`id_kelas`, `jenjang`, `jurusan`, `nama_kelas`) VALUES
+(1, '10', 'PPLG', 'XI PPLG 1');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `siswa`
+-- Struktur dari tabel `tb_mapel`
 --
 
-CREATE TABLE `siswa` (
-  `id_siswa` int(11) NOT NULL,
-  `nama_siswa` varchar(255) NOT NULL,
-  `kelas` varchar(10) NOT NULL
+CREATE TABLE `tb_mapel` (
+  `id_mapel` int(4) NOT NULL,
+  `nama_mapel` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `siswa`
+-- Dumping data untuk tabel `tb_mapel`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `kelas`) VALUES
-(1000, 'IPAN', 'XI PPLG 1'),
-(1001, 'Robby', 'XI PPLG 2'),
-(1002, 'Rava', 'X PPLG 1'),
-(1003, 'Gifari', 'XI AKL 3'),
-(1004, 'Warid', 'XI PPLG 1'),
-(1005, 'Yossa', 'X PM 2'),
-(1006, 'Ridho', 'XI PM 1'),
-(1007, 'Adit', 'XII PPLG 3'),
-(1008, 'Linda', 'XII PM 2'),
-(1009, 'Bagas Dwi', 'XI MPLB 2'),
-(1010, 'Yulia', 'XII AKL 3'),
-(1011, 'Haidar', 'XI PPLG 1'),
-(1012, 'Iqbal', 'XI PPLG 1'),
-(1013, 'Sodiq', 'X PPLG 1');
+INSERT INTO `tb_mapel` (`id_mapel`, `nama_mapel`) VALUES
+(1, 'Kejuruan'),
+(3, 'Pemrograman Web');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_nilai`
+--
+
+CREATE TABLE `tb_nilai` (
+  `id_nilai` int(4) NOT NULL,
+  `nis` int(6) NOT NULL,
+  `id_mapel` int(4) NOT NULL,
+  `nilai` int(4) NOT NULL,
+  `id_user` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tb_nilai`
+--
+
+INSERT INTO `tb_nilai` (`id_nilai`, `nis`, `id_mapel`, `nilai`, `id_user`) VALUES
+(28, 1015, 1, 100, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_siswa`
+--
+
+CREATE TABLE `tb_siswa` (
+  `nis` int(6) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `id_kelas` int(4) NOT NULL,
+  `jk` smallint(2) NOT NULL,
+  `user` varchar(100) NOT NULL,
+  `pass` varchar(200) NOT NULL,
+  `foto` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tb_siswa`
+--
+
+INSERT INTO `tb_siswa` (`nis`, `nama`, `id_kelas`, `jk`, `user`, `pass`, `foto`) VALUES
+(1015, 'test1', 1, 1, 'test', 'test123', 'tes');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_user`
+--
+
+CREATE TABLE `tb_user` (
+  `id_user` int(2) NOT NULL,
+  `user` varchar(502) NOT NULL,
+  `pass` varchar(200) NOT NULL,
+  `lvl` enum('admin','petugas','wakasek','walikelas') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tb_user`
+--
+
+INSERT INTO `tb_user` (`id_user`, `user`, `pass`, `lvl`) VALUES
+(1, 'test', 'test123', 'petugas');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `nilai_siswa`
+-- Indeks untuk tabel `tb_bayar`
 --
-ALTER TABLE `nilai_siswa`
-  ADD PRIMARY KEY (`id_nilai_siswa`),
-  ADD KEY `id_siswa` (`id_siswa`);
+ALTER TABLE `tb_bayar`
+  ADD PRIMARY KEY (`id_bayar`),
+  ADD KEY `nis` (`nis`),
+  ADD KEY `id_user` (`id_user`);
 
 --
--- Indeks untuk tabel `pembayaran_siswa`
+-- Indeks untuk tabel `tb_kelas`
 --
-ALTER TABLE `pembayaran_siswa`
-  ADD PRIMARY KEY (`id_pembayaran_siswa`),
-  ADD KEY `id_siswa` (`id_siswa`);
+ALTER TABLE `tb_kelas`
+  ADD PRIMARY KEY (`id_kelas`);
 
 --
--- Indeks untuk tabel `siswa`
+-- Indeks untuk tabel `tb_mapel`
 --
-ALTER TABLE `siswa`
-  ADD PRIMARY KEY (`id_siswa`);
+ALTER TABLE `tb_mapel`
+  ADD PRIMARY KEY (`id_mapel`);
+
+--
+-- Indeks untuk tabel `tb_nilai`
+--
+ALTER TABLE `tb_nilai`
+  ADD PRIMARY KEY (`id_nilai`),
+  ADD KEY `nis` (`nis`),
+  ADD KEY `id_mapel` (`id_mapel`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Indeks untuk tabel `tb_siswa`
+--
+ALTER TABLE `tb_siswa`
+  ADD PRIMARY KEY (`nis`),
+  ADD UNIQUE KEY `user` (`user`),
+  ADD KEY `id_kelas` (`id_kelas`);
+
+--
+-- Indeks untuk tabel `tb_user`
+--
+ALTER TABLE `tb_user`
+  ADD PRIMARY KEY (`id_user`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT untuk tabel `nilai_siswa`
+-- AUTO_INCREMENT untuk tabel `tb_bayar`
 --
-ALTER TABLE `nilai_siswa`
-  MODIFY `id_nilai_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+ALTER TABLE `tb_bayar`
+  MODIFY `id_bayar` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT untuk tabel `pembayaran_siswa`
+-- AUTO_INCREMENT untuk tabel `tb_kelas`
 --
-ALTER TABLE `pembayaran_siswa`
-  MODIFY `id_pembayaran_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+ALTER TABLE `tb_kelas`
+  MODIFY `id_kelas` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `siswa`
+-- AUTO_INCREMENT untuk tabel `tb_mapel`
 --
-ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1014;
+ALTER TABLE `tb_mapel`
+  MODIFY `id_mapel` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_nilai`
+--
+ALTER TABLE `tb_nilai`
+  MODIFY `id_nilai` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_siswa`
+--
+ALTER TABLE `tb_siswa`
+  MODIFY `nis` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1016;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_user`
+--
+ALTER TABLE `tb_user`
+  MODIFY `id_user` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Ketidakleluasaan untuk tabel `nilai_siswa`
+-- Ketidakleluasaan untuk tabel `tb_bayar`
 --
-ALTER TABLE `nilai_siswa`
-  ADD CONSTRAINT `nilai_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tb_bayar`
+  ADD CONSTRAINT `tb_bayar_ibfk_1` FOREIGN KEY (`nis`) REFERENCES `tb_siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_bayar_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `pembayaran_siswa`
+-- Ketidakleluasaan untuk tabel `tb_nilai`
 --
-ALTER TABLE `pembayaran_siswa`
-  ADD CONSTRAINT `pembayaran_siswa_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tb_nilai`
+  ADD CONSTRAINT `tb_nilai_ibfk_1` FOREIGN KEY (`nis`) REFERENCES `tb_siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_nilai_ibfk_2` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id_mapel`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_nilai_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_siswa`
+--
+ALTER TABLE `tb_siswa`
+  ADD CONSTRAINT `tb_siswa_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

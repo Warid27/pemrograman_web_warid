@@ -28,7 +28,7 @@ a:hover {
   color: #717ff5;
   text-decoration: none;
 }
-.mb-100{
+.mb-100 {
   margin-bottom: 100vh;
 }
 h1,
@@ -40,6 +40,66 @@ h6 {
   font-family: "Nunito", sans-serif;
 }
 
+/*--------------------------------------------------------------
+# Buatan Saya
+--------------------------------------------------------------*/
+#nis::-webkit-inner-spin-button, 
+#nis::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+table *{
+  text-align: center;
+}
+table {
+  width: 100%; /* Make the table responsive or set a fixed width */
+}
+
+td {
+  vertical-align: middle;
+  word-wrap: break-word; /* Allows long words to break and wrap */
+  word-break: normal; /* Prevents breaking words aggressively, keeping natural line breaks */
+  max-width: 200px; /* Optional: set a max width for the cells */
+  white-space: normal; /* Ensures text wraps normally */
+}
+
+
+.table_info *{
+  text-align: left;
+}
+.card-body {
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  z-index: 1000;
+  width: 75vw;
+  background: #f6f9ff;
+  border-radius: 12px;
+}
+.cardModals {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  width: 100vw;
+  height: 120vh;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.cardInfo{
+  top: 45%;
+  width: 50vw;
+}
+.foto_siswa{
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+.foto_siswa img{
+  width: 150px;
+  height: 150px;
+}
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/
@@ -248,9 +308,7 @@ h6 {
   font-weight: 400;
 }
 
-.card-body {
-  padding: 0 20px 20px 20px;
-}
+
 
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
@@ -463,7 +521,7 @@ h6 {
   list-style: none;
 }
 
-.header-nav>ul {
+.header-nav > ul {
   margin: 0;
   padding: 0;
 }
@@ -632,7 +690,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   #main,
   #footer {
     margin-left: 300px;
@@ -646,7 +703,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
     margin-left: 0;
@@ -885,7 +941,7 @@ h6 {
 }
 
 /* News & Updates */
-.dashboard .news .post-item+.post-item {
+.dashboard .news .post-item + .post-item {
   margin-top: 15px;
 }
 
@@ -1151,7 +1207,7 @@ h6 {
   padding: 12px 15px;
 }
 
-.contact .php-email-form button[type=submit] {
+.contact .php-email-form button[type="submit"] {
   background: #4154f1;
   border: 0;
   padding: 10px 30px;
@@ -1160,7 +1216,7 @@ h6 {
   border-radius: 4px;
 }
 
-.contact .php-email-form button[type=submit]:hover {
+.contact .php-email-form button[type="submit"]:hover {
   background: #5969f3;
 }
 

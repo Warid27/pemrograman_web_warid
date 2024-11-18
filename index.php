@@ -74,11 +74,6 @@
   ?>
   <!-- End Sidebar Variable -->
   
-  <!-- ======= List Mata Pelajaran ======= -->
-   <?php include 'assets/components/sim_akademik_warid/list_mapel.php' ?>
-  <!-- List Mata Pelajaran -->
-
-
   <!-- ======= Main ======= -->
   <?php
   if (!isset($_GET['page'])) {
@@ -146,26 +141,29 @@
       break;
 
       // Sim Akademik Warid
+    case 'user':
+      include 'assets/components/sim_akademik_warid/user.php';
+      break;
     case 'siswa':
       include 'assets/components/sim_akademik_warid/siswa.php';
       break;
     case 'mapel':
       include 'assets/components/sim_akademik_warid/mapel.php';
       break;
-    case 'nilai_siswa':
-      include 'assets/components/sim_akademik_warid/nilai_siswa.php';
+    case 'kelas':
+      include 'assets/components/sim_akademik_warid/kelas.php';
       break;
-    case 'pembayaran_siswa':
-      include 'assets/components/sim_akademik_warid/pembayaran.php';
+    case 'nilai':
+      include 'assets/components/sim_akademik_warid/nilai.php';
+      break;
+    case 'bayar':
+      include 'assets/components/sim_akademik_warid/bayar.php';
       break;
     case 'data_sim_akademik':
       include 'assets/components/sim_akademik_warid/data_sim_akademik.php';
       break;
 
       // Sim Akademik Warid (Aksi)
-    case 'update_sim':
-      include 'assets/components/sim_akademik_warid/update_sim.php';
-      break;
     case 'delete_sim':
       include 'assets/components/sim_akademik_warid/delete_sim.php';
       break;
