@@ -191,7 +191,7 @@ $pageName = 'user';
                             </tr>
                         </table>
                         <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-                        <a class="btn btn-danger float-end mt-3" href="?page=delete_sim&page_name=<?php echo $pageName; ?>&id=<?php echo $d_user['id_user']; ?>">Hapus</a>
+                        <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_user['id_user']; ?>">Hapus</a>
                     </div>
                 </div>
         <?php
@@ -269,7 +269,7 @@ $pageName = 'user';
         if (isset($_POST['update_data'])) {
             $id_user = $_POST['id_user'];
             $user = $_POST['user'];
-            $pass = $_POST['pass'];
+            $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
             $lvl = $_POST['lvl'];
 
             try {

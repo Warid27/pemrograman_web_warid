@@ -123,11 +123,6 @@
             <i class="bi bi-circle"></i><span>Data Bayar</span>
           </a>
         </li>
-        <li>
-          <a href="?page=data_sim_akademik" class="<?php echo $simAkademik_7 ?>">
-            <i class="bi bi-circle"></i><span>Data Sim Akademik</span>
-          </a>
-        </li>
       </ul>
     </li>
 

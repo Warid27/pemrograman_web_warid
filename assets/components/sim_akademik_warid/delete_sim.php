@@ -22,8 +22,7 @@ if (isset($_GET['nis'])) {
 
         if ($stmt->execute()) {
             echo "<script>
-                    alert('Data successfully deleted.');
-                    window.location.href = '?page=$pageName';
+                    window.location.href = '?page=$pageName&alert=Deleted';
                 </script>";
         } else {
             echo "<script>
@@ -43,8 +42,7 @@ if (isset($_GET['nis'])) {
 
         if ($stmt->execute()) {
             echo "<script>
-                    alert('Data successfully deleted.');
-                    window.location.href = '?page=$pageName';
+                    window.location.href = '?page=$pageName&alert=Deleted';
                 </script>";
         } else {
             echo "<script>

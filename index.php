@@ -71,6 +71,7 @@
     $simAkademik_3 = "";  
     $simAkademik_4 = "";  
     $simAkademik_5 = "";  
+    $simAkademik_6 = "";  
   ?>
   <!-- End Sidebar Variable -->
   
@@ -158,9 +159,6 @@
       break;
     case 'bayar':
       include 'assets/components/sim_akademik_warid/bayar.php';
-      break;
-    case 'data_sim_akademik':
-      include 'assets/components/sim_akademik_warid/data_sim_akademik.php';
       break;
 
       // Sim Akademik Warid (Aksi)

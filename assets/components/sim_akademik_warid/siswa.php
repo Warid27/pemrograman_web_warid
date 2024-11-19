@@ -74,7 +74,7 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
       if ($_GET['alert'] == 'add_data') {
 
     ?>
-        <div class="card cardModals ">
+        <div class="card cardModals">
           <div class="card-body cardInfo border">
             <span class="card-title d-flex justify-content-between border-bottom">
               <h5 class="fw-bold" style="color: black;">Form Siswa</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
@@ -165,9 +165,13 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
       if ($foto['error'] == 0) {
         $allowed_ext = ['jpg', 'jpeg', 'png'];
         $file_ext = pathinfo($foto['name'], PATHINFO_EXTENSION);
+        $file_size = $foto["size"];
 
         if (!in_array(strtolower($file_ext), $allowed_ext)) {
           echo "Format file tidak valid!";
+          exit;
+        } else if ($file_size > 1044070) {
+          echo "Ukuran file terlalu besar!";
           exit;
         }
 
@@ -259,7 +263,7 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
               </tr>
             </table>
             <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-            <a class="btn btn-danger float-end mt-3" href="?page=delete_sim&page_name=<?php echo $pageName; ?>&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
+            <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
           </div>
         </div>
     <?php
@@ -285,9 +289,12 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
               <h5 class="fw-bold" style="color: black;">Edit Data Siswa</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
             </span>
             <div class="foto_siswa">
+              <label for="new_foto" class="label_new_foto"><i class="bi bi-arrow-repeat"></i></label>
+
               <img src="assets/uploads/<?php echo $d_siswa['foto']; ?>" alt="Foto Siswa">
             </div>
             <form action="" method="POST" enctype="multipart/form-data" class="mt-2">
+              <input type="file" class="new_foto" id="new_foto" name="new_foto" accept="image/*">
               <div class="row mb-3">
                 <label for="nis" class="col-sm-2 col-form-label">NIS</label>
                 <div class="col-sm-10">
@@ -348,10 +355,50 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
       $nama = $_POST['nama'];
       $id_kelas = $_POST['id_kelas'];
       $jk = $_POST['jk'];
+      $foto = $_FILES['new_foto'];
+
+      if (isset($_FILES['new_foto']) && $_FILES['new_foto']['error'] == UPLOAD_ERR_OK) {
+        if ($foto['error'] == 0) {
+          $allowed_ext = ['jpg', 'jpeg', 'png'];
+          $file_ext = pathinfo($foto['name'], PATHINFO_EXTENSION);
+          $file_size = $foto["size"];
+
+          if (!in_array(strtolower($file_ext), $allowed_ext)) {
+            echo "Format file tidak valid!";
+            exit;
+          } else if ($file_size > 1044070) {
+            echo "Ukuran file terlalu besar!";
+            exit;
+          }
+
+          $foto_name = time() . '-' . uniqid() . '-' . $foto['name'];
+          $target_file = $foto_dir . $foto_name;
+
+          if (!move_uploaded_file($foto['tmp_name'], $target_file)) {
+            echo "Gagal mengunggah foto";
+            exit;
+          }
+
+          $query_siswa = "SELECT foto FROM tb_siswa WHERE nis = '$nis'";
+          $stmt_siswa = $pdo->prepare($query_siswa);
+          $stmt_siswa->execute();
+          $siswa_list = $stmt_siswa->fetchALL(PDO::FETCH_ASSOC);
+
+          foreach ($siswa_list as $siswa) {
+            $foto = $siswa['foto'];
+            if (file_exists($foto_dir . $foto)) {
+              unlink($foto_dir . $foto);
+            }
+          }
+        }
+      }
 
       try {
-        // Use correct placeholders
-        $query = "UPDATE tb_siswa SET nama = :nama, id_kelas = :id_kelas, jk = :jk WHERE nis = :nis";
+        if ($foto_name) {
+          $query = "UPDATE tb_siswa SET nama = :nama, id_kelas = :id_kelas, jk = :jk, foto = :foto WHERE nis = :nis";
+        } else {
+          $query = "UPDATE tb_siswa SET nama = :nama, id_kelas = :id_kelas, jk = :jk WHERE nis = :nis";
+        }
 
         $stmt = $pdo->prepare($query);
 
@@ -360,6 +407,10 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
         $stmt->bindParam(':nama', $nama);
         $stmt->bindParam(':id_kelas', $id_kelas);
         $stmt->bindParam(':jk', $jk);
+
+        if ($foto_name) {
+          $stmt->bindParam(':foto', $foto_name);
+        }
 
         if ($stmt->execute()) {
     ?>

@@ -1,5 +1,5 @@
 <?php
-$simAkademik_5 = "active";
+$simAkademik_6 = "active";
 $pageName = 'bayar';
 ?>
 <!-- Main -->

@@ -210,7 +210,7 @@ $pageName = 'kelas';
                             </tr>
                         </table>
                         <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-                        <a class="btn btn-danger float-end mt-3" href="?page=delete_sim&page_name=<?php echo $pageName; ?>&id=<?php echo $d_kelas['id_kelas']; ?>">Hapus</a>
+                        <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_kelas['id_kelas']; ?>">Hapus</a>
                     </div>
                 </div>
         <?php

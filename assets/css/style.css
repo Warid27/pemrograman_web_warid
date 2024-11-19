@@ -48,6 +48,20 @@ h6 {
   -webkit-appearance: none; 
   margin: 0; 
 }
+
+.new_foto {
+  color: transparent;
+  background: transparent;
+  height: 0;
+  overflow: hidden;
+  width: 0;
+}
+/* .new_foto::-webkit-file-upload-button {
+  display: none;
+}
+.new_foto:active {
+  outline: none;
+} */
 table *{
   text-align: center;
 }
@@ -67,7 +81,7 @@ td {
 .table_info *{
   text-align: left;
 }
-.card-body {
+.cardModals .card-body {
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -76,6 +90,9 @@ td {
   width: 75vw;
   background: #f6f9ff;
   border-radius: 12px;
+}
+.card-body{
+  padding: 20px;
 }
 .cardModals {
   position: fixed;
@@ -87,7 +104,7 @@ td {
   height: 120vh;
   background-color: rgba(0, 0, 0, 0.75);
 }
-.cardInfo{
+.cardModals .cardInfo{
   top: 45%;
   width: 50vw;
 }
@@ -95,10 +112,30 @@ td {
   width: 100%;
   text-align: center;
   overflow: hidden;
+  position: relative;
 }
 .foto_siswa img{
   width: 150px;
   height: 150px;
+}
+.label_new_foto{
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  font-size: 100px;
+  color: white;
+  background: rgba(68, 68, 68, 0.5);
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.label_new_foto:hover{
+  opacity: 100;
 }
 /*--------------------------------------------------------------
 # Main
