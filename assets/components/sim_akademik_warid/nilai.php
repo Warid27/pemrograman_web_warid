@@ -1,144 +1,158 @@
+<!-- ===== INFO ===== -->
 <?php
-$simAkademik_5 = "active";
-$pageName = 'nilai';
+if (isset($_GET['alert']) && $_GET['alert'] == 'info_nilai' && isset($_GET['nis'])) {
+    if (isset($_GET['nis'])) {
+        $nis = $_GET['nis'];
+    } else {
+        die('NIS tidak ditemukan!');
+    }
+
+    $query_nilai = "SELECT s.nis, s.nama, m.id_mapel, m.nama_mapel, COALESCE(n.nilai, '-') AS nilai FROM tb_siswa s LEFT JOIN tb_mapel m ON 1 = 1 LEFT JOIN tb_nilai n ON s.nis = n.nis AND m.id_mapel = n.id_mapel WHERE s.nis = :nis ORDER BY m.id_mapel";
+    $stmt_nilai = $pdo->prepare($query_nilai);
+    $stmt_nilai->execute(['nis' => $nis]);
+    $d_nilai = $stmt_nilai->fetch(PDO::FETCH_ASSOC);
+
+    if ($d_nilai) {
 ?>
-<!-- Main -->
-<main id="main" class="main">
-
-    <div class="pagetitle">
-        <h1>Data Nilai</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="?page=dashboard">Home</a></li>
-                <li class="breadcrumb-item">Sim Akademik</li>
-                <li class="breadcrumb-item active">Data Nilai</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <h5 class="card-header d-flex">
-                        <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
-                    </h5>
-                    <div class="table-responsive text-nowrap">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>ID Nilai</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Mata Pelajaran</th>
-                                    <th>Nilai</th>
-                                    <th>Username</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // $sqlNilai = "SELECT * FROM tb_nilai";
-                                $sqlNilai = "SELECT n.id_nilai, s.nama AS nama_siswa, m.nama_mapel AS mata_pelajaran, n.nilai, u.user FROM tb_nilai n LEFT JOIN tb_siswa s ON n.nis = s.nis LEFT JOIN tb_mapel m ON n.id_mapel = m.id_mapel LEFT JOIN tb_user u ON n.id_user = u.id_user;";
-                                $stmt = $pdo->query($sqlNilai);
-                                $no = 1;
-                                foreach ($stmt as $nilai) {
-                                ?>
-                                    <tr>
-                                        <td><?php echo $no++; ?></td>
-                                        <td><?php echo htmlspecialchars($nilai['id_nilai']); ?></td>
-                                        <td><?php echo htmlspecialchars($nilai['nama_siswa']); ?></td>
-                                        <td><?php echo htmlspecialchars($nilai['mata_pelajaran']); ?></td>
-                                        <td><?php echo htmlspecialchars($nilai['nilai']); ?></td>
-                                        <td><?php echo htmlspecialchars($nilai['user']); ?></td>
-                                        <td>
-                                            <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $nilai['id_nilai']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
-                                            <a href="?page=<?php echo $pageName ?>&alert=info_data&id=<?php echo $nilai['id_nilai']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
-                                        </td>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="card cardModals ">
+            <div class="card-body cardInfo border">
+                <span class="card-title d-flex justify-content-between border-bottom">
+                    <h5 class="fw-bold" style="color: black;">Nilai Mata Pelajaran - <?php echo htmlspecialchars($d_nilai['nama']); ?></h5>
+                    <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                </span>
+                <table class="border-bottom w-100 mt-2 table_info">
+                    <?php
+                    do {
+                    ?>
+                        <tr>
+                            <th><?php echo htmlspecialchars($d_nilai['nama_mapel']); ?></th>
+                            <th>:</th>
+                            <td><?php echo htmlspecialchars($d_nilai['nilai']); ?></td>
+                        </tr>
+                    <?php
+                    } while ($d_nilai = $stmt_nilai->fetch(PDO::FETCH_ASSOC));
+                    ?>
+                </table>
+                <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
+                <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_nilai&nis=<?php echo $nis; ?>">Input Nilai</a>
             </div>
         </div>
+<?php
+    }
+}
+?>
 
-        <!-- ===== ADD DATA FORM ===== -->
-        <?php
-        if (isset($_GET['alert'])) {
-            if ($_GET['alert'] == 'add_data') {
-        ?>
-                <div class="card cardModals">
-                    <div class="card-body cardInfo border">
-                        <span class="card-title d-flex justify-content-between border-bottom">
-                            <h5 class="fw-bold" style="color: black;">Form Nilai</h5> <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;"><i class="bi bi-x-circle"></i></a>
-                        </span>
+<!-- ===== ADD DATA FORM ===== -->
+<?php
+if (isset($_GET['alert']) && $_GET['alert'] == 'add_nilai' && isset($_GET['nis'])) {
+    if (isset($_GET['nis'])) {
+        $nis = $_GET['nis'];
+    } else {
+        die('NIS tidak ditemukan!');
+    }
 
-                        <!-- General Form Elements -->
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="row mb-3">
-                                <label for="nama_siswa" class="col-sm-2 col-form-label">Nama Siswa</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" required placeholder="Nama Siswa...">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="mata_pelajaran" class="col-sm-2 col-form-label">Mata Pelajaran</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mata_pelajaran" name="mata_pelajaran" required placeholder="Mata Pelajaran...">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="nilai" class="col-sm-2 col-form-label">Nilai</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control" id="nilai" name="nilai" required placeholder="Nilai...">
-                                </div>
-                            </div>
+    $query_nilai = "SELECT s.nis, s.nama, m.id_mapel, m.nama_mapel, COALESCE(n.nilai, '-') AS nilai FROM tb_siswa s LEFT JOIN tb_mapel m ON 1 = 1 LEFT JOIN tb_nilai n ON s.nis = n.nis AND m.id_mapel = n.id_mapel WHERE s.nis = :nis ORDER BY m.id_mapel";
+    $stmt_nilai = $pdo->prepare($query_nilai);
+    $stmt_nilai->execute(['nis' => $nis]);
+    $d_nilai = $stmt_nilai->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows
 
-                            <div class="row pt-3 border-top">
-                                <div class="col-sm-12 d-flex justify-content-end gap-1">
-                                    <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Simpan</button>
-                                    <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
-                                </div>
+    if (!empty($d_nilai)) { // Check if rows are available
+?>
+        <div class="card cardModals ">
+            <div class="card-body cardInfo border">
+                <span class="card-title d-flex justify-content-between border-bottom">
+                    <h5 class="fw-bold" style="color: black;">Nilai Mata Pelajaran - <?php echo htmlspecialchars($d_nilai[0]['nama']); ?></h5>
+                    <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                </span>
+                <form action="" method="POST">
+                    <input type="hidden" name="nis" id="nis" value="<?php echo $nis; ?>">
+                    <input type="hidden" name="id_user" id="id_user" value="<?php echo $id_user; ?>">
+                    <?php foreach ($d_nilai as $data_nilai) { ?>
+                        <div class="row mb-3">
+                            <label for="nilai[<?php echo $data_nilai['id_mapel'] ?>]" class="col-sm-3 col-form-label">
+                                <?php echo htmlspecialchars($data_nilai['nama_mapel']) ?>
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" id="nilai[<?php echo $data_nilai['id_mapel'] ?>]" name="nilai[<?php echo $data_nilai['id_mapel'] ?>]" value="<?php echo $data_nilai['nilai'] !== '-' ? htmlspecialchars($data_nilai['nilai']) : ''; ?>" placeholder="Masukkan nilai" max="100" min="0">
                             </div>
-                        </form><!-- End General Form Elements -->
+                        </div>
+                    <?php } ?>
+                    <div class="row pt-3 border-top">
+                        <div class="col-sm-12 d-flex justify-content-end gap-1">
+                            <button type="submit" name="add_nilai" value="add_nilai" class="btn btn-primary">Simpan</button>
+                            <a class="btn btn-secondary" href="?page=<?php echo $pageName ?>">Tutup</a>
+                        </div>
                     </div>
-                </div>
-        <?php
+                </form><!-- End General Form Elements -->
+            </div>
+        </div>
+<?php
+    }
+}
+?>
+<!-- ===== ADD DATA PROCCESS ===== -->
+<?php
+if (isset($_POST['add_nilai'])) {
+    $nis = $_POST['nis'];
+    $nilai_data = $_POST['nilai'];
+    $id_user = 3; // Replace this with actual user ID if needed
+
+    try {
+        $pdo->beginTransaction();
+
+        foreach ($nilai_data as $id_mapel => $nilai) {
+            $nilai = (int) $nilai; // Ensure nilai is an integer
+
+            if ($nilai > 100 || $nilai < 0) {
+                die('Nilai Maksimal Adalah 100! Dan Minimal Adalah 0!');
             }
-        }
-        ?>
 
-        <!-- ===== ADD DATA PROCCESS ===== -->
-        <?php
-        if (isset($_POST['add_data'])) {
-            $nama_siswa = $_POST['nama_siswa'];
-            $mata_pelajaran = $_POST['mata_pelajaran'];
-            $nilai = $_POST['nilai'];
+            // Check if the record already exists
+            $checkQuery = "SELECT COUNT(*) FROM tb_nilai WHERE nis = :nis AND id_mapel = :id_mapel";
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([
+                ':nis' => $nis,
+                ':id_mapel' => $id_mapel,
+            ]);
+            $exists = $checkStmt->fetchColumn();
 
-            try {
-                $query = "INSERT INTO tb_nilai(id_nilai, nama_siswa, mata_pelajaran, nilai) VALUES (NULL, :nama_siswa, :mata_pelajaran, :nilai)";
-                $stmt = $pdo->prepare($query);
-                $stmt->bindParam(':nama_siswa', $nama_siswa);
-                $stmt->bindParam(':mata_pelajaran', $mata_pelajaran);
-                $stmt->bindParam(':nilai', $nilai);
-
-                if ($stmt->execute()) {
-        ?>
-                    <script>
-                        window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
-                    </script>
-        <?php
-                } else {
-                    $errorInfo = $stmt->errorInfo();
-                    echo "Error: " . $errorInfo[2];
-                }
-            } catch (PDOException $e) {
-                echo "Error: " . $e->getMessage();
+            if ($exists > 0) {
+                // If record exists, update the value
+                $query = "UPDATE tb_nilai SET nilai = :nilai, id_user = :id_user WHERE nis = :nis AND id_mapel = :id_mapel
+                        ";
+            } else {
+                // If record doesn't exist, insert the new value
+                $query = "INSERT INTO tb_nilai (nis, id_mapel, nilai, id_user) VALUES (:nis, :id_mapel, :nilai, :id_user)
+                        ";
             }
+
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([
+                ':nis' => $nis,
+                ':id_mapel' => $id_mapel,
+                ':nilai' => $nilai,
+                ':id_user' => $id_user,
+            ]);
         }
-        ?>
-    </section>
-</main>
+
+
+        // Commit the transaction
+        if ($pdo->commit()) {
+?>
+            <script>
+                window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+            </script>
+<?php
+        } else {
+            echo "Error: Could not commit the transaction.";
+        }
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        echo "Error: " . $e->getMessage();
+    }
+}
+?>

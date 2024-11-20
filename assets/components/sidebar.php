@@ -114,13 +114,8 @@
           </a>
         </li>
         <li>
-          <a href="?page=nilai" class="<?php echo $simAkademik_5 ?>">
-            <i class="bi bi-circle"></i><span>Data Nilai</span>
-          </a>
-        </li>
-        <li>
-          <a href="?page=bayar" class="<?php echo $simAkademik_6 ?>">
-            <i class="bi bi-circle"></i><span>Data Bayar</span>
+          <a href="?page=transaksi" class="<?php echo $simAkademik_5 ?>">
+            <i class="bi bi-circle"></i><span>Transaksi</span>
           </a>
         </li>
       </ul>

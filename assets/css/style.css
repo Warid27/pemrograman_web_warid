@@ -77,10 +77,31 @@ td {
   white-space: normal; /* Ensures text wraps normally */
 }
 
+.cardModals tbody tr td{
+  width: 60%;
+}
 
 .table_info *{
   text-align: left;
 }
+.table_bayar .cardInfo{
+  width: 75% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+}
+.table_bayar table *{
+  font-size: 12px;
+}
+.table_bayar table thead th{
+  text-align: center;
+}
+.table_bayar table tbody td:first-child{
+  text-align: center;
+}
+.table_bayar table tbody td{
+  width: 20% !important;
+}
+
 .cardModals .card-body {
   position: fixed;
   top: 50%;

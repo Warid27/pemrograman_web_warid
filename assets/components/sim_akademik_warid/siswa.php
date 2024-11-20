@@ -67,7 +67,7 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
         </div>
       </div>
     </div>
-
+  </section>
     <!-- ===== ADD DATA FORM ===== -->
     <?php
     if (isset($_GET['alert'])) {
@@ -296,10 +296,10 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
             <form action="" method="POST" enctype="multipart/form-data" class="mt-2">
               <input type="file" class="new_foto" id="new_foto" name="new_foto" accept="image/*">
               <div class="row mb-3">
-                <label for="nis" class="col-sm-2 col-form-label">NIS</label>
+                <label for="nis_output" class="col-sm-2 col-form-label">NIS</label>
                 <div class="col-sm-10">
                   <input type="hidden" id="nis" name="nis" value="<?php echo $d_siswa['nis'] ?>">
-                  <input type="text" class="form-control" value="<?php echo $d_siswa['nis'] ?>" disabled>
+                  <input type="text" id="nis_output" class="form-control" value="<?php echo $d_siswa['nis'] ?>" disabled>
                 </div>
               </div>
               <div class="row mb-3">

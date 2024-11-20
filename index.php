@@ -154,11 +154,8 @@
     case 'kelas':
       include 'assets/components/sim_akademik_warid/kelas.php';
       break;
-    case 'nilai':
-      include 'assets/components/sim_akademik_warid/nilai.php';
-      break;
-    case 'bayar':
-      include 'assets/components/sim_akademik_warid/bayar.php';
+    case 'transaksi':
+      include 'assets/components/sim_akademik_warid/transaksi.php';
       break;
 
       // Sim Akademik Warid (Aksi)
