@@ -7,18 +7,23 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'info_bayar' && isset($_GET['nis'
         die('NIS tidak ditemukan!');
     }
 
-    $query_bayar = "SELECT b.bulan, SUM(CASE WHEN b.jenis = 'SPP' THEN b.jumlah ELSE 0 END) AS SPP, SUM(CASE WHEN b.jenis = 'Tabungan' THEN b.jumlah ELSE 0 END) AS tabungan, SUM(CASE WHEN b.jenis = 'Extra' THEN b.jumlah ELSE 0 END) AS extra, SUM(b.jumlah) AS total FROM tb_bayar b WHERE b.nis = :nis AND b.bulan IS NOT NULL GROUP BY b.bulan ORDER BY b.bulan";
+    $query_bayar = "SELECT s.nama, b.bulan, SUM(CASE WHEN b.jenis = 'SPP' THEN b.jumlah ELSE 0 END) AS SPP, SUM(CASE WHEN b.jenis = 'Tabungan' THEN b.jumlah ELSE 0 END) AS tabungan, SUM(CASE WHEN b.jenis = 'Extra' THEN b.jumlah ELSE 0 END) AS extra, SUM(b.jumlah) AS total FROM tb_siswa s LEFT JOIN tb_bayar b ON s.nis = b.nis WHERE s.nis = :nis AND b.bulan IS NOT NULL GROUP BY s.nama, b.bulan ORDER BY b.bulan";
+
     $stmt_bayar = $pdo->prepare($query_bayar);
     $stmt_bayar->execute(['nis' => $nis]);
+
     $pembayaran = [];
-    while ($d_bayar =  $stmt_bayar->fetch(PDO::FETCH_ASSOC)) {
+    $nama_siswa = 'User'; // Variabel untuk menyimpan nama siswa
+
+    while ($d_bayar = $stmt_bayar->fetch(PDO::FETCH_ASSOC)) {
         $pembayaran[$d_bayar['bulan']] = $d_bayar;
+        $nama_siswa = $d_bayar['nama']; // Ambil nama siswa
     }
 ?>
     <div class="card cardModals table_bayar">
         <div class="card-body cardInfo border">
             <span class="card-title d-flex justify-content-between border-bottom">
-                <h5 class="fw-bold" style="color: black;">Data Pembayaran - echo nama</h5>
+                <h5 class="fw-bold" style="color: black;">Data Pembayaran - <?php echo htmlspecialchars($nama_siswa); ?></h5>
                 <a href="?page=<?php echo $pageName ?>" style="color: black; text-decoration:none;">
                     <i class="bi bi-x-circle"></i>
                 </a>
@@ -56,6 +61,7 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'info_bayar' && isset($_GET['nis'
 <?php
 }
 ?>
+
 
 <!-- ===== ADD DATA FORM ===== -->
 <?php
