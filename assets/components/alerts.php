@@ -114,3 +114,136 @@ if (isset($_GET['alert'])) {
     }
 }
 ?>
+
+
+<!-- User Hapus -->
+<?php 
+if (isset($_GET['alert'])) {
+    if ($_GET['alert'] == 'user_hapus') {
+?>
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "User Berhasil Dihapus!",
+            });
+        </script>
+<?php  
+    }
+}
+?>
+
+<!-- Manipulate -->
+<?php 
+if (isset($_GET['alert'])) {
+    if ($_GET['alert'] == 'manipulate') {
+?>
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "🗿🗿🗿",
+                text: "Jangan Memanipulasi Data!"
+            });
+        </script>
+<?php  
+    }
+}
+?>
+
+<!-- Not Sign -->
+<?php 
+if (isset($_GET['alert'])) {
+    if ($_GET['alert'] == 'notSign') {
+?>
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Kamu Belum Login!"
+            });
+        </script>
+<?php  
+    }
+}
+?>
+
+<!-- SIGN OUT -->
+    <?php 
+    if (isset($_GET['alert'])) {
+        if ($_GET['alert']=='logout') {
+?>
+    <script>
+        Swal.fire({
+            icon: "info",
+            title: "Kamu Telah Log Out",
+        });
+    </script>
+<?php  
+        }
+    }
+?>
+
+    <!-- SIGN IN -->
+<?php 
+    if (isset($_GET['alert'])) {
+        if ($_GET['alert']=='failed_login') {
+?>
+    <script>
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Username dan Password tidak sesuai!",
+        });
+    </script>
+<?php  
+        }
+    }
+?>
+
+<?php 
+    if (isset($_GET['alert'])) {
+        if ($_GET['alert']=='success_login') {
+?>
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil Masuk!",
+        });
+    </script>
+<?php  
+        }
+    }
+?>
+
+    <!-- gagal_ukuran -->
+    <?php 
+    if (isset($_GET['alert'])) {
+        if ($_GET['alert']=='gagal_ukuran') {
+?>
+    <script>
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Ukuran File Terlalu Besar"
+        });
+    </script>
+<?php  
+        }
+    }
+?>
+    <!-- gagal_ekstensi -->
+<?php 
+    if (isset($_GET['alert'])) {
+        if ($_GET['alert']=='gagal_ekstensi') {
+?>
+    <script>
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Ekstensi File Tidak Sesuai"
+        });
+    </script>
+<?php  
+        }
+    }
+?>
+

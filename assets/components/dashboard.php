@@ -14,12 +14,14 @@
 
   <section class="section dashboard">
     <div class="col-12">
-      <div class="card">
-        <div class="card-body pt-5 pb-5 mb-100">
-          <h1>Selamat Datang di Dashboard!</h1>
+        <div class="card">
+            <div class="card-body pt-5 pb-5 mb-100">
+                <h1>Selamat Datang <b><?php echo htmlspecialchars($userDisplayName, ENT_QUOTES, 'UTF-8'); ?></b> di Dashboard!</h1>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+    <?php echo $_SESSION['id']; ?>
+</section>
+
 </main>
 <!-- Main -->

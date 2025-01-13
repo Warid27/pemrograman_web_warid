@@ -39,8 +39,17 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
                             </thead>
                             <tbody>
                                 <?php
-                                $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas";
-                                $stmt = $pdo->query($sqlSiswa);
+
+                                if ($_SESSION['role'] == 'siswa') {
+                                    $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas WHERE nis = :nis";
+                                    $stmt = $pdo->prepare($sqlSiswa);
+                                    $stmt->bindParam(':nis', $_SESSION['id'], PDO::PARAM_STR);
+                                    $stmt->execute();
+                                } else {
+                                    $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas";
+                                    $stmt = $pdo->query($sqlSiswa);
+                                }
+
                                 $no = 1;
                                 foreach ($stmt as $siswa) {
                                 ?>

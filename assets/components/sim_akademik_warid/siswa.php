@@ -8,55 +8,58 @@ $stmt_kelas = $pdo->prepare($query_kelas);
 $stmt_kelas->execute();
 $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
 ?>
+<?php
+if (isset($_POST['kelas_siswa'])) {
+  $kelas_siswa = $_POST['kelas_siswa'];
+  if ($kelas_siswa == "Semua Kelas") {
+    $kelas_query = "";
+  } else {
+    $kelas_query = "WHERE k.nama_kelas ='$kelas_siswa'";
+  }
+} else {
+  $kelas_siswa = "Semua Kelas";
+  $kelas_query = "";
+}
+?>
 <!-- Main -->
 <main id="main" class="main">
 
-  <div class="pagetitle">
-    <h1>Data Siswa</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="?page=dashboard">Home</a></li>
-        <li class="breadcrumb-item">Sim Akademik</li>
-        <li class="breadcrumb-item active">Data Siswa</li>
-      </ol>
-    </nav>
+  <div class="pagetitle d-flex align-items-center">
+    <span class="col-sm-6">
+      <h1>Data Siswa</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="?page=dashboard">Home</a></li>
+          <li class="breadcrumb-item">Sim Akademik</li>
+          <li class="breadcrumb-item active">Data Siswa</li>
+        </ol>
+      </nav>
+    </span>
+    <span class="col-sm-6 fs-5"><?php echo $kelas_siswa; ?></span>
   </div><!-- End Page Title -->
-  <?php
-  if (isset($_POST['kelas_siswa'])) {
-    $kelas_siswa = $_POST['kelas_siswa'];
-    if ($kelas_siswa == "Semua Kelas") {
-      $kelas_query = "";
-    } else {
-      $kelas_query = "WHERE k.nama_kelas ='$kelas_siswa'";
-    }
-  } else {
-    $kelas_siswa = "Semua Kelas";
-    $kelas_query = "";
-  }
-  ?>
+
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <h5 class="card-header d-flex">
-            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data</span>
-            <span class="col-sm-3"><?php echo $kelas_siswa; ?></span>
-            <form class="col-sm-3" action="?page=<?php echo $pageName ?>" method="post">
-              <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
-                <option value="Belum Memilih">Filter Kelas</option>
-                <option value="Semua Kelas">Semua Kelas</option>
-                <?php
-                $sqlKelas = "SELECT * FROM tb_kelas";
-                $stmt = $pdo->query($sqlKelas);
-                foreach ($stmt as $kelas) {
-                ?>
-                  <option value="<?php echo $kelas['nama_kelas'] ?>"><?php echo $kelas['nama_kelas'] ?></option>
-                <?php } ?>
-              </select>
-            </form>
-          </h5>
+          <?php if (isset($_SESSION['user'])) {
+            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+          ?>
+              <h5 class="card-header d-flex align-items-center">
+                <span class="col-sm-9"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data</span>
+                <form class="col-sm-3" action="?page=<?php echo $pageName ?>" method="post">
+                  <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    <?php foreach ($kelas_list as $kelas) { ?>
+                      <option value="<?php echo $kelas['nama_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
+                    <?php } ?>
+                  </select>
+                </form>
+              </h5>
+          <?php }
+          } ?>
           <div class="table-responsive text-nowrap">
-            <table class="table table-hover">
+            <table id="dataTableSiswa" class="table table-hover">
               <thead>
                 <tr>
                   <th>No</th>
@@ -68,8 +71,17 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
               </thead>
               <tbody>
                 <?php
-                $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas $kelas_query";
-                $stmt = $pdo->query($sqlSiswa);
+
+                if ($_SESSION['role'] == 'siswa') {
+                  $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas WHERE s.nis = :nis";
+                  $stmt = $pdo->prepare($sqlSiswa);
+                  $stmt->bindParam(':nis', $_SESSION['id'], PDO::PARAM_STR);
+                  $stmt->execute();
+                } else {
+                  $sqlSiswa = "SELECT s.nis, s.nama, k.nama_kelas FROM tb_siswa s LEFT JOIN tb_kelas k ON s.id_kelas = k.id_kelas $kelas_query";
+                  $stmt = $pdo->query($sqlSiswa);
+                }
+
                 $no = 1;
                 foreach ($stmt as $siswa) {
                 ?>
@@ -79,7 +91,12 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($siswa['nama']); ?></td>
                     <td><?php echo htmlspecialchars($siswa['nama_kelas']); ?></td>
                     <td>
-                      <a href="?page=<?php echo $pageName ?>&alert=edit_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <?php if (isset($_SESSION['user'])) {
+                        if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                      ?>
+                          <a href="?page=<?php echo $pageName ?>&alert=edit_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <?php }
+                      } ?>
                       <a href="?page=<?php echo $pageName ?>&alert=info_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
 
                     </td>
@@ -289,7 +306,12 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
             </tr>
           </table>
           <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-          <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
+          <?php if (isset($_SESSION['user'])) {
+            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+          ?>
+              <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
+          <?php }
+          } ?>
         </div>
       </div>
   <?php
@@ -457,3 +479,81 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
 
 </main>
 <!-- Main -->
+
+<script>
+  $(document).ready(function() {
+    var table = $('#dataTableSiswa').DataTable({
+      dom: '<"d-flex justify-content-between align-items-center px-3 py-3"Brf>t<"d-flex justify-content-between align-items-center px-3 py-3"lip>',
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search for records...",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        paginate: {
+          previous: "Previous",
+          next: "Next",
+        },
+      },
+      buttons: [{
+          extend: 'excelHtml5',
+          text: 'Export to Excel',
+          title: function() {
+            var currentPage = table.page.info().page + 1;
+            return 'Data Excel - Page ' + currentPage;
+          },
+          exportOptions: {
+            modifier: {
+              page: 'current',
+            },
+          },
+        },
+        {
+          extend: 'pdfHtml5',
+          text: 'Export to PDF',
+          title: function() {
+            var currentPage = table.page.info().page + 1;
+            return 'Data PDF - Page ' + currentPage;
+          },
+          exportOptions: {
+            modifier: {
+              page: 'current',
+            },
+          },
+        },
+        {
+          extend: 'print',
+          text: 'Print',
+          title: function() {
+            var currentPage = table.page.info().page + 1;
+            return 'Print - Data for Page ' + currentPage;
+          },
+          exportOptions: {
+            modifier: {
+              page: 'current',
+            },
+          },
+        },
+      ],
+      paging: true,
+      lengthMenu: [
+        [10, 25, 50, 100],
+        [10, 25, 50, 100],
+      ],
+      pageLength: 10,
+      createdRow: function(row, data, dataIndex) {
+        // Center-align text in each cell
+        $(row).find('td').css('text-align', 'center');
+      },
+      columnDefs: [{
+        targets: '_all', // Target all columns
+        className: 'text-center', // Add center alignment to header
+      }, ],
+    });
+
+    // Add custom paging filter dropdown
+    $('#pagingFilter').on('change', function() {
+      var pageLength = $(this).val();
+      table.page.len(pageLength).draw();
+    });
+  });
+</script>

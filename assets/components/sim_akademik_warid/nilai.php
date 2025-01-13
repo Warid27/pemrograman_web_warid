@@ -36,7 +36,12 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'info_nilai' && isset($_GET['nis'
                     ?>
                 </table>
                 <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-                <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_nilai&nis=<?php echo $nis; ?>">Input Nilai</a>
+                <?php if (isset($_SESSION['user'])) {
+                    if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                ?>
+                        <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_nilai&nis=<?php echo $nis; ?>">Input Nilai</a>
+                <?php }
+                } ?>
             </div>
         </div>
 <?php
@@ -70,7 +75,6 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'add_nilai' && isset($_GET['nis']
                 </span>
                 <form action="" method="POST">
                     <input type="hidden" name="nis" id="nis" value="<?php echo $nis; ?>">
-                    <input type="hidden" name="id_user" id="id_user" value="<?php echo $id_user; ?>">
                     <?php foreach ($d_nilai as $data_nilai) { ?>
                         <div class="row mb-3">
                             <label for="nilai[<?php echo $data_nilai['id_mapel'] ?>]" class="col-sm-3 col-form-label">
@@ -99,7 +103,11 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'add_nilai' && isset($_GET['nis']
 if (isset($_POST['add_nilai'])) {
     $nis = $_POST['nis'];
     $nilai_data = $_POST['nilai'];
-    $id_user = 3; // Replace this with actual user ID if needed
+    if (isset($_SESSION['user'])) {
+        $id_user = $_SESSION['id']; // Replace this with actual user ID if needed
+    } else {
+        $id_user = 1; // Replace this with actual user ID if needed
+    }
 
     try {
         $pdo->beginTransaction();

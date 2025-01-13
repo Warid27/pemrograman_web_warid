@@ -55,7 +55,12 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'info_bayar' && isset($_GET['nis'
                 </tbody>
             </table>
             <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-            <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_bayar&nis=<?php echo $nis; ?>">Input Pembayaran</a>
+            <?php if (isset($_SESSION['user'])) {
+                if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+            ?>
+                    <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_bayar&nis=<?php echo $nis; ?>">Input Pembayaran</a>
+            <?php }
+            } ?>
         </div>
     </div>
 <?php
@@ -175,7 +180,7 @@ if (isset($_POST['add_bayar'])) {
             // Insert new records for this month
             $query = "INSERT INTO tb_bayar (nis, bulan, jenis, jumlah, id_user) VALUES (:nis, :bulan, 'SPP', :SPP, :id_user), (:nis, :bulan, 'Tabungan', :Tabungan, :id_user), (:nis, :bulan, 'Extra', :Extra, :id_user)";
         }
-        
+
         $stmt = $pdo->prepare($query);
         // Bind parameters for both insert and update queries
         $stmt->bindParam(':nis', $nis);

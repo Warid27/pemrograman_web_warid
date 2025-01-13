@@ -2,6 +2,12 @@
 $simAkademik_1 = "active";
 $pageName = 'user';
 ?>
+<?php
+$query_kelas = "SELECT * FROM tb_kelas";
+$stmt_kelas = $pdo->prepare($query_kelas);
+$stmt_kelas->execute();
+$kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
+?>
 <!-- Main -->
 <main id="main" class="main">
 
@@ -32,6 +38,7 @@ $pageName = 'user';
                                     <th>Username</th>
                                     <th>Password</th>
                                     <th>Level</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,6 +110,32 @@ $pageName = 'user';
                                 </div>
                             </div>
 
+                            <div class="row mb-3 kelas-row" style="display: none;">
+                                <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" name="id_kelas" id="id_kelas">
+                                        <option value="" disabled selected>Pilih Kelas</option>
+                                        <?php foreach ($kelas_list as $kelas) { ?>
+                                            <option value="<?php echo $kelas['id_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3 wks-row" style="display: none;">
+                                <label for="bidang" class="col-sm-2 col-form-label">Bidang</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" name="bidang" id="bidang">
+                                        <option value="" disabled selected>Pilih Bidang</option>
+                                        <option value="1">Kurikulum</option>
+                                        <option value="2">Kesiswaan</option>
+                                        <option value="3">Sarpras</option>
+                                        <option value="4">Humas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
                             <div class="row pt-3 border-top">
                                 <div class="col-sm-12 d-flex justify-content-end gap-1">
                                     <button type="submit" name="add_data" value="add_data" class="btn btn-primary">Simpan</button>
@@ -123,7 +156,7 @@ $pageName = 'user';
             $user = $_POST['user'];
             $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
             $lvl = $_POST['lvl'];
-
+            $password_real = $_POST['pass'];
 
             try {
                 $query = "INSERT INTO tb_user(id_user, user, pass, lvl) VALUES (NULL,:user,:pass,:lvl)";
@@ -134,18 +167,80 @@ $pageName = 'user';
 
 
                 if ($stmt->execute()) {
+                    // Ambil ID terakhir yang dimasukkan
+                    $lastInsertedId = $pdo->lastInsertId();
+
+                    // Switch untuk db details
+                    switch ($lvl) {
+                        case 'admin':
+                            $details = "INSERT INTO tb_admin(id_user) VALUES ($lastInsertedId)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'petugas':
+                            $details = "INSERT INTO tb_petugas(id_user) VALUES ($lastInsertedId)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'walikelas':
+                            $id_kelas = $_POST['id_kelas'];
+                            $details = "INSERT INTO tb_walikelas(id_user, id_kelas) VALUES ($lastInsertedId, $id_kelas)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'wakasek':
+                            $bidang = $_POST['bidang'];
+                            $details = "INSERT INTO tb_wakasek(id_user, bidang) VALUES ($lastInsertedId, $bidang)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+
+                        default:
+                            echo "ERROR LEVEL!!!";
+                            break;
+                    }
+
+                    // Proses memasukkan data ke dalam userList.php
+                    $filePath = __DIR__ . "/../../auth/userList.php"; // Path relatif
+                    if (file_exists($filePath)) {
+                        include $filePath;
+
+                        if (isset($userList) && is_array($userList)) {
+                            // Tambahkan data baru
+                            $newUser = array(
+                                'user_id' => $lastInsertedId,
+                                'username' => $user,
+                                'password' => $password_real,
+                                'level' => $lvl,
+                            );
+                            $userList[] = $newUser;
+
+                            // Tulis ulang file
+                            $content = "<?php\n\$userList = " . var_export($userList, true) . ";\n";
+                            if (file_put_contents($filePath, $content) === false) {
+                                die("Gagal menulis ke file: $filePath");
+                            }
+                        } else {
+                            die("Variabel \$userList tidak ditemukan atau bukan array.");
+                        }
+                    } else {
+                        die("File tidak ditemukan: $filePath");
+                    }
+
+                    if ($query_details->execute()) {
         ?>
-                    <script>
-                        window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
-                    </script>
+                        <script>
+                            window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
+                        </script>
         <?php
+                    } else {
+                        // Ambil informasi error
+                        $errorInfo = $query_details->errorInfo();
+                        echo "Error Details: " . $errorInfo[2]; // Elemen ke-2 berisi pesan error
+                    }
                 } else {
                     // Ambil informasi error
                     $errorInfo = $stmt->errorInfo();
-                    echo "Error: " . $errorInfo[2]; // Elemen ke-2 berisi pesan error
+                    echo "Error Execute: " . $errorInfo[2]; // Elemen ke-2 berisi pesan error
                 }
             } catch (PDOException $e) {
-                echo "Error: " . $e->getMessage();
+                echo "Error All: " . $e->getMessage();
             }
         }
 
@@ -170,7 +265,7 @@ $pageName = 'user';
                         </span>
                         <table class="border-bottom w-100 mt-2 table_info">
                             <tr>
-                                <th>id_user</th>
+                                <th>ID User</th>
                                 <th>:</th>
                                 <td><?php echo $d_user['id_user'] ?? '-'; ?></td>
                             </tr>
@@ -189,6 +284,39 @@ $pageName = 'user';
                                 <th>:</th>
                                 <td><?php echo $d_user['lvl'] ?? '-'; ?></td>
                             </tr>
+                            <?php
+                            if ($d_user['lvl'] == "walikelas" || $d_user['lvl'] == "wakasek") {
+                                $infoData = '-'; // Default value
+                                $infoName = '-'; // Default value
+
+                                if ($d_user['lvl'] == 'walikelas') {
+                                    $query = "SELECT k.nama_kelas FROM tb_walikelas w JOIN tb_kelas k ON w.id_kelas = k.id_kelas WHERE w.id_user = :id_user";
+                                    $stmt = $pdo->prepare($query);
+                                    $stmt->bindParam(':id_user', $d_user['id_user'], PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    $d_wali_kelas = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    $infoName = "Wali Kelas";
+                                    $infoData = $d_wali_kelas['nama_kelas'] ?? '-';
+                                } elseif ($d_user['lvl'] == 'wakasek') {
+                                    $query_wks = "SELECT bidang FROM tb_wakasek WHERE id_user = :id_user";
+                                    $stmt_wks = $pdo->prepare($query_wks);
+                                    $stmt_wks->bindParam(':id_user', $d_user['id_user'], PDO::PARAM_INT);
+                                    $stmt_wks->execute();
+                                    $d_wks = $stmt_wks->fetch(PDO::FETCH_ASSOC);
+
+                                    $infoData = $d_wks['bidang'] ?? '-';
+                                    $infoName = "Bidang";
+                                }
+                            ?>
+                                <tr>
+                                    <th><?php echo $infoName ?></th>
+                                    <th>:</th>
+                                    <td><?php echo $infoData; ?></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
                         </table>
                         <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
                         <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_user['id_user']; ?>">Hapus</a>
@@ -218,7 +346,7 @@ $pageName = 'user';
                         </span>
                         <form action="" method="POST" enctype="multipart/form-data" class="mt-2">
                             <div class="row mb-3">
-                                <label for="id_user" class="col-sm-2 col-form-label">id_user</label>
+                                <label for="id_user" class="col-sm-2 col-form-label">ID User</label>
                                 <div class="col-sm-10">
                                     <input type="hidden" id="id_user" name="id_user" value="<?php echo $d_user['id_user'] ?>">
                                     <input type="text" class="form-control" value="<?php echo $d_user['id_user'] ?>" disabled>
@@ -233,14 +361,15 @@ $pageName = 'user';
                             <div class="row mb-3">
                                 <label for="pass" class="col-sm-2 col-form-label">Password</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="pass" name="pass" required placeholder="Password..." value="<?php echo $d_user['pass'] ?>">
+                                    <input type="password" class="form-control" id="pass" name="pass" required placeholder="Password..." value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <input type="hidden" name="lvlBefore" value="<?php echo $d_user['lvl'] ?>">
                                 <label for="lvl" class="col-sm-2 col-form-label">Level</label>
                                 <div class="col-sm-10">
                                     <select class="form-select" name="lvl" id="lvl" required>
-                                        <option value="" disabled selected>Pilih Level</option>
+                                        <option value="" disabled>Pilih Level</option>
                                         <option value="admin" <?php echo ($d_user['lvl'] == 'admin') ? 'selected="selected"' : ''; ?>>Admin</option>
                                         <option value="petugas" <?php echo ($d_user['lvl'] == 'petugas') ? 'selected="selected"' : ''; ?>>Petugas</option>
                                         <option value="wakasek" <?php echo ($d_user['lvl'] == 'wakasek') ? 'selected="selected"' : ''; ?>>Wakasek</option>
@@ -248,6 +377,75 @@ $pageName = 'user';
                                     </select>
                                 </div>
                             </div>
+
+                            <?php
+                            // == WALIKELAS ==
+                            if ($d_user['lvl'] == 'walikelas') {
+                                $query_wali = "SELECT * FROM tb_walikelas WHERE id_user = :id_user";
+                                $stmt_wali = $pdo->prepare($query_wali);
+                                $stmt_wali->bindParam(':id_user', $d_user['id_user'], PDO::PARAM_INT);
+                                $stmt_wali->execute();
+                                $d_wali = $stmt_wali->fetch(PDO::FETCH_ASSOC);
+                            ?>
+                                <div class="row mb-3 kelas-row" style="display: flex;">
+                                    <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="id_kelas" id="id_kelas" required>
+                                            <option value="" disabled>Pilih Kelas</option>
+                                            <?php foreach ($kelas_list as $kelas) { ?>
+                                                <option value="<?php echo $kelas['id_kelas']; ?>" <?php echo ($kelas['id_kelas'] == $d_wali['id_kelas']) ? 'selected="selected"' : ''; ?>><?php echo $kelas['nama_kelas']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 wks-row" style="display: none;">
+                                    <label for="bidang" class="col-sm-2 col-form-label">Bidang</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="bidang" id="bidang">
+                                            <option value="" disabled selected>Pilih Bidang</option>
+                                            <option value="1">Kurikulum</option>
+                                            <option value="2">Kesiswaan</option>
+                                            <option value="3">Sarpras</option>
+                                            <option value="4">Humas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            <?php
+                                // == WAKASEK ==
+                            } else if ($d_user['lvl'] == 'wakasek') {
+                                $query_wks = "SELECT * FROM tb_wakasek WHERE id_user = :id_user";
+                                $stmt_wks = $pdo->prepare($query_wks);
+                                $stmt_wks->bindParam(':id_user', $d_user['id_user'], PDO::PARAM_INT);
+                                $stmt_wks->execute();
+                                $d_wks = $stmt_wks->fetch(PDO::FETCH_ASSOC);
+                            ?>
+                                <div class="row mb-3 wks-row" style="display: flex;">
+                                    <label for="wks" class="col-sm-2 col-form-label">Bidang</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="wks" id="wks">
+                                            <option value="" disabled selected>Pilih Bidang</option>
+                                            <option value="1" <?php echo ($d_wks['bidang'] == '1') ? 'selected="selected"' : ''; ?>>Kurikulum</option>
+                                            <option value="2" <?php echo ($d_wks['bidang'] == '2') ? 'selected="selected"' : ''; ?>>Kesiswaan</option>
+                                            <option value="3" <?php echo ($d_wks['bidang'] == '3') ? 'selected="selected"' : ''; ?>>Sarpras</option>
+                                            <option value="4" <?php echo ($d_wks['bidang'] == '4') ? 'selected="selected"' : ''; ?>>Humas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 kelas-row" style="display: none;">
+                                    <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="id_kelas" id="id_kelas">
+                                            <option value="" disabled selected>Pilih Kelas</option>
+                                            <?php foreach ($kelas_list as $kelas) { ?>
+                                                <option value="<?php echo $kelas['id_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                            ?>
 
                             <div class="row pt-3 border-top">
                                 <div class="col-sm-12 d-flex justify-content-end gap-1">
@@ -270,30 +468,114 @@ $pageName = 'user';
             $id_user = $_POST['id_user'];
             $user = $_POST['user'];
             $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+            $password_real = $_POST['pass']; // Simpan untuk file userList.php
             $lvl = $_POST['lvl'];
+            $lvlBefore = $_POST['lvlBefore'];
+
+            if ($lvlBefore != $lvl) {
+                $updateQuery = "DELETE FROM tb_$lvlBefore WHERE id_user = $id_user";
+                $delToUpdate = $pdo->prepare($updateQuery);
+                if ($delToUpdate->execute()) {
+                    // Switch untuk db details
+                    switch ($lvl) {
+                        case 'admin':
+                            $details = "INSERT INTO tb_admin(id_user) VALUES ($id_user)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'petugas':
+                            $details = "INSERT INTO tb_petugas(id_user) VALUES ($id_user)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'walikelas':
+                            $id_kelas = $_POST['id_kelas'];
+                            $details = "INSERT INTO tb_walikelas(id_user, id_kelas) VALUES ($id_user, $id_kelas)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+                        case 'wakasek':
+                            $bidang = $_POST['bidang'];
+                            $details = "INSERT INTO tb_wakasek(id_user, bidang) VALUES ($id_user, $bidang)";
+                            $query_details = $pdo->prepare($details);
+                            break;
+
+                        default:
+                            echo "ERROR LEVEL!!!";
+                            break;
+                    }
+                }
+            } else {
+                // Switch untuk db details
+                switch ($lvl) {
+                    case 'admin':
+                        $details = "UPDATE tb_admin SET id_user = $id_user WHERE id_user = $id_user";
+                        break;
+                    case 'petugas':
+                        $details = "UPDATE tb_petugas SET id_user = $id_user WHERE id_user = $id_user";
+                        break;
+                    case 'walikelas':
+                        $id_kelas = $_POST['id_kelas'];
+                        $details = "UPDATE tb_walikelas SET id_user = $id_user, id_kelas = $id_kelas WHERE id_user = $id_user";
+                        break;
+                    case 'wakasek':
+                        $bidang = $_POST['bidang'];
+                        $details = "UPDATE tb_wakasek SET id_user = $id_user, bidang = $bidang WHERE id_user = $id_user";
+                        break;
+
+                    default:
+                        echo "ERROR LEVEL!!!";
+                        break;
+                }
+            }
+            $query_details = $pdo->prepare($details);
 
             try {
-                // Use correct placeholders
+                // Query untuk memperbarui data di database
                 $query = "UPDATE tb_user SET user = :user, pass = :pass, lvl = :lvl WHERE id_user = :id_user";
-
                 $stmt = $pdo->prepare($query);
-
-                // Bind parameters
                 $stmt->bindParam(':id_user', $id_user);
                 $stmt->bindParam(':user', $user);
                 $stmt->bindParam(':pass', $pass);
                 $stmt->bindParam(':lvl', $lvl);
 
-                if ($stmt->execute()) {
+                if ($stmt->execute() && $query_details->execute()) {
+
+                    // Setelah sukses, perbarui data di file userList.php
+                    $filePath = __DIR__ . "/../../auth/userList.php"; // Sesuaikan path relatif
+                    if (file_exists($filePath)) {
+                        include $filePath; // Ambil data dari file
+
+                        if (isset($userList) && is_array($userList)) {
+                            // Cari dan perbarui data dengan ID yang sesuai
+                            foreach ($userList as &$u) {
+                                if ($u['user_id'] == $id_user) {
+                                    $u['username'] = $user;
+                                    $u['password'] = $password_real;
+                                    $u['level'] = $lvl;
+                                    break;
+                                }
+                            }
+
+                            // Tulis ulang file userList.php
+                            $content = "<?php\n\$userList = " . var_export($userList, true) . ";\n";
+                            if (file_put_contents($filePath, $content) === false) {
+                                die("Gagal menulis ke file: $filePath");
+                            }
+                        } else {
+                            die("Variabel \$userList tidak ditemukan atau bukan array.");
+                        }
+                    } else {
+                        die("File tidak ditemukan: $filePath");
+                    }
+
+                    // Redirect jika sukses
         ?>
                     <script>
                         window.location.href = '<?php echo "?page=$pageName&alert=Success"; ?>';
                     </script>
         <?php
                 } else {
-                    // Handle execution failure
+                    // Tangani kegagalan eksekusi
                     $errorInfo = $stmt->errorInfo();
-                    echo "Error: " . $errorInfo[2]; // Error message from database
+                    echo "Error: " . $errorInfo[2];
                 }
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
@@ -301,5 +583,16 @@ $pageName = 'user';
         }
         ?>
 
+
 </main>
 <!-- Main -->
+<script>
+    document.getElementById('lvl').addEventListener('change', function() {
+        const level = this.value;
+        const kelasRow = document.querySelector('.kelas-row'); // Element for "walikelas"
+        const wakasekRow = document.querySelector('.wks-row'); // Element for "wakasek"
+
+        kelasRow.style.display = (level === 'walikelas') ? 'flex' : 'none';
+        wakasekRow.style.display = (level === 'wakasek') ? 'flex' : 'none';
+    });
+</script>

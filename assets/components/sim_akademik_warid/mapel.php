@@ -20,9 +20,14 @@ $pageName = 'mapel';
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <h5 class="card-header d-flex">
-            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
-          </h5>
+          <?php if (isset($_SESSION['user'])) {
+            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+          ?>
+              <h5 class="card-header d-flex">
+                <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
+              </h5>
+          <?php }
+          } ?>
           <div class="table-responsive text-nowrap">
             <table class="table table-hover">
               <thead>
@@ -30,6 +35,7 @@ $pageName = 'mapel';
                   <th>No</th>
                   <th>ID Mapel</th>
                   <th>Nama Mata Pelajaran</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,7 +50,12 @@ $pageName = 'mapel';
                     <td><?php echo htmlspecialchars($mapel['id_mapel']); ?></td>
                     <td><?php echo htmlspecialchars($mapel['nama_mapel']); ?></td>
                     <td>
-                      <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <?php if (isset($_SESSION['user'])) {
+                        if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                      ?>
+                          <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                      <?php }
+                      } ?>
                       <a href="?page=<?php echo $pageName ?>&alert=info_data&id=<?php echo $mapel['id_mapel']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
 
                     </td>
@@ -173,7 +184,12 @@ $pageName = 'mapel';
               </tr>
             </table>
             <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-            <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_mapel['id_mapel']; ?>">Hapus</a>
+            <?php if (isset($_SESSION['user'])) {
+              if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+            ?>
+                <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_mapel['id_mapel']; ?>">Hapus</a>
+            <?php }
+            } ?>
           </div>
         </div>
     <?php
