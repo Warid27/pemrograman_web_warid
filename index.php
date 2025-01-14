@@ -194,9 +194,9 @@ if (session_status() === PHP_SESSION_NONE) {
         include 'assets/components/main/dashboard.php';
         break;
     }
-  } else {
+  } else if (isset($_SESSION['user'])) {
     switch ($page) {
-        // Homepage
+        // HomepageF
       case 'dashboard':
         include 'assets/components/dashboard.php';
         break;
@@ -281,6 +281,81 @@ if (session_status() === PHP_SESSION_NONE) {
         // Sim Akademik Warid (Aksi)
       case 'delete_sim':
         include 'assets/components/sim_akademik_warid/delete_sim.php';
+        break;
+
+        // Default Homepage
+      default:
+        include 'assets/components/dashboard.php';
+        break;
+    }
+  } else{
+    switch ($page) {
+        // Homepage
+      case 'dashboard':
+        include 'assets/components/dashboard.php';
+        break;
+
+      case 'login':
+        include 'assets/auth/login.php';
+        break;
+
+      case 'login_act':
+        include 'assets/auth/login_act.php';
+        break;
+
+      case 'logout':
+        include 'assets/auth/logout.php';
+        break;
+
+        // Penilaian Form
+      case 'kereta':
+        include 'assets/components/penilaian/form/kereta.php';
+        break;
+
+      case 'rapor':
+        include 'assets/components/penilaian/form/rapor.php';
+        break;
+
+      case 'kwalifikasi':
+        include 'assets/components/penilaian/form/kwalifikasi.php';
+        break;
+
+      case 'seragam':
+        include 'assets/components/penilaian/form/seragam.php';
+        break;
+
+      case 'gaji':
+        include 'assets/components/penilaian/form/gaji.php';
+        break;
+
+        // Penilaian Table
+      case 'tabel_kereta':
+        include 'assets/components/penilaian/tabel/tabel_kereta.php';
+        break;
+
+      case 'tabel_rapor':
+        include 'assets/components/penilaian/tabel/tabel_rapor.php';
+        break;
+
+      case 'tabel_kwalifikasi':
+        include 'assets/components/penilaian/tabel/tabel_kwalifikasi.php';
+        break;
+
+      case 'tabel_seragam':
+        include 'assets/components/penilaian/tabel/tabel_seragam.php';
+        break;
+
+      case 'tabel_gaji':
+        include 'assets/components/penilaian/tabel/tabel_gaji.php';
+        break;
+
+        // Penilaian Aksi
+      case 'delete':
+        include 'assets/components/penilaian/action/delete.php';
+        break;
+
+      case 'update':
+        include 'assets/components/penilaian/action/update.php';
         break;
 
         // Default Homepage

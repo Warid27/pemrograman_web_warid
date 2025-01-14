@@ -36,12 +36,14 @@ if (isset($_GET['alert']) && $_GET['alert'] == 'info_nilai' && isset($_GET['nis'
                     ?>
                 </table>
                 <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-                <?php if (isset($_SESSION['user'])) {
-                    if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                <?php
+                if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
                 ?>
-                        <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_nilai&nis=<?php echo $nis; ?>">Input Nilai</a>
-                <?php }
-                } ?>
+                    <a class="btn btn-primary float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=add_nilai&nis=<?php echo $nis; ?>">Input Nilai</a>
+                <?php
+                }
+                ?>
+
             </div>
         </div>
 <?php

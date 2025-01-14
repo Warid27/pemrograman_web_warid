@@ -420,9 +420,9 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
                                 $d_wks = $stmt_wks->fetch(PDO::FETCH_ASSOC);
                             ?>
                                 <div class="row mb-3 wks-row" style="display: flex;">
-                                    <label for="wks" class="col-sm-2 col-form-label">Bidang</label>
+                                    <label for="bidang" class="col-sm-2 col-form-label">Bidang</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select" name="wks" id="wks">
+                                        <select class="form-select" name="bidang" id="bidang">
                                             <option value="" disabled selected>Pilih Bidang</option>
                                             <option value="1" <?php echo ($d_wks['bidang'] == '1') ? 'selected="selected"' : ''; ?>>Kurikulum</option>
                                             <option value="2" <?php echo ($d_wks['bidang'] == '2') ? 'selected="selected"' : ''; ?>>Kesiswaan</option>
@@ -506,18 +506,18 @@ $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
                 // Switch untuk db details
                 switch ($lvl) {
                     case 'admin':
-                        $details = "UPDATE tb_admin SET id_user = $id_user WHERE id_user = $id_user";
+                        $details = "UPDATE tb_admin SET WHERE id_user = $id_user";
                         break;
                     case 'petugas':
-                        $details = "UPDATE tb_petugas SET id_user = $id_user WHERE id_user = $id_user";
+                        $details = "UPDATE tb_petugas SET WHERE id_user = $id_user";
                         break;
                     case 'walikelas':
                         $id_kelas = $_POST['id_kelas'];
-                        $details = "UPDATE tb_walikelas SET id_user = $id_user, id_kelas = $id_kelas WHERE id_user = $id_user";
+                        $details = "UPDATE tb_walikelas SET id_kelas = $id_kelas WHERE id_user = $id_user";
                         break;
                     case 'wakasek':
                         $bidang = $_POST['bidang'];
-                        $details = "UPDATE tb_wakasek SET id_user = $id_user, bidang = $bidang WHERE id_user = $id_user";
+                        $details = "UPDATE tb_wakasek SET bidang = $bidang WHERE id_user = $id_user";
                         break;
 
                     default:

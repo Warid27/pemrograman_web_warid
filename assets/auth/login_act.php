@@ -31,8 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             // If user not found in both tables, show alert
             if (!$data) {
                 $_SESSION['alert'] = 'empty_fields';
-                echo "<script>window.location.href = '?page=login&alert=" . $_SESSION['alert'] . "';</script>";
-                exit();
+                redirectToLogin();
             }
 
             // Compare the entered password (plaintext) with the hashed password
@@ -48,29 +47,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 $pageName = (in_array($data['lvl'], ['admin', 'petugas', 'wakasek', 'walikelas', 'siswa'])) ? 'dashboard' : 'login';
                 $_SESSION['alert'] = ($pageName === 'login') ? 'failed_login' : $_SESSION['alert'];
 
-                // JavaScript redirection
-                echo "<script>window.location.href = '?page=$pageName&alert=" . $_SESSION['alert'] . "';</script>";
-                exit();
+                // Redirect to the appropriate page
+                redirectToPage($pageName);
             } else {
                 // Incorrect password
                 $_SESSION['alert'] = 'failed_login';
-                echo "<script>window.location.href = '?page=login&alert=" . $_SESSION['alert'] . "';</script>";
-                exit();
+                redirectToLogin();
             }
         } catch (PDOException $e) {
             // Log the error and redirect
             error_log("Login Error: " . $e->getMessage());
             $_SESSION['alert'] = 'error_occurred';
-            echo "<script>window.location.href = '?page=login&alert=" . $_SESSION['alert'] . "';</script>";
-            exit();
+            redirectToLogin();
         }
     } else {
         // Handle empty user or pass
         $_SESSION['alert'] = 'empty_fields';
-        echo "<script>window.location.href = '?page=login&alert=" . $_SESSION['alert'] . "';</script>";
-        exit();
+        redirectToLogin();
     }
 } else {
-    echo "<script>window.location.href = '?page=login';</script>";
+    redirectToLogin();
+}
+
+// Helper function to redirect to login
+function redirectToLogin() {
+    echo "<script>window.location.href = '?page=login&alert=" . $_SESSION['alert'] . "';</script>";
     exit();
 }
+
+// Helper function to redirect to the specified page
+function redirectToPage($page) {
+    echo "<script>window.location.href = '?page=$page&alert=" . $_SESSION['alert'] . "';</script>";
+    exit();
+}
+?>

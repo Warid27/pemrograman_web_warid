@@ -9,18 +9,24 @@ $stmt_kelas->execute();
 $kelas_list = $stmt_kelas->fetchALL(PDO::FETCH_ASSOC);
 ?>
 <?php
-if (isset($_POST['kelas_siswa'])) {
+$kelas_siswa = "Semua Kelas"; // Default value
+$kelas_query = ""; // Default query
+
+if (isset($_SESSION['user']) && $_SESSION['role'] === 'walikelas') {
+  $query_wali = "SELECT k.nama_kelas FROM tb_walikelas w LEFT JOIN tb_kelas k ON k.id_kelas = w.id_kelas WHERE w.id_user = :id_user";
+  $stmt_wali = $pdo->prepare($query_wali);
+  $stmt_wali->bindParam(':id_user', $_SESSION['id'], PDO::PARAM_INT);
+  $stmt_wali->execute();
+  $d_wali = $stmt_wali->fetch(PDO::FETCH_ASSOC);
+  $kelas_siswa = $d_wali['nama_kelas'] ?? "Semua Kelas";
+
+  $kelas_query = "WHERE k.nama_kelas = '$kelas_siswa'";
+} elseif (isset($_POST['kelas_siswa'])) {
   $kelas_siswa = $_POST['kelas_siswa'];
-  if ($kelas_siswa == "Semua Kelas") {
-    $kelas_query = "";
-  } else {
-    $kelas_query = "WHERE k.nama_kelas ='$kelas_siswa'";
-  }
-} else {
-  $kelas_siswa = "Semua Kelas";
-  $kelas_query = "";
+  $kelas_query = ("$kelas_siswa" !== "Semua Kelas") ? "WHERE k.nama_kelas = '$kelas_siswa'" : "";
 }
 ?>
+
 <!-- Main -->
 <main id="main" class="main">
 
@@ -42,22 +48,23 @@ if (isset($_POST['kelas_siswa'])) {
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <?php if (isset($_SESSION['user'])) {
-            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+          <?php
+          if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek'])) {
           ?>
-              <h5 class="card-header d-flex align-items-center">
-                <span class="col-sm-9"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data</span>
-                <form class="col-sm-3" action="?page=<?php echo $pageName ?>" method="post">
-                  <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
-                    <option value="" disabled selected>Pilih Kelas</option>
-                    <?php foreach ($kelas_list as $kelas) { ?>
-                      <option value="<?php echo $kelas['nama_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
-                    <?php } ?>
-                  </select>
-                </form>
-              </h5>
+            <h5 class="card-header d-flex align-items-center">
+              <span class="col-sm-9"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success">+</a> Tambah Data</span>
+              <form class="col-sm-3" action="?page=<?php echo $pageName ?>" method="post">
+                <select class="form-select" name="kelas_siswa" id="kelas_siswa" onchange="this.form.submit()">
+                  <option value="" disabled selected>-- Pilih Kelas --</option>
+                  <option value="Semua Kelas">Semua Kelas</option>
+                  <?php foreach ($kelas_list as $kelas) { ?>
+                    <option value="<?php echo $kelas['nama_kelas']; ?>"><?php echo $kelas['nama_kelas']; ?></option>
+                  <?php } ?>
+                </select>
+              </form>
+            </h5>
           <?php }
-          } ?>
+          ?>
           <div class="table-responsive text-nowrap">
             <table id="dataTableSiswa" class="table table-hover">
               <thead>
@@ -91,12 +98,12 @@ if (isset($_POST['kelas_siswa'])) {
                     <td><?php echo htmlspecialchars($siswa['nama']); ?></td>
                     <td><?php echo htmlspecialchars($siswa['nama_kelas']); ?></td>
                     <td>
-                      <?php if (isset($_SESSION['user'])) {
-                        if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                      <?php
+                      if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
                       ?>
-                          <a href="?page=<?php echo $pageName ?>&alert=edit_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                        <a href="?page=<?php echo $pageName ?>&alert=edit_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
                       <?php }
-                      } ?>
+                      ?>
                       <a href="?page=<?php echo $pageName ?>&alert=info_data&nis=<?php echo $siswa['nis']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
 
                     </td>
@@ -306,11 +313,11 @@ if (isset($_POST['kelas_siswa'])) {
             </tr>
           </table>
           <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-          <?php if (isset($_SESSION['user'])) {
-            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+          <?php
+          if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
           ?>
-              <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
-          <?php }
+            <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&nis=<?php echo $d_siswa['nis']; ?>">Hapus</a>
+          <?php
           } ?>
         </div>
       </div>

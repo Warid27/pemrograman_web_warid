@@ -20,14 +20,14 @@ $pageName = 'kelas';
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <?php if (isset($_SESSION['user'])) {
-                        if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                    <?php
+                    if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
                     ?>
-                            <h5 class="card-header d-flex">
-                                <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
-                            </h5>
+                        <h5 class="card-header d-flex">
+                            <span class="col-sm-6"><a href="?page=<?php echo $pageName ?>&alert=add_data" class="btn btn-success"><i class="bi bi-plus-lg"></i></a> Tambah Data</span>
+                        </h5>
                     <?php }
-                    } ?>
+                    ?>
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                             <thead>
@@ -54,12 +54,14 @@ $pageName = 'kelas';
                                         <td><?php echo htmlspecialchars($kelas['jurusan']); ?></td>
                                         <td><?php echo htmlspecialchars($kelas['nama_kelas']); ?></td>
                                         <td>
-                                            <?php if (isset($_SESSION['user'])) {
-                                                if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                                            <?php
+                                            if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
                                             ?>
-                                                    <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $kelas['id_kelas']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
-                                            <?php }
-                                            } ?>
+                                                <a href="?page=<?php echo $pageName ?>&alert=edit_data&id=<?php echo $kelas['id_kelas']; ?>" class="btn btn-primary"><i class="bi bi-pencil-fill" style="color: white;"></i></a>
+                                            <?php
+                                            };
+                                            ?>
+
                                             <a href="?page=<?php echo $pageName ?>&alert=info_data&id=<?php echo $kelas['id_kelas']; ?>" class="btn btn-secondary"><i class="bi bi-info-circle" style="color: white"></i></a>
 
                                         </td>
@@ -221,12 +223,14 @@ $pageName = 'kelas';
                             </tr>
                         </table>
                         <a class="btn btn-secondary float-end mt-3 ms-2" href="?page=<?php echo $pageName ?>">Tutup</a>
-                        <?php if (isset($_SESSION['user'])) {
-                            if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "petugas" || $_SESSION['role'] == "wakasek" || $_SESSION['role'] == "walikelas") {
+                        <?php
+                        if (isset($_SESSION['user']) && in_array($_SESSION['role'], ['admin', 'petugas', 'wakasek', 'walikelas'])) {
                         ?>
-                                <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_kelas['id_kelas']; ?>">Hapus</a>
-                        <?php }
-                        } ?>
+                            <a class="btn btn-danger float-end mt-3" href="?page=<?php echo $pageName; ?>&alert=confirm_delete_sim&id=<?php echo $d_kelas['id_kelas']; ?>">Hapus</a>
+                        <?php
+                        }
+                        ?>
+
                     </div>
                 </div>
         <?php

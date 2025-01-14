@@ -25,7 +25,7 @@ $userList = array (
   array (
     'user_id' => '14',
     'username' => 'Pak Wildan',
-    'password' => 'pakwd',
+    'password' => 'wadawd',
     'level' => 'walikelas',
   ),
   4 => 
@@ -48,5 +48,26 @@ $userList = array (
     'username' => 'siswaAdmin',
     'password' => 'siswa',
     'level' => 'admin',
+  ),
+  7 => 
+  array (
+    'user_id' => '128',
+    'username' => 'Bu Yuana',
+    'password' => '12345',
+    'level' => 'wakasek',
+  ),
+  8 => 
+  array (
+    'user_id' => '129',
+    'username' => 'Pak Ahmad',
+    'password' => '09128302183',
+    'level' => 'wakasek',
+  ),
+  9 => 
+  array (
+    'user_id' => '130',
+    'username' => 'Pak Antuk',
+    'password' => '91749821',
+    'level' => 'wakasek',
   ),
 );
