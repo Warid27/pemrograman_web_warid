@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Jan 2025 pada 19.26
+-- Waktu pembuatan: 14 Jan 2025 pada 07.51
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -54,6 +54,15 @@ CREATE TABLE `tb_bayar` (
   `jumlah` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tb_bayar`
+--
+
+INSERT INTO `tb_bayar` (`id_bayar`, `nis`, `jenis`, `bulan`, `jumlah`, `id_user`) VALUES
+(13, 17325, 'SPP', 1, 2147483647, 3),
+(14, 17325, 'Tabungan', 1, 2147483647, 3),
+(15, 17325, 'Extra', 1, 2147483647, 3);
 
 -- --------------------------------------------------------
 
@@ -125,7 +134,8 @@ CREATE TABLE `tb_mapel` (
 INSERT INTO `tb_mapel` (`id_mapel`, `nama_mapel`) VALUES
 (1, 'Pem. Web'),
 (2, 'Basis Data'),
-(3, 'Pem. Perangkat Bergerak');
+(3, 'OOP'),
+(4, 'Bahasa Inggris');
 
 -- --------------------------------------------------------
 
@@ -140,6 +150,18 @@ CREATE TABLE `tb_nilai` (
   `nilai` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tb_nilai`
+--
+
+INSERT INTO `tb_nilai` (`id_nilai`, `nis`, `id_mapel`, `nilai`, `id_user`) VALUES
+(24, 17696, 1, 100, 126),
+(25, 17696, 2, 100, 126),
+(26, 17696, 3, 100, 126),
+(27, 17325, 1, 100, 129),
+(28, 17325, 2, 80, 129),
+(29, 17325, 3, 0, 129);
 
 -- --------------------------------------------------------
 
@@ -858,7 +880,7 @@ INSERT INTO `tb_siswa` (`nis`, `nama`, `id_kelas`, `jk`, `user`, `pass`, `foto`)
 (17313, 'GAVIN TYAGA DANISWARA', 20, 1, '17313', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17314, 'HAIDAR AGAM AFFANDANI', 20, 1, '17314', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17315, 'HELMI AQSHA FIRDAUSSI', 20, 1, '17315', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
-(17316, 'IRFAN ARIF FADHILLAH', 20, 1, '17316', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
+(17316, 'IRFAN ARIF FADHILLAH', 20, 1, 'ipan', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17317, 'IRMA ALIFIYATUZ ZAHWA', 20, 2, '17317', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17318, 'IZZATUN NISSA', 20, 2, '17318', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17319, 'JASON GERARD ATMAJA', 20, 1, '17319', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
@@ -867,7 +889,7 @@ INSERT INTO `tb_siswa` (`nis`, `nama`, `id_kelas`, `jk`, `user`, `pass`, `foto`)
 (17322, 'KURNIA AZ ZAHRA ILMI SYADZA', 20, 2, '17322', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17323, 'MADA ALVINO MAULANA RUKY', 20, 1, '17323', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17324, 'MIRZA ZAKY QASTHALANY', 20, 1, '17324', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
-(17325, 'MOHAMAD SINATRYA AL WARID', 20, 1, '17325', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
+(17325, 'MOHAMAD SINATRYA AL WARID', 20, 1, 'warid', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17326, 'MUHAMMAD IQBAAL TAQI TSAAQIF', 20, 1, '17326', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17327, 'NAURRA CITRA RAHMAWATI', 20, 2, '17327', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
 (17328, 'PUTRI ARUMARISTIANA AMALIA HID', 20, 2, '17328', '$2y$10$MnpH2UsRNknDFDDW/rHmM.Kqk/qk5pLnOJm/6DaMf67AgNElxdQnK', '1732584748-images.png'),
@@ -1365,10 +1387,14 @@ CREATE TABLE `tb_user` (
 INSERT INTO `tb_user` (`id_user`, `user`, `pass`, `lvl`) VALUES
 (1, 'Admin', '$2y$10$SSS7R54linkNLLjwHD.Uc.hifWNWzZUrwgcpM3yQjiPG3CSuQLZ8O', 'admin'),
 (3, 'Petugas', '$2y$10$xIETuQdEN92f5F5D.nEsleNqXZFxxQlUlzDLDyOydTM4wErEfoGMq', 'petugas'),
-(14, 'Pak Wildan', '$2y$10$9P.AeyO7dl10kpuzA0iEUeTGzOzr.8mt0JPC1VnqcT4GFKkCi88ee', 'walikelas'),
+(14, 'Pak Wildan', '$2y$10$PoNw1JHrIi0XRgYSsShdTOr.RrmdcpKFtVi9Krpq5T5Nmi2wzWNTy', 'walikelas'),
 (125, 'Babe Agus', '$2y$10$jtrAIA73dmEZKf2n7.lWG.plJGNGKgYbXsS4aym5JFqwn5o8JKPF6', 'wakasek'),
 (126, 'Bu Akrim', '$2y$10$G7s17v38vzljfnTyWkKQqenD8HEGAN4XXKAhhyvlxeBrY/3Mt4HLm', 'walikelas'),
-(127, 'siswaAdmin', '$2y$10$pgU9iaxFidTpn0tfpiRaGOX.yn2WfSTMP1HRktCPDPLRGIw8DL8yG', 'admin');
+(127, 'siswaAdmin', '$2y$10$pgU9iaxFidTpn0tfpiRaGOX.yn2WfSTMP1HRktCPDPLRGIw8DL8yG', 'admin'),
+(128, 'Bu Yuana', '$2y$10$Xt0ltAP9u8MpyyK.E9yvluRxB1YOp6sYGbzcnhf7DuE9GskO9ohvC', 'wakasek'),
+(129, 'Pak Ahmad', '$2y$10$SW6LuiDy4Njw48PJDQPXb.KbYOxJttGyTQ2UIUzqjR6atjivDEupK', 'wakasek'),
+(130, 'Pak Antuk', '$2y$10$H74mJc/HX7uOVoQ00ajeae3ztC5IljROMAc6migpIKtmnzggr.rIe', 'wakasek'),
+(131, 'IRFAN BESAR', '$2y$10$9gEYQHkGd2XV.piu8BN/keeA9Z8AZm.Hhqj6VongCC2z7QlR05Z5y', 'walikelas');
 
 -- --------------------------------------------------------
 
@@ -1387,7 +1413,10 @@ CREATE TABLE `tb_wakasek` (
 --
 
 INSERT INTO `tb_wakasek` (`id_wks`, `id_user`, `bidang`) VALUES
-(3, 125, '2');
+(3, 125, '2'),
+(6, 128, '1'),
+(7, 129, '3'),
+(8, 130, '4');
 
 -- --------------------------------------------------------
 
@@ -1407,7 +1436,8 @@ CREATE TABLE `tb_walikelas` (
 
 INSERT INTO `tb_walikelas` (`id_wali`, `id_user`, `id_kelas`) VALUES
 (1, 14, 20),
-(4, 126, 9);
+(4, 126, 9),
+(6, 131, 31);
 
 --
 -- Indexes for dumped tables
@@ -1500,7 +1530,7 @@ ALTER TABLE `tb_admin`
 -- AUTO_INCREMENT untuk tabel `tb_bayar`
 --
 ALTER TABLE `tb_bayar`
-  MODIFY `id_bayar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_bayar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_kelas`
@@ -1512,13 +1542,13 @@ ALTER TABLE `tb_kelas`
 -- AUTO_INCREMENT untuk tabel `tb_mapel`
 --
 ALTER TABLE `tb_mapel`
-  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_nilai`
 --
 ALTER TABLE `tb_nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_petugas`
@@ -1530,19 +1560,19 @@ ALTER TABLE `tb_petugas`
 -- AUTO_INCREMENT untuk tabel `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_wakasek`
 --
 ALTER TABLE `tb_wakasek`
-  MODIFY `id_wks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_wks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_walikelas`
 --
 ALTER TABLE `tb_walikelas`
-  MODIFY `id_wali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_wali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

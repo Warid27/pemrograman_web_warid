@@ -70,4 +70,18 @@ $userList = array (
     'password' => '91749821',
     'level' => 'wakasek',
   ),
+  10 => 
+  array (
+    'user_id' => '131',
+    'username' => 'IRFAN BESAR',
+    'password' => 'IRFAN BESAR',
+    'level' => 'walikelas',
+  ),
+  11 => 
+  array (
+    'user_id' => '132',
+    'username' => 'Bu Dhani',
+    'password' => '12345',
+    'level' => 'walikelas',
+  ),
 );
