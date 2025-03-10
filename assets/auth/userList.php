@@ -84,4 +84,11 @@ $userList = array (
     'password' => '12345',
     'level' => 'walikelas',
   ),
+  12 => 
+  array (
+    'user_id' => '133',
+    'username' => 'Bu Uma',
+    'password' => 'Bu Uma',
+    'level' => 'walikelas',
+  ),
 );
