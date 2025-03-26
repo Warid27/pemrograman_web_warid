@@ -4,63 +4,50 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-javascript.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
-This is my school project—a simple CRUD app to manage academic system info with a login system using hashed passwords.
-## How to Clone:
-https://github.com/Warid27/pemrograman_web_warid.git
+Welcome to SIM Akademik, a simple CRUD app to manage academic system information with a login system using hashed passwords. This project is a school assignment and is intended to demonstrate a basic understanding of PHP, MySQLi, and web development.
 
-## What It Does
-A PHP & MySQLi app with these features:
-1. **Login System**: Multiuser login with secure hashed passwords.
-2. **CRUD**: Create, Read, Update, & Delete (Users / System Info).
-3. **Roles**: 
-   - `notsign` (guest)
-   - `operator` (basic user)
-   - `admin` (more control)
-   - `superadmin` (full control)
+## Getting Started
 
-### Extra Features
-1. **Light & Dark Mode**: Switch themes.
-2. **Alerts**: Pop-ups with SweetAlert2.
-3. **Text Editor**: Edit text with CKEDITOR.
+To get started, follow these steps:
+
+1. Clone the repository: `https://github.com/Warid27/pemrograman_web_warid.git`
+2. Set up the database:
+	* Start XAMPP (Apache and MySQL).
+	* Go to `http://localhost/phpmyadmin`.
+	* Import the `.sql` file from the `database` folder (e.g., `academycs_db.sql`).
+3. Run the app:
+	* Put the project folder in `C:/xampp/htdocs/` (e.g., `htdocs/pemrograman_web_warid`).
+	* Open your browser and go to `http://localhost/pemrograman_web_warid`.
+	* Log in with a user from the database (passwords are hashed!).
+
+## Features
+
+* **Login System**: Multiuser login with secure hashed passwords.
+* **CRUD**: Create, Read, Update, & Delete (Users / System Info).
+* **Roles**: 
+	+ `notsign` (guest)
+	+ `operator` (basic user)
+	+ `admin` (more control)
+	+ `superadmin` (full control)
+* **Light & Dark Mode**: Switch themes.
+* **Alerts**: Pop-ups with SweetAlert2.
+* **Text Editor**: Edit text with CKEDITOR.
 
 ## Tools Used
-- **PHP**: Runs the app.
-- **MySQLi**: Connects to the database.
-- **Bootstrap**: Makes it look good.
-- **JavaScript**: Adds cool stuff.
-- **MySQL**: Stores everything.
 
-## What You Need
-- [XAMPP](https://www.apachefriends.org/index.html).
-- A browser (like Chrome).
-
-## How to Set It Up
-1. **Get the Files**:
-   - Download this project from my GitHub.
-
-2. **Set Up the Database**:
-   - Start XAMPP (Apache and MySQL).
-   - Go to `http://localhost/phpmyadmin`.
-   - Import the `.sql` file from the `database` folder:
-     - Click "Import," pick the file (e.g., `academycs_db.sql`), and upload it.
-
-3. **Run It**:
-   - Put the project folder in `C:/xampp/htdocs/` (e.g., `htdocs/pemrograman_web_warid`).
-   - Open your browser and go to `http://localhost/pemrograman_web_warid`.
-   - Log in with a user from the database (passwords are hashed!).
-
-## How It Works
-- **Login**: Use a username and password (hashed in the database).
-- **Home**: See info based on your role.
-- **CRUD**: Add, view, edit, or delete info/users (depends on your role).
-- **Extras**: Switch themes, see alerts, use the text editor.
+* **PHP**: Runs the app.
+* **MySQLi**: Connects to the database.
+* **Bootstrap**: Makes it look good.
+* **JavaScript**: Adds cool stuff.
+* **MySQL**: Stores everything.
 
 ## Help
-If it doesn’t work, ask my teacher or friends. It’s my first app!
+
+If you encounter any issues or have questions, feel free to reach out to my teacher or friends. This is my first app, and I'm happy to help troubleshoot or provide guidance.
 
 ---
 
-### Notes:
-- The "Files" section is removed as requested.
-- I kept the setup steps exactly as you specified: import the `.sql` from the `database` folder and run XAMPP.
-- Let me know if you need anything else adjusted!
+### Notes
+
+* This README.md file provides an overview of the project, its features, and how to get started.
+* The project is designed to be easy to use and understand, but if you have any questions or need further assistance, please don't hesitate to ask.
