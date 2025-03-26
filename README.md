@@ -5,6 +5,8 @@
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 This is my school project—a simple CRUD app to manage academic system info with a login system using hashed passwords.
+## How to Clone:
+https://github.com/Warid27/pemrograman_web_warid.git
 
 ## What It Does
 A PHP & MySQLi app with these features:
@@ -43,8 +45,8 @@ A PHP & MySQLi app with these features:
      - Click "Import," pick the file (e.g., `academycs_db.sql`), and upload it.
 
 3. **Run It**:
-   - Put the project folder in `C:/xampp/htdocs/` (e.g., `htdocs/system-info`).
-   - Open your browser and go to `http://localhost/system-info`.
+   - Put the project folder in `C:/xampp/htdocs/` (e.g., `htdocs/pemrograman_web_warid`).
+   - Open your browser and go to `http://localhost/pemrograman_web_warid`.
    - Log in with a user from the database (passwords are hashed!).
 
 ## How It Works
